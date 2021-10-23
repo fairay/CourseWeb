@@ -18,7 +18,7 @@ type Handler struct {
 /*var e error*/
 
 func main() {
-	dsn := "host=localhost user=admin password=admin dbname=recipes port=5432 sslmode=disable"
+	dsn := "host=25.76.186.53 user=postgres password=postgres dbname=recipes port=5432 sslmode=disable"
 	db, e := gorm.Open("postgres", dsn)
 
 	if e != nil {
@@ -35,7 +35,6 @@ func main() {
 	handler.db = db
 
 	fmt.Println("Hello test")
-	
 
 	router := mux.NewRouter()
 	router.HandleFunc("/test", getTest).Methods("GET")
