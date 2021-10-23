@@ -1,9 +1,11 @@
 package main
 
 import (
-	"app/server/repository/objects"
+	"api/recipes/repository/objects"
+	"api/recipes/utils"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -15,16 +17,18 @@ type Handler struct {
 	db *gorm.DB
 }
 
-/*var e error*/
-
 func main() {
-	dsn := "host=25.76.186.53 user=postgres password=postgres dbname=recipes port=5432 sslmode=disable"
-	db, e := gorm.Open("postgres", dsn)
+	utils.InitConfig()
+	cnf := utils.Config.DB
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", 
+		cnf.Host, cnf.User, cnf.Password, cnf.Name, cnf.Port)
+	db, e := gorm.Open(cnf.Type, dsn)
 
 	if e != nil {
 		fmt.Println(e)
 	} else {
 		fmt.Println("Connection Established")
+		log.Fatal()
 	}
 
 	defer db.Close()
@@ -34,12 +38,10 @@ func main() {
 	handler := new(Handler)
 	handler.db = db
 
-	fmt.Println("Hello test")
-
 	router := mux.NewRouter()
 	router.HandleFunc("/test", getTest).Methods("GET")
 	router.HandleFunc("/categories", handler.getAllCategories).Methods("GET")
-	http.ListenAndServe(":1991", router)
+	http.ListenAndServe(utils.Config.Port, router)
 }
 
 func getTest(w http.ResponseWriter, r *http.Request) {

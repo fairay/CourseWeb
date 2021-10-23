@@ -1,4 +1,4 @@
-module app/server
+module api/recipes
 
 go 1.17
 
