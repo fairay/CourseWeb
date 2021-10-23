@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -18,6 +19,14 @@ type Handler struct {
 }
 
 func main() {
+	f, err := os.OpenFile("info.log", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+
+	logger := log.New(f, "INFO\t", log.Ldate|log.Ltime)
+
 	utils.InitConfig()
 	cnf := utils.Config.DB
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", 
@@ -28,7 +37,7 @@ func main() {
 		fmt.Println(e)
 	} else {
 		fmt.Println("Connection Established")
-		log.Fatal()
+		logger.Fatal("Connection Established")
 	}
 
 	defer db.Close()
