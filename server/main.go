@@ -5,9 +5,7 @@ import (
 	"api/recipes/utils"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
-	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -19,15 +17,10 @@ type Handler struct {
 }
 
 func main() {
-	f, err := os.OpenFile("info.log", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer f.Close()
-
-	logger := log.New(f, "INFO\t", log.Ldate|log.Ltime)
-
 	utils.InitConfig()
+	utils.InitLogger()
+	defer utils.CloseLogger()
+
 	cnf := utils.Config.DB
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", 
 		cnf.Host, cnf.User, cnf.Password, cnf.Name, cnf.Port)
@@ -36,8 +29,7 @@ func main() {
 	if e != nil {
 		fmt.Println(e)
 	} else {
-		fmt.Println("Connection Established")
-		logger.Fatal("Connection Established")
+		utils.Logger.Print("Connection Established")
 	}
 
 	defer db.Close()
@@ -50,6 +42,8 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/test", getTest).Methods("GET")
 	router.HandleFunc("/categories", handler.getAllCategories).Methods("GET")
+
+	utils.Logger.Print("Server started")
 	http.ListenAndServe(utils.Config.Port, router)
 }
 
