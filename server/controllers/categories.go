@@ -1,9 +1,8 @@
 package controllers
 
 import (
+	"api/recipes/models"
 	"api/recipes/repository"
-	"api/recipes/repository/objects"
-	"encoding/json"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -25,11 +24,7 @@ func InitCategories(r *mux.Router, db *gorm.DB) {
 // @Produce json
 // @Success 200 {object} []objects.Categories
 func (this *category) getAllCategories(w http.ResponseWriter, r *http.Request) {
-	rep := &repository.PGCategoriesRep{this.db}
-	temp := rep.List()
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Response-Code", "00")
-	w.Header().Set("Response-Desc", "Success")
-	json.NewEncoder(w).Encode(temp)
+	model := models.NewCategory(repository.NewCategotiesRep(this.db))
+	data := model.GetAll()
+	jsonSuccess(w, data)
 }

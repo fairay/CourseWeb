@@ -3,7 +3,7 @@ package main
 import (
 	"api/recipes/controllers"
 	_ "api/recipes/docs"
-	"api/recipes/repository/objects"
+	"api/recipes/objects"
 	"api/recipes/utils"
 	"encoding/json"
 	"fmt"
@@ -14,10 +14,6 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
-
-type Handler struct {
-	db *gorm.DB
-}
 
 func InitDBConnection(cnf utils.DBConfiguration) (*gorm.DB) {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
@@ -47,8 +43,6 @@ func main() {
 
 	db := InitDBConnection(utils.Config.DB)
 	defer db.Close()
-	// handler := new(Handler)
-	// handler.db = db
 
 	router := mux.NewRouter()
 	controllers.InitCategories(router, db)
