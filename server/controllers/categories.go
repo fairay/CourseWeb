@@ -33,7 +33,7 @@ func (this *category) getAllCategories(w http.ResponseWriter, r *http.Request) {
 // @Tags Categories
 // @Router /categories/find/{req} [get]
 // @Summary Retrieves categories with certain item
-// @Param (required) query string false "Search query"
+// @Param req path string false "Search query"
 // @Produce json
 // @Success 200 {object} []objects.Categories
 func (this *category) getCertainCategories(w http.ResponseWriter, r *http.Request) {
@@ -41,8 +41,5 @@ func (this *category) getCertainCategories(w http.ResponseWriter, r *http.Reques
 	model := models.NewCategory(repository.NewCategotiesRep(this.db))
 	temp := mux.Vars(r)
 	data := model.Find(temp["req"])
-
-	print(temp)
-	print(data)
 	jsonSuccess(w, data)
 }

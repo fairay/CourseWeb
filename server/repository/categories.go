@@ -2,6 +2,7 @@ package repository
 
 import (
 	"api/recipes/objects"
+	"strings"
 
 	"github.com/jinzhu/gorm"
 )
@@ -27,6 +28,6 @@ func (this *PGCategoriesRep) List() ([]objects.Categories) {
 
 func (this *PGCategoriesRep) Find(ctg string) ([]objects.Categories) { 
 	temp := []objects.Categories{}
-	this.db.Where("title LIKE ?", "%" + ctg + "%").Find(&temp)
+	this.db.Where("LOWER(title) LIKE ?", "%" + strings.ToLower(ctg) + "%").Find(&temp)
 	return temp
 }

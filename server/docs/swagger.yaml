@@ -28,8 +28,8 @@ paths:
     get:
       parameters:
       - description: Search query
-        in: query
-        name: (required)
+        in: path
+        name: req
         type: string
       produces:
       - application/json

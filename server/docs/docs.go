@@ -58,8 +58,8 @@ var doc = `{
                     {
                         "type": "string",
                         "description": "Search query",
-                        "name": "(required)",
-                        "in": "query"
+                        "name": "req",
+                        "in": "path"
                     }
                 ],
                 "responses": {
