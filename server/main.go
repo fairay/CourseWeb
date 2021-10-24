@@ -50,7 +50,7 @@ func main() {
 
 	router.HandleFunc("/test", getTest).Methods("GET")
 	router.PathPrefix("/swagger").Handler(httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:8000/swagger/doc.json"),
+		httpSwagger.URL("swagger/doc.json"),
 		httpSwagger.DeepLinking(true),
 		httpSwagger.DocExpansion("none"),
 		httpSwagger.DomID("#swagger-ui"),
