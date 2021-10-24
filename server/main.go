@@ -46,6 +46,7 @@ func main() {
 
 	router := mux.NewRouter()
 	controllers.InitCategories(router, db)
+	controllers.InitRecipes(router, db)
 
 	router.HandleFunc("/test", getTest).Methods("GET")
 	router.PathPrefix("/swagger").Handler(httpSwagger.Handler(

@@ -58,12 +58,60 @@
                     }
                 }
             }
+        },
+        "/recipes": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Recipes"
+                ],
+                "summary": "Retrieves all recipes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.Recipes"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
         "objects.Categories": {
             "type": "object",
             "properties": {
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "objects.Recipes": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "duration": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "portion_num": {
+                    "type": "integer"
+                },
                 "title": {
                     "type": "string"
                 }

@@ -10,6 +10,6 @@ type Recipes struct {
 	Title       string        `json:"title"`
 	CreatedAt   time.Time     `json:"created_at"`
 	Description string        `json:"description"`
-	Duration    time.Duration `json:"duration"`
+	Duration    uint64		  `json:"duration"`
 	PortionNum  int           `json:"portion_num"`
 }
