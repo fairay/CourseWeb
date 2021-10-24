@@ -1,6 +1,7 @@
 package main
 
 import (
+	"api/recipes/controllers"
 	_ "api/recipes/docs"
 	"api/recipes/repository/objects"
 	"api/recipes/utils"
@@ -18,36 +19,41 @@ type Handler struct {
 	db *gorm.DB
 }
 
-// @title Recipes API
-// @version 0.1
-// @description API for culinary recipes (BMSTU Web development cource project)
-
-func main() {
-	utils.InitConfig()
-	utils.InitLogger()
-	defer utils.CloseLogger()
-
-	cnf := utils.Config.DB
+func InitDBConnection(cnf utils.DBConfiguration) (*gorm.DB) {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		cnf.Host, cnf.User, cnf.Password, cnf.Name, cnf.Port)
 	db, e := gorm.Open(cnf.Type, dsn)
 
 	if e != nil {
-		fmt.Println(e)
+		utils.Logger.Print("DB Connection failed")
+		utils.Logger.Fatal(e)
 	} else {
-		utils.Logger.Print("Connection Established")
+		utils.Logger.Print("DB Connection Established")
 	}
 
-	defer db.Close()
+	// TODO: learn db connection setup actions
 	db.SingularTable(true)
 	db.AutoMigrate(&objects.Categories{})
+	return db
+}
 
-	handler := new(Handler)
-	handler.db = db
+// @title Recipes API
+// @version 0.1
+// @description API for culinary recipes (BMSTU Web development cource project)
+func main() {
+	utils.InitConfig()
+	utils.InitLogger()
+	defer utils.CloseLogger()
+
+	db := InitDBConnection(utils.Config.DB)
+	defer db.Close()
+	// handler := new(Handler)
+	// handler.db = db
 
 	router := mux.NewRouter()
+	controllers.InitCategories(router, db)
+
 	router.HandleFunc("/test", getTest).Methods("GET")
-	router.HandleFunc("/categories", handler.getAllCategories).Methods("GET")
 	router.PathPrefix("/swagger").Handler(httpSwagger.Handler(
 		httpSwagger.URL("http://localhost:8000/swagger/doc.json"),
 		httpSwagger.DeepLinking(true),
@@ -68,17 +74,3 @@ func getTest(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(data)
 }
 
-// @Tags Categories
-// @Router /categories [get]
-// @Summary Retrieves all categories
-// @Produce json
-// @Success 200 {object} []objects.Categories
-func (handler *Handler) getAllCategories(w http.ResponseWriter, r *http.Request) {
-	temp := []objects.Categories{}
-	handler.db.Find(&temp)
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Response-Code", "00")
-	w.Header().Set("Response-Desc", "Success")
-	json.NewEncoder(w).Encode(temp)
-}
