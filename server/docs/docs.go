@@ -44,6 +44,36 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/categories/find/{req}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Retrieves categories with certain item",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search query",
+                        "name": "(required)",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.Categories"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {

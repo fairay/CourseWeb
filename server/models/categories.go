@@ -17,3 +17,8 @@ func (this *CategoryM) GetAll() ([]objects.Categories) {
 	temp := this.rep.List()
 	return temp
 }
+
+func (this *CategoryM) Find(ctg string) ([]objects.Categories) {
+	temp := this.rep.Find(ctg)
+	return temp
+}
