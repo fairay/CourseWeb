@@ -1,0 +1,27 @@
+definitions:
+  objects.Categories:
+    properties:
+      title:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: API for culinary recipes (BMSTU Web development cource project)
+  title: Recipes API
+  version: "0.1"
+paths:
+  /categories:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/objects.Categories'
+            type: array
+      summary: Retrieves all categories
+      tags:
+      - Categories
+swagger: "2.0"
