@@ -14,27 +14,29 @@ type category struct {
 func InitCategories(r *mux.Router, model *models.CategoryM) {
 	ctrl := &category{model}
 	r.HandleFunc("/categories", ctrl.getAllCategories).Methods("GET")
-	r.HandleFunc("/categories/find/{req}", ctrl.getCertainCategories).Methods("GET")
+	r.HandleFunc("/categories/{title}", ctrl.getCategory).Methods("GET")
 }
 
 // @Tags Categories
 // @Router /categories [get]
 // @Summary Retrieves all categories
+// @Param search query string false "Search query"
 // @Produce json
 // @Success 200 {object} []objects.Categories
 func (this *category) getAllCategories(w http.ResponseWriter, r *http.Request) {
-	data := this.model.GetAll()
+	urlParams := r.URL.Query()
+	data := this.model.Find(urlParams.Get("search"))
 	jsonSuccess(w, data)
 }
 
 // @Tags Categories
-// @Router /categories/find/{req} [get]
-// @Summary Retrieves categories with certain item
-// @Param req path string false "Search query"
+// @Router /categories/{title} [get]
+// @Summary Retrieves categoriey
+// @Param title path string false "Category title"
 // @Produce json
-// @Success 200 {object} []objects.Categories
-func (this *category) getCertainCategories(w http.ResponseWriter, r *http.Request) {
+// @Success 200 {object} objects.Categories
+func (this *category) getCategory(w http.ResponseWriter, r *http.Request) {
 	temp := mux.Vars(r)
-	data := this.model.Find(temp["req"])
+	data := this.model.Get(temp["title"])
 	jsonSuccess(w, data)
 }

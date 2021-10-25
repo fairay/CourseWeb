@@ -29,6 +29,11 @@ info:
 paths:
   /categories:
     get:
+      parameters:
+      - description: Search query
+        in: query
+        name: search
+        type: string
       produces:
       - application/json
       responses:
@@ -41,12 +46,12 @@ paths:
       summary: Retrieves all categories
       tags:
       - Categories
-  /categories/find/{req}:
+  /categories/{title}:
     get:
       parameters:
-      - description: Search query
+      - description: Category title
         in: path
-        name: req
+        name: title
         type: string
       produces:
       - application/json
@@ -54,10 +59,8 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/objects.Categories'
-            type: array
-      summary: Retrieves categories with certain item
+            $ref: '#/definitions/objects.Categories'
+      summary: Retrieves categoriey
       tags:
       - Categories
   /recipes:

@@ -32,6 +32,14 @@ var doc = `{
                     "Categories"
                 ],
                 "summary": "Retrieves all categories",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search query",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -45,7 +53,7 @@ var doc = `{
                 }
             }
         },
-        "/categories/find/{req}": {
+        "/categories/{title}": {
             "get": {
                 "produces": [
                     "application/json"
@@ -53,12 +61,12 @@ var doc = `{
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Retrieves categories with certain item",
+                "summary": "Retrieves categoriey",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Search query",
-                        "name": "req",
+                        "description": "Category title",
+                        "name": "title",
                         "in": "path"
                     }
                 ],
@@ -66,10 +74,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/objects.Categories"
-                            }
+                            "$ref": "#/definitions/objects.Categories"
                         }
                     }
                 }

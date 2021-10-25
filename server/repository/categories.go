@@ -10,6 +10,8 @@ import (
 type CategoriesRep interface {
 	List() ([]objects.Categories)
 	Find(ctg string) ([]objects.Categories)
+
+	Get(ctg string) (objects.Categories)
 }
 
 type PGCategoriesRep struct {
@@ -29,5 +31,11 @@ func (this *PGCategoriesRep) List() ([]objects.Categories) {
 func (this *PGCategoriesRep) Find(ctg string) ([]objects.Categories) { 
 	temp := []objects.Categories{}
 	this.db.Where("LOWER(title) LIKE ?", "%" + strings.ToLower(ctg) + "%").Find(&temp)
+	return temp
+}
+
+func (this *PGCategoriesRep) Get(ctg string) (objects.Categories) { 
+	temp := objects.Categories{}
+	this.db.Where("LOWER(title) = ?", strings.ToLower(ctg)).Find(&temp)
 	return temp
 }
