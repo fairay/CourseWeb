@@ -2,19 +2,17 @@ package controllers
 
 import (
 	"api/recipes/models"
-	"api/recipes/repository"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
 )
 
 type category struct {
-	db *gorm.DB
+	model *models.CategoryM
 }
 
-func InitCategories(r *mux.Router, db *gorm.DB) {
-	ctrl := &category{db}
+func InitCategories(r *mux.Router, model *models.CategoryM) {
+	ctrl := &category{model}
 	r.HandleFunc("/categories", ctrl.getAllCategories).Methods("GET")
 	r.HandleFunc("/categories/find/{req}", ctrl.getCertainCategories).Methods("GET")
 }
@@ -25,8 +23,7 @@ func InitCategories(r *mux.Router, db *gorm.DB) {
 // @Produce json
 // @Success 200 {object} []objects.Categories
 func (this *category) getAllCategories(w http.ResponseWriter, r *http.Request) {
-	model := models.NewCategory(repository.NewCategotiesRep(this.db))
-	data := model.GetAll()
+	data := this.model.GetAll()
 	jsonSuccess(w, data)
 }
 
@@ -37,9 +34,7 @@ func (this *category) getAllCategories(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Success 200 {object} []objects.Categories
 func (this *category) getCertainCategories(w http.ResponseWriter, r *http.Request) {
-
-	model := models.NewCategory(repository.NewCategotiesRep(this.db))
 	temp := mux.Vars(r)
-	data := model.Find(temp["req"])
+	data := this.model.Find(temp["req"])
 	jsonSuccess(w, data)
 }

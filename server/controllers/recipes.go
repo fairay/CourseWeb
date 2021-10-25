@@ -2,19 +2,17 @@ package controllers
 
 import (
 	"api/recipes/models"
-	"api/recipes/repository"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
 )
 
 type recipe struct {
-	db *gorm.DB
+	model *models.RecipeM
 }
 
-func InitRecipes(r *mux.Router, db *gorm.DB) {
-	ctrl := &recipe{db}
+func InitRecipes(r *mux.Router, model *models.RecipeM) {
+	ctrl := &recipe{model}
 	r.HandleFunc("/recipes", ctrl.getAllRecipes).Methods("GET")
 }
 
@@ -24,7 +22,6 @@ func InitRecipes(r *mux.Router, db *gorm.DB) {
 // @Produce json
 // @Success 200 {object} []objects.Recipes
 func (this *recipe) getAllRecipes(w http.ResponseWriter, r *http.Request) {
-	model := models.NewRecipe(repository.NewRecipesRep(this.db))
-	data := model.GetAll()
+	data := this.model.GetAll()
 	jsonSuccess(w, data)
 }

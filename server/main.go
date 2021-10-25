@@ -3,7 +3,9 @@ package main
 import (
 	"api/recipes/controllers"
 	_ "api/recipes/docs"
-	"api/recipes/objects"
+	"api/recipes/models"
+	_ "api/recipes/objects"
+	"api/recipes/repository"
 	"api/recipes/utils"
 	"encoding/json"
 	"fmt"
@@ -15,7 +17,7 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
-func InitDBConnection(cnf utils.DBConfiguration) (*gorm.DB) {
+func initDBConnection(cnf utils.DBConfiguration) (*gorm.DB) {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		cnf.Host, cnf.User, cnf.Password, cnf.Name, cnf.Port)
 	db, e := gorm.Open(cnf.Type, dsn)
@@ -28,9 +30,14 @@ func InitDBConnection(cnf utils.DBConfiguration) (*gorm.DB) {
 	}
 
 	// TODO: learn db connection setup actions
+	// TODO: need db.AutoMigrate(&objects.Categories{}) ?
 	db.SingularTable(true)
-	db.AutoMigrate(&objects.Categories{})
 	return db
+}
+
+func initControllers(r *mux.Router, db *gorm.DB) {
+	controllers.InitCategories(r, models.NewCategory(repository.NewCategotiesRep(db)))
+	controllers.InitRecipes(r, models.NewRecipe(repository.NewRecipesRep(db)))
 }
 
 // @title Recipes API
@@ -41,12 +48,11 @@ func main() {
 	utils.InitLogger()
 	defer utils.CloseLogger()
 
-	db := InitDBConnection(utils.Config.DB)
+	db := initDBConnection(utils.Config.DB)
 	defer db.Close()
 
 	router := mux.NewRouter()
-	controllers.InitCategories(router, db)
-	controllers.InitRecipes(router, db)
+	initControllers(router, db)
 
 	router.HandleFunc("/test", getTest).Methods("GET")
 	router.PathPrefix("/swagger").Handler(httpSwagger.Handler(
@@ -57,6 +63,7 @@ func main() {
 	))
 
 	utils.Logger.Print("Server started")
+	fmt.Printf("Server is running on http://localhost%s\n", utils.Config.Port)
 	http.ListenAndServe(utils.Config.Port, router)
 }
 
@@ -68,4 +75,3 @@ func getTest(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Response-Desc", "Success")
 	json.NewEncoder(w).Encode(data)
 }
-
