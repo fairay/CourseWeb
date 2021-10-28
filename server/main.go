@@ -2,6 +2,7 @@ package main
 
 import (
 	"api/recipes/controllers"
+	"api/recipes/controllers/token"
 	_ "api/recipes/docs"
 	"api/recipes/models"
 	_ "api/recipes/objects"
@@ -38,6 +39,8 @@ func initDBConnection(cnf utils.DBConfiguration) (*gorm.DB) {
 func initControllers(r *mux.Router, db *gorm.DB) {
 	controllers.InitCategories(r, models.NewCategory(repository.NewCategotiesRep(db)))
 	controllers.InitRecipes(r, models.NewRecipe(repository.NewRecipesRep(db)))
+	controllers.InitAccount(r, models.NewAccount(repository.NewAccountsRep(db)))
+	r.Use(auth.JwtAuthentication)
 }
 
 // @title Recipes API

@@ -1,4 +1,13 @@
 definitions:
+  objects.AccountDTO:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+    type: object
   objects.Category:
     properties:
       title:
@@ -27,6 +36,24 @@ info:
   title: Recipes API
   version: "0.1"
 paths:
+  /accounts/login:
+    post:
+      parameters:
+      - description: Authentication data
+        in: body
+        name: account
+        schema:
+          $ref: '#/definitions/objects.AccountDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/objects.AccountDTO'
+      summary: User's authorization
+      tags:
+      - Accounts
   /categories:
     get:
       parameters:

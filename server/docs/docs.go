@@ -23,6 +23,35 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/accounts/login": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "User's authorization",
+                "parameters": [
+                    {
+                        "description": "Authentication data",
+                        "name": "account",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/objects.AccountDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/objects.AccountDTO"
+                        }
+                    }
+                }
+            }
+        },
         "/categories": {
             "get": {
                 "produces": [
@@ -104,6 +133,20 @@ var doc = `{
         }
     },
     "definitions": {
+        "objects.AccountDTO": {
+            "type": "object",
+            "properties": {
+                "login": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        },
         "objects.Category": {
             "type": "object",
             "properties": {
