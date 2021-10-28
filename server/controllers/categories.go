@@ -22,7 +22,7 @@ func InitCategories(r *mux.Router, model *models.CategoryM) {
 // @Summary Retrieves all categories
 // @Param search query string false "Search query"
 // @Produce json
-// @Success 200 {object} []objects.Categories
+// @Success 200 {object} []objects.Category
 func (this *category) getAllCategories(w http.ResponseWriter, r *http.Request) {
 	urlParams := r.URL.Query()
 	data := this.model.Find(urlParams.Get("search"))
@@ -34,7 +34,7 @@ func (this *category) getAllCategories(w http.ResponseWriter, r *http.Request) {
 // @Summary Retrieves categoriey
 // @Param title path string false "Category title"
 // @Produce json
-// @Success 200 {object} objects.Categories
+// @Success 200 {object} objects.Category
 func (this *category) getCategory(w http.ResponseWriter, r *http.Request) {
 	temp := mux.Vars(r)
 	data := this.model.Get(temp["title"])

@@ -7,7 +7,7 @@ import (
 )
 
 type RecipesRep interface {
-	List() ([]objects.Recipes)
+	List() ([]objects.Recipe)
 }
 
 type PGRecipesRep struct {
@@ -18,8 +18,8 @@ func NewRecipesRep (db *gorm.DB) *PGRecipesRep {
 	return &PGRecipesRep{db}
 }
 
-func (this *PGRecipesRep) List() ([]objects.Recipes) {
-	temp := []objects.Recipes{}
+func (this *PGRecipesRep) List() ([]objects.Recipe) {
+	temp := []objects.Recipe{}
 	this.db.Find(&temp)
 	return temp
 }

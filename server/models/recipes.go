@@ -13,7 +13,7 @@ func NewRecipe(rep repository.RecipesRep) *RecipeM {
 	return &RecipeM{rep}
 }
 
-func (this *RecipeM) GetAll() ([]objects.Recipes) {
+func (this *RecipeM) GetAll() ([]objects.Recipe) {
 	temp := this.rep.List()
 	return temp
 }

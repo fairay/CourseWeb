@@ -30,7 +30,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/objects.Categories"
+                                "$ref": "#/definitions/objects.Category"
                             }
                         }
                     }
@@ -58,7 +58,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/objects.Categories"
+                            "$ref": "#/definitions/objects.Category"
                         }
                     }
                 }
@@ -79,7 +79,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/objects.Recipes"
+                                "$ref": "#/definitions/objects.RecipeDTO"
                             }
                         }
                     }
@@ -88,7 +88,7 @@
         }
     },
     "definitions": {
-        "objects.Categories": {
+        "objects.Category": {
             "type": "object",
             "properties": {
                 "title": {
@@ -96,7 +96,7 @@
                 }
             }
         },
-        "objects.Recipes": {
+        "objects.RecipeDTO": {
             "type": "object",
             "properties": {
                 "author": {

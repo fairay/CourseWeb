@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS Recipes (
 	title 			VARCHAR(128)	NOT NULL,
 	created_at		TIMESTAMP		NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	description		TEXT			NOT NULL,
-	duration		TIME,
+	duration		INTERVAL,
 	portion_num		INT
 );
 
@@ -43,15 +43,15 @@ CREATE TABLE IF NOT EXISTS Grades (
 	PRIMARY KEY (recipe, account)
 );
 
-DROP TABLE IF EXISTS RecipeСategory CASCADE;
-CREATE TABLE IF NOT EXISTS RecipeCategory (
+DROP TABLE IF EXISTS Recipe_Category CASCADE;
+CREATE TABLE IF NOT EXISTS Recipe_Category (
 	recipe			INT 			REFERENCES Recipes(id) NOT NULL,
 	category		VARCHAR(64)		REFERENCES Categories(title) NOT NULL,
 	PRIMARY KEY (recipe, category)
 );
 
-DROP TABLE IF EXISTS RecipeIngredient CASCADE;
-CREATE TABLE IF NOT EXISTS RecipeIngredient (
+DROP TABLE IF EXISTS Recipe_Ingredient CASCADE;
+CREATE TABLE IF NOT EXISTS Recipe_Ingredient (
 	recipe			INT 			REFERENCES Recipes(id) NOT NULL,
 	item			VARCHAR(64)		REFERENCES Ingredients(title) NOT NULL,
 	PRIMARY KEY (recipe, item)

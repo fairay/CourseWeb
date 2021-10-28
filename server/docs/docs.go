@@ -46,7 +46,7 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/objects.Categories"
+                                "$ref": "#/definitions/objects.Category"
                             }
                         }
                     }
@@ -74,7 +74,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/objects.Categories"
+                            "$ref": "#/definitions/objects.Category"
                         }
                     }
                 }
@@ -95,7 +95,7 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/objects.Recipes"
+                                "$ref": "#/definitions/objects.RecipeDTO"
                             }
                         }
                     }
@@ -104,7 +104,7 @@ var doc = `{
         }
     },
     "definitions": {
-        "objects.Categories": {
+        "objects.Category": {
             "type": "object",
             "properties": {
                 "title": {
@@ -112,7 +112,7 @@ var doc = `{
                 }
             }
         },
-        "objects.Recipes": {
+        "objects.RecipeDTO": {
             "type": "object",
             "properties": {
                 "author": {
