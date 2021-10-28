@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"api/recipes/controllers"
+	"api/recipes/controllers/responses"
 	"api/recipes/utils"
 	"net/http"
 	"time"
@@ -41,7 +41,7 @@ func FillCookie(w http.ResponseWriter, login string) {
 	tokenStr := tk.ToString()
 
 	if len(tokenStr) == 0 {
-		controllers.BadRequest(w, "Error in formatting token to string")
+		responses.BadRequest(w, "Error in formatting token to string")
 		return
 	}
 
@@ -71,11 +71,11 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		c, err := r.Cookie("token")
 		if err != nil {
 			if err == http.ErrNoCookie {
-				controllers.TokenIsMissed(w)
+				responses.TokenIsMissed(w)
 				return
 			}
 
-			controllers.BadRequest(w, "Can not extract token")
+			responses.BadRequest(w, "Can not extract token")
 			return
 		}
 
@@ -87,12 +87,12 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		})
 
 		if err != nil || !token.Valid { 
-			controllers.AccessDenied(w)
+			responses.AccessDenied(w)
 			return
 		}
 
 		if time.Now().Unix()-tk.ExpiresAt > utils.Config.TokenLiveTime {
-			controllers.TokenExpired(w)
+			responses.TokenExpired(w)
 			return
 		}
 

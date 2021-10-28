@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"api/recipes/controllers/responses"
 	"api/recipes/models"
 	"net/http"
 
@@ -26,7 +27,7 @@ func InitCategories(r *mux.Router, model *models.CategoryM) {
 func (this *category) getAllCategories(w http.ResponseWriter, r *http.Request) {
 	urlParams := r.URL.Query()
 	data := this.model.Find(urlParams.Get("search"))
-	jsonSuccess(w, data)
+	responses.JsonSuccess(w, data)
 }
 
 // @Tags Categories
@@ -38,5 +39,5 @@ func (this *category) getAllCategories(w http.ResponseWriter, r *http.Request) {
 func (this *category) getCategory(w http.ResponseWriter, r *http.Request) {
 	temp := mux.Vars(r)
 	data := this.model.Get(temp["title"])
-	jsonSuccess(w, data)
+	responses.JsonSuccess(w, data)
 }

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"api/recipes/controllers/responses"
 	"api/recipes/models"
 	"api/recipes/objects"
 	"net/http"
@@ -24,5 +25,5 @@ func InitRecipes(r *mux.Router, model *models.RecipeM) {
 // @Success 200 {object} []objects.RecipeDTO
 func (this *recipe) getAllRecipes(w http.ResponseWriter, r *http.Request) {
 	data := this.model.GetAll()
-	jsonSuccess(w, objects.Recipe{}.ArrToDTO(data))
+	responses.JsonSuccess(w, objects.Recipe{}.ArrToDTO(data))
 }

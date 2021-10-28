@@ -1,9 +1,10 @@
 package controllers
 
 import (
+	"api/recipes/controllers/responses"
+	"api/recipes/controllers/token"
 	"api/recipes/models"
 	"api/recipes/objects"
-	"auth"
 
 	"encoding/json"
 	"net/http"
@@ -31,13 +32,13 @@ func (this *account) LogIn(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(accDTO)
 	if err != nil {
-		BadRequest(w, "Invalid request")
+		responses.BadRequest(w, "Invalid request")
 		return
 	}
 
 	acc, err := this.model.LogIn(accDTO.Login, accDTO.Password)
 	if err != nil {
-		AuthenticationFailed(w)
+		responses.AuthenticationFailed(w)
 		return
 	}
 
