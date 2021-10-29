@@ -3,9 +3,10 @@ package auth
 import (
 	"api/recipes/controllers/responses"
 	"api/recipes/utils"
+
 	"net/http"
-	"time"
 	"regexp"
+	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 )

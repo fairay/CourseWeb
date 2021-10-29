@@ -8,6 +8,7 @@ import (
 
 type RecipesRep interface {
 	List() ([]objects.Recipe)
+	Create(rcp objects.Recipe) error
 }
 
 type PGRecipesRep struct {
@@ -22,4 +23,8 @@ func (this *PGRecipesRep) List() ([]objects.Recipe) {
 	temp := []objects.Recipe{}
 	this.db.Find(&temp)
 	return temp
+}
+
+func (this *PGRecipesRep) Create(rcp objects.Recipe) error {
+	return this.db.Create(&rcp).Error
 }

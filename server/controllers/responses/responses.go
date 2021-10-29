@@ -45,3 +45,9 @@ func BadRequest(w http.ResponseWriter, msg string) {
 	w.WriteHeader(http.StatusBadRequest)
 	json.NewEncoder(w).Encode(msg)
 }
+
+func Success(w http.ResponseWriter, msg string) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(msg)
+}

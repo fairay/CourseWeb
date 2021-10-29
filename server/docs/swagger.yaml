@@ -54,6 +54,16 @@ paths:
       summary: User's authorization
       tags:
       - Accounts
+  /accounts/logout:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: Logging out
+      tags:
+      - Accounts
   /categories:
     get:
       parameters:

@@ -52,6 +52,22 @@ var doc = `{
                 }
             }
         },
+        "/accounts/logout": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Logging out",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/categories": {
             "get": {
                 "produces": [

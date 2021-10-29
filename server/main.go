@@ -2,7 +2,7 @@ package main
 
 import (
 	"api/recipes/controllers"
-	"api/recipes/controllers/token"
+	auth "api/recipes/controllers/token"
 	_ "api/recipes/docs"
 	"api/recipes/models"
 	_ "api/recipes/objects"
@@ -18,7 +18,7 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
-func initDBConnection(cnf utils.DBConfiguration) (*gorm.DB) {
+func initDBConnection(cnf utils.DBConfiguration) *gorm.DB {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		cnf.Host, cnf.User, cnf.Password, cnf.Name, cnf.Port)
 	db, e := gorm.Open(cnf.Type, dsn)
@@ -36,6 +36,7 @@ func initDBConnection(cnf utils.DBConfiguration) (*gorm.DB) {
 	return db
 }
 
+//TODO: переделать под структуру Models
 func initControllers(r *mux.Router, db *gorm.DB) {
 	controllers.InitCategories(r, models.NewCategory(repository.NewCategotiesRep(db)))
 	controllers.InitRecipes(r, models.NewRecipe(repository.NewRecipesRep(db)))

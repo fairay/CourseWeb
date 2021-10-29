@@ -5,6 +5,7 @@ import (
 	"api/recipes/controllers/token"
 	"api/recipes/models"
 	"api/recipes/objects"
+	"time"
 
 	"encoding/json"
 	"net/http"
@@ -19,8 +20,10 @@ type account struct {
 func InitAccount(r *mux.Router, model *models.AccountM) {
 	ctrl := &account{model}
 	r.HandleFunc("/accounts/login", ctrl.LogIn).Methods("POST")
+	r.HandleFunc("/accounts/logout", ctrl.LogOut).Methods("POST")
 }
 
+// TODO: Check me out
 // @Tags Accounts
 // @Router /accounts/login [post]
 // @Param account body objects.AccountDTO false "Authentication data"
@@ -43,4 +46,22 @@ func (this *account) LogIn(w http.ResponseWriter, r *http.Request) {
 	}
 
 	auth.FillCookie(w, acc.Login)
+}
+
+// @Tags Accounts
+// @Router /accounts/logout [post]
+// @Summary Logging out
+// @Produce json
+// @Success 200
+func (this *account) LogOut(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+	Name:    "token",
+	Value:   "",
+	Expires: time.Unix(0, 0),
+	Path:    "/",
+
+	HttpOnly: true,
+	})
+
+	responses.Success(w, "Logout was successful")
 }
