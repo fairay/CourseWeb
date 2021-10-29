@@ -7,10 +7,11 @@ import (
 
 type CategoryM struct {
 	rep repository.CategoriesRep
+	models *Models
 }
 
-func NewCategory(rep repository.CategoriesRep) *CategoryM {
-	return &CategoryM{rep}
+func NewCategory(rep repository.CategoriesRep, models *Models) *CategoryM {
+	return &CategoryM{rep, models}
 }
 
 func (this *CategoryM) GetAll() ([]objects.Category) {

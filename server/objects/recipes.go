@@ -17,16 +17,6 @@ type Recipe struct {
 	Categories []Category	`gorm:"many2many:recipe_category;"`
 }
 
-type RecipeDTO struct {
-	Id          int			`json:"id"`
-	Author      string		`json:"author"`
-	Title       string		`json:"title"`
-	CreatedAt   string		`json:"created_at"`
-	Description string     	`json:"description"`
-	Duration    int			`json:"duration"`
-	PortionNum  int			`json:"portion_num"`
-}
-
 func (Recipe) TableName() string {
 	return "recipes"
 }
@@ -54,3 +44,22 @@ func (Recipe) ArrToDTO(src []Recipe) []RecipeDTO {
 	}
 	return dst
 }
+
+
+type RecipeDTO struct {
+	Id          int			`json:"id"`
+	Author      string		`json:"author"`
+	Title       string		`json:"title"`
+	CreatedAt   string		`json:"created_at"`
+	Description string     	`json:"description"`
+	Duration    int			`json:"duration"`
+	PortionNum  int			`json:"portion_num"`
+}
+
+func (this *RecipeDTO) ToModel() *Recipe {
+	dto := new(Recipe)
+	jsonStr, _ := json.Marshal(this)
+	json.Unmarshal(jsonStr, dto) 
+	return dto
+}
+

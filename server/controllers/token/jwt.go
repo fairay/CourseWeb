@@ -58,7 +58,7 @@ func FillCookie(w http.ResponseWriter, login string) {
 
 var JwtAuthentication = func(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		notAuth := []string{`^/accounts/.*`, `^/swagger/.*`}//,  "/accounts/register", "/accounts/login"} 
+		notAuth := []string{`^/.*`, `^/accounts/.*`, `^/swagger/.*`} // remove "all-allowed" rerx
 		requestPath := r.URL.Path
 
 		for _, value := range notAuth {

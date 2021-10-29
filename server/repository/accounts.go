@@ -8,7 +8,7 @@ import (
 )
 
 type AccountsRep interface {
-	Find(login string) (objects.Account, error)
+	Find(login string) (*objects.Account, error)
 }
 
 type PGAccountsRep struct {
@@ -19,9 +19,9 @@ func NewAccountsRep (db *gorm.DB) *PGAccountsRep {
 	return &PGAccountsRep{db}
 }
 
-func (this *PGAccountsRep) Find(login string) (objects.Account, error) { 
-	temp := objects.Account{}
-	err := this.db.Where("login = ?", login).First(&temp).Error
+func (this *PGAccountsRep) Find(login string) (*objects.Account, error) { 
+	temp := new (objects.Account)
+	err := this.db.Where("login = ?", login).First(temp).Error
 	switch err {
 	case nil:
 		break

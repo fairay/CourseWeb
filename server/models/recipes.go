@@ -19,19 +19,17 @@ func (this *RecipeM) GetAll() ([]objects.Recipe) {
 	return temp
 }
 
-func (this *RecipeM) AddRecipe(login string) error{
-	acc, err := this.models.accounts.rep.Find(login)
-	
+func (this *RecipeM) AddRecipe(obj *objects.Recipe) (err error) {
+	_, err = this.models.Accounts.find(obj.Author);
 	if err != nil {
 		return err
 	}
 
 	/* TODO: check for right categories (возможно и не надо, если из
-	/* выпадающего списка...)
+	выпадающего списка...)
+
+	TODO: validate other data
 	*/
-
-
-
-	//err = repository.RecipesRep.Create()
-
+	err = this.rep.Create(obj)
+	return
 }

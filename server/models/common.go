@@ -7,15 +7,17 @@ import (
 )
 
 type Models struct {
-	recipes *RecipeM
-	accounts *AccountM
+	Recipes *RecipeM
+	Accounts *AccountM
+	Category *CategoryM
 }
 
 func InitModels(db *gorm.DB) *Models {
-	models := &Models{}
+	models := new(Models)
 
-	models.recipes = NewRecipe(repository.NewRecipesRep(db), models)
-	models.accounts = NewAccount(repository.NewAccountsRep(db))
+	models.Recipes = NewRecipe(repository.NewRecipesRep(db), models)
+	models.Accounts = NewAccount(repository.NewAccountsRep(db), models)
+	models.Category = NewCategory(repository.NewCategotiesRep(db), models)
 
 	return models
 }

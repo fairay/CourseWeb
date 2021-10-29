@@ -146,6 +146,35 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/recipes/add": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Recipes"
+                ],
+                "summary": "Creation a new recipe",
+                "parameters": [
+                    {
+                        "description": "Recipe data",
+                        "name": "recipe",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/objects.RecipeDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/objects.RecipeDTO"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {

@@ -114,4 +114,22 @@ paths:
       summary: Retrieves all recipes
       tags:
       - Recipes
+  /recipes/add:
+    post:
+      parameters:
+      - description: Recipe data
+        in: body
+        name: recipe
+        schema:
+          $ref: '#/definitions/objects.RecipeDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/objects.RecipeDTO'
+      summary: Creation a new recipe
+      tags:
+      - Recipes
 swagger: "2.0"

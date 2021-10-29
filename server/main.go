@@ -6,9 +6,7 @@ import (
 	_ "api/recipes/docs"
 	"api/recipes/models"
 	_ "api/recipes/objects"
-	"api/recipes/repository"
 	"api/recipes/utils"
-	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -37,10 +35,10 @@ func initDBConnection(cnf utils.DBConfiguration) *gorm.DB {
 }
 
 //TODO: переделать под структуру Models
-func initControllers(r *mux.Router, db *gorm.DB) {
-	controllers.InitCategories(r, models.NewCategory(repository.NewCategotiesRep(db)))
-	controllers.InitRecipes(r, models.NewRecipe(repository.NewRecipesRep(db)))
-	controllers.InitAccount(r, models.NewAccount(repository.NewAccountsRep(db)))
+func initControllers(r *mux.Router, m *models.Models) {
+	controllers.InitCategories(r, m.Category)
+	controllers.InitRecipes(r, m.Recipes)
+	controllers.InitAccount(r, m.Accounts)
 	r.Use(auth.JwtAuthentication)
 }
 
@@ -56,9 +54,9 @@ func main() {
 	defer db.Close()
 
 	router := mux.NewRouter()
-	initControllers(router, db)
+	models := models.InitModels(db)
+	initControllers(router, models)
 
-	router.HandleFunc("/test", getTest).Methods("GET")
 	router.PathPrefix("/swagger").Handler(httpSwagger.Handler(
 		httpSwagger.URL("swagger/doc.json"),
 		httpSwagger.DeepLinking(true),
@@ -69,13 +67,4 @@ func main() {
 	utils.Logger.Print("Server started")
 	fmt.Printf("Server is running on http://localhost%s\n", utils.Config.Port)
 	http.ListenAndServe(utils.Config.Port, router)
-}
-
-func getTest(w http.ResponseWriter, r *http.Request) {
-	var data = [...]int{155555, 2, 3, 4}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Response-Code", "00")
-	w.Header().Set("Response-Desc", "Success")
-	json.NewEncoder(w).Encode(data)
 }

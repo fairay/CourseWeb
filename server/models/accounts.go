@@ -9,10 +9,11 @@ import (
 
 type AccountM struct {
 	rep repository.AccountsRep
+	models *Models
 }
 
-func NewAccount(rep repository.AccountsRep) *AccountM {
-	return &AccountM{rep}
+func NewAccount(rep repository.AccountsRep, models *Models) *AccountM {
+	return &AccountM{rep, models}
 }
 
 /*func (this *AccountM) GetAll() ([]objects.Account) {
@@ -25,8 +26,12 @@ func (this *AccountM) Get(ctg string) (objects.Account) {
 	return temp
 }*/
 
+func (this *AccountM) find(login string) (*objects.Account, error) {
+	return this.rep.Find(login)
+}
+
 func (this *AccountM) LogIn(login string, password string) (*objects.Account, error){
-	acc, err := this.rep.Find(login)
+	acc, err := this.find(login)
 
 	if err != nil {
 		return nil, err
@@ -37,5 +42,5 @@ func (this *AccountM) LogIn(login string, password string) (*objects.Account, er
 		return nil, errors.WrongPassword
 	}
 
-	return &acc, err
+	return acc, err
 }
