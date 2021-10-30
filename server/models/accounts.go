@@ -7,6 +7,12 @@ import (
 	"api/recipes/errors"
 )
 
+const (
+	AdminRole string = "admin"
+	UserRole string = "user"
+	UnauthRole string = "unauthorized"
+)
+
 type AccountM struct {
 	rep repository.AccountsRep
 	models *Models
@@ -38,6 +44,16 @@ func (this *AccountM) IsExists(login string) bool {
 	}
 
 	return true
+}
+
+func (this *AccountM) GetRole(login string) (role string, err error) {
+	acc, err := this.find(login)
+
+	if err != nil {
+		return "", err
+	}
+
+	return acc.Role, err
 }
 
 func (this *AccountM) LogIn(login string, password string) (*objects.Account, error){

@@ -7,6 +7,7 @@ import (
 	"api/recipes/objects"
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -20,6 +21,7 @@ func InitRecipes(r *mux.Router, model *models.RecipeM) {
 	r.HandleFunc("/recipes", ctrl.getAllRecipes).Methods("GET")
 	r.HandleFunc("/accounts/{login}/recipes", ctrl.getRecipesByLogin).Methods("GET")
 	r.HandleFunc("/recipes", ctrl.addRecipe).Methods("POST")
+	r.HandleFunc("/recipes", ctrl.deleteRecipe).Methods("DELETE")
 }
 
 // @Tags Recipes
@@ -41,7 +43,7 @@ func (this *recipe) getAllRecipes(w http.ResponseWriter, r *http.Request) {
 func (this *recipe) getRecipesByLogin(w http.ResponseWriter, r *http.Request) {
 	urlParams := mux.Vars(r)
 	login := urlParams["login"]
-	data := this.model.FindByLogin(login)
+	data, _ := this.model.FindByLogin(login)
 	responses.JsonSuccess(w, objects.Recipe{}.ArrToDTO(data))
 }
 
@@ -50,7 +52,7 @@ func (this *recipe) getRecipesByLogin(w http.ResponseWriter, r *http.Request) {
 // @Param recipe body objects.RecipeDTO true "Recipe data"
 // @Summary Creation a new recipe
 // @Produce json
-// @Success 200 {object} objects.RecipeDTO
+// @Success 201 {object} objects.RecipeDTO
 func (this *recipe) addRecipe(w http.ResponseWriter, r *http.Request) {
 	rcpDTO := new(objects.RecipeDTO)
 	err := json.NewDecoder(r.Body).Decode(rcpDTO)
@@ -68,4 +70,32 @@ func (this *recipe) addRecipe(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = this.model.AddRecipe(rcpDTO.ToModel())
+}
+
+// @Tags Recipes
+// @Router /recipes/{id} [delete]
+// @Param id path int true "Recipe's id"
+// @Summary Deletion the recipe by its id
+// @Success 204
+func (this *recipe) deleteRecipe(w http.ResponseWriter, r *http.Request) {
+	urlParams := mux.Vars(r)
+	strId := urlParams["id"]
+
+	login, err := auth.LoginFromCookie(r)
+	if err != nil {
+		responses.AuthenticationFailed(w)
+		return
+	}
+
+	id, err := strconv.Atoi(strId)
+	if err != nil {
+		responses.BadRequest(w, "Invalid request")
+	}
+
+	err = this.model.DeleteRecipe(id, login)
+	if err != nil {
+		//???
+	}
+
+	responses.TextSuccess(w, "Deletion was successful")
 }
