@@ -23,12 +23,13 @@ func (this *RecipeM) GetAll() []objects.Recipe {
 func (this *RecipeM) GetAuthor(id int) (*objects.Account, error) {
 	rcp, err := this.FindById(id)
 	if err != nil {
-		return nil, err
+		return nil, errors.UnknownRecipe
 	}
 
 	login := rcp.Author
-
-	return this.models.Accounts.find(login)
+	acc, err := this.models.Accounts.Find(login)
+	if err != nil { err = errors.UnknownAccount }
+	return acc, err
 }
 
 func (this *RecipeM) FindByLogin(login string) ([]objects.Recipe, error) {
@@ -51,7 +52,7 @@ func (this *RecipeM) FindById(id int) (*objects.Recipe, error) {
 }
 
 func (this *RecipeM) AddRecipe(obj *objects.Recipe) (err error) {
-	_, err = this.models.Accounts.find(obj.Author)
+	_, err = this.models.Accounts.Find(obj.Author)
 	if err != nil {
 		return err
 	}
@@ -72,12 +73,9 @@ func (this *RecipeM) DeleteRecipe(id int, login string) (err error) {
 		return err
 	}
 
-	authorRole := author.Role
-
-	if userRole == AdminRole || userRole == authorRole {
-		this.rep.Delete(id)
-		err = nil
-	}else {
+	if userRole == AdminRole || login == author.Login {
+		err = this.rep.Delete(id)
+	} else {
 		err = errors.AccessDeleteDenied
 	}
 

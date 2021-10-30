@@ -3,6 +3,7 @@ package controllers
 import (
 	"api/recipes/controllers/responses"
 	auth "api/recipes/controllers/token"
+	"api/recipes/errors"
 	"api/recipes/models"
 	"api/recipes/objects"
 	"encoding/json"
@@ -76,7 +77,7 @@ func (this *recipe) addRecipe(w http.ResponseWriter, r *http.Request) {
 // @Router /recipes/{id} [delete]
 // @Param id path int true "Recipe's id"
 // @Summary Deletion the recipe by its id
-// @Success 204
+// @Success 200
 func (this *recipe) deleteRecipe(w http.ResponseWriter, r *http.Request) {
 	urlParams := mux.Vars(r)
 	strId := urlParams["id"]
@@ -93,9 +94,18 @@ func (this *recipe) deleteRecipe(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = this.model.DeleteRecipe(id, login)
-	if err != nil {
-		//???
+	switch err {
+	case nil:
+		responses.TextSuccess(w, "Deletion was successful")
+	case errors.AccessDeleteDenied:
+		responses.AccessDenied(w)
+	case errors.RecordNotFound:
+		responses.RecordNotFound(w, "user")
+	case errors.UnknownAccount:
+		responses.RecordNotFound(w, "author")
+	case errors.UnknownAccount:
+		responses.RecordNotFound(w, "author")
+	case errors.UnknownRecipe:
+		responses.RecordNotFound(w, "recipe")
 	}
-
-	responses.TextSuccess(w, "Deletion was successful")
 }

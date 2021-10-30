@@ -32,12 +32,12 @@ func (this *AccountM) Get(ctg string) (objects.Account) {
 	return temp
 }*/
 
-func (this *AccountM) find(login string) (*objects.Account, error) {
+func (this *AccountM) Find(login string) (*objects.Account, error) {
 	return this.rep.Find(login)
 }
 
 func (this *AccountM) IsExists(login string) bool {
-	_, err := this.find(login)
+	_, err := this.Find(login)
 
 	if err != nil {
 		return false
@@ -47,7 +47,7 @@ func (this *AccountM) IsExists(login string) bool {
 }
 
 func (this *AccountM) GetRole(login string) (role string, err error) {
-	acc, err := this.find(login)
+	acc, err := this.Find(login)
 
 	if err != nil {
 		return "", err
@@ -57,7 +57,7 @@ func (this *AccountM) GetRole(login string) (role string, err error) {
 }
 
 func (this *AccountM) LogIn(login string, password string) (*objects.Account, error){
-	acc, err := this.find(login)
+	acc, err := this.Find(login)
 
 	if err != nil {
 		return nil, err

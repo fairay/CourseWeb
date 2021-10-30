@@ -198,11 +198,33 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/objects.RecipeDTO"
                         }
+                    }
+                }
+            }
+        },
+        "/recipes/{id}": {
+            "delete": {
+                "tags": [
+                    "Recipes"
+                ],
+                "summary": "Deletion the recipe by its id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
                     }
                 }
             }

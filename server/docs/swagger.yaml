@@ -146,11 +146,25 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/objects.RecipeDTO'
       summary: Creation a new recipe
+      tags:
+      - Recipes
+  /recipes/{id}:
+    delete:
+      parameters:
+      - description: Recipe's id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: ""
+      summary: Deletion the recipe by its id
       tags:
       - Recipes
 swagger: "2.0"

@@ -2,6 +2,7 @@ package responses
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -52,3 +53,9 @@ func BadRequest(w http.ResponseWriter, msg string) {
 	json.NewEncoder(w).Encode(msg)
 }
 
+func RecordNotFound(w http.ResponseWriter, recType string) {
+	msg := fmt.Sprintf("Requested %s record not found", recType)
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusBadRequest)
+	json.NewEncoder(w).Encode(msg)
+}
