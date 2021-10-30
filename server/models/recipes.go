@@ -6,7 +6,7 @@ import (
 )
 
 type RecipeM struct {
-	rep repository.RecipesRep
+	rep    repository.RecipesRep
 	models *Models
 }
 
@@ -14,13 +14,13 @@ func NewRecipe(rep repository.RecipesRep, models *Models) *RecipeM {
 	return &RecipeM{rep, models}
 }
 
-func (this *RecipeM) GetAll() ([]objects.Recipe) {
+func (this *RecipeM) GetAll() []objects.Recipe {
 	temp := this.rep.List()
 	return temp
 }
 
 //TODO: return array and error? or only array
-func (this *RecipeM) FindByLogin(login string) ([]objects.Recipe) {
+func (this *RecipeM) FindByLogin(login string) []objects.Recipe {
 	isExist := this.models.Accounts.IsExists(login)
 	if isExist == false {
 		return nil
@@ -31,7 +31,7 @@ func (this *RecipeM) FindByLogin(login string) ([]objects.Recipe) {
 }
 
 func (this *RecipeM) AddRecipe(obj *objects.Recipe) (err error) {
-	_, err = this.models.Accounts.find(obj.Author);
+	_, err = this.models.Accounts.find(obj.Author)
 	if err != nil {
 		return err
 	}
@@ -40,3 +40,5 @@ func (this *RecipeM) AddRecipe(obj *objects.Recipe) (err error) {
 	err = this.rep.Create(obj)
 	return
 }
+
+//func (this *RecipeM) DeleteRecipe()

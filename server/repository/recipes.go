@@ -37,6 +37,6 @@ func (this *PGRecipesRep) Create(obj *objects.Recipe) error {
 	return this.db.Create(obj).Error
 }
 
-func (this *PGRecipesRep) Delete(id int) {
-	return this.db.Where("id = ?", id).Delete()
+func (this *PGRecipesRep) Delete(id int) error {
+	return this.db.Where("id = ?", id).Delete(&objects.Recipe{}).Error
 }
