@@ -23,6 +23,37 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/account/{login}/recipes": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Recipes"
+                ],
+                "summary": "Retrieves recipes of user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Category title",
+                        "name": "login",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.RecipeDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/accounts/login": {
             "post": {
                 "produces": [
@@ -159,6 +190,7 @@ var doc = `{
                         "description": "Recipe data",
                         "name": "recipe",
                         "in": "body",
+                        "required": true,
                         "schema": {
                             "$ref": "#/definitions/objects.RecipeDTO"
                         }

@@ -28,7 +28,7 @@ func (this *PGRecipesRep) List() ([]objects.Recipe) {
 
 func (this *PGRecipesRep) FindByLogin(login string) ([]objects.Recipe) {
 	temp := []objects.Recipe{}
-	this.db.Where("login = ?", login).Find(&temp)
+	this.db.Where("author = ?", login).Find(&temp)
 	return temp
 }
 

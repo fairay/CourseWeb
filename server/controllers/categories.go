@@ -26,7 +26,8 @@ func InitCategories(r *mux.Router, model *models.CategoryM) {
 // @Success 200 {object} []objects.Category
 func (this *category) getAllCategories(w http.ResponseWriter, r *http.Request) {
 	urlParams := r.URL.Query()
-	data := this.model.Find(urlParams.Get("search"))
+	search := urlParams.Get("search")
+	data := this.model.Find(search)
 	responses.JsonSuccess(w, data)
 }
 

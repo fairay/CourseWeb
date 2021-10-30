@@ -18,6 +18,7 @@ type recipe struct {
 func InitRecipes(r *mux.Router, model *models.RecipeM) {
 	ctrl := &recipe{model}
 	r.HandleFunc("/recipes", ctrl.getAllRecipes).Methods("GET")
+	r.HandleFunc("/account/{login}/recipes", ctrl.getRecipesByLogin).Methods("GET")
 	r.HandleFunc("/recipes", ctrl.addRecipe).Methods("POST")
 }
 
@@ -31,22 +32,22 @@ func (this *recipe) getAllRecipes(w http.ResponseWriter, r *http.Request) {
 	responses.JsonSuccess(w, objects.Recipe{}.ArrToDTO(data))
 }
 
-func (this *recipe) getRecipeByLogin(w http.ResponseWriter, r *http.Request) {
-	rcpDTO := new(objects.RecipeDTO)
-	err := json.NewDecoder(r.Body).Decode(rcpDTO)
-	if err != nil {
-		responses.BadRequest(w, "Invalid request")
-		return
-	}
-
-	// TODO: доделать!!!
-	data := this.model.FindByLogin(rcpDTO.Author)
-
+// @Tags Recipes
+// @Router /account/{login}/recipes [get]
+// @Summary Retrieves recipes of user
+// @Param login path string true "Category title"
+// @Produce json
+// @Success 200 {object} []objects.RecipeDTO
+func (this *recipe) getRecipesByLogin(w http.ResponseWriter, r *http.Request) {
+	urlParams := mux.Vars(r)
+	login := urlParams["login"]
+	data := this.model.FindByLogin(login)
+	responses.JsonSuccess(w, objects.Recipe{}.ArrToDTO(data))
 }
 
 // @Tags Recipes
 // @Router /recipes [post]
-// @Param recipe body objects.RecipeDTO false "Recipe data"
+// @Param recipe body objects.RecipeDTO true "Recipe data"
 // @Summary Creation a new recipe
 // @Produce json
 // @Success 200 {object} objects.RecipeDTO
