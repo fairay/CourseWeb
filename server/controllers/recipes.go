@@ -18,7 +18,7 @@ type recipe struct {
 func InitRecipes(r *mux.Router, model *models.RecipeM) {
 	ctrl := &recipe{model}
 	r.HandleFunc("/recipes", ctrl.getAllRecipes).Methods("GET")
-	r.HandleFunc("/account/{login}/recipes", ctrl.getRecipesByLogin).Methods("GET")
+	r.HandleFunc("/accounts/{login}/recipes", ctrl.getRecipesByLogin).Methods("GET")
 	r.HandleFunc("/recipes", ctrl.addRecipe).Methods("POST")
 }
 
