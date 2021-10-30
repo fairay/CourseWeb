@@ -84,7 +84,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		tk := &Token{}
 
 		token, err := jwt.ParseWithClaims(tokenStr, tk, func(token *jwt.Token) (interface{}, error) {
-			return utils.Config.TokenPassword, nil
+			return []byte(utils.Config.TokenPassword), nil
 		})
 
 		if err != nil || !token.Valid { 

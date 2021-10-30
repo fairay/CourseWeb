@@ -29,12 +29,10 @@ func initDBConnection(cnf utils.DBConfiguration) *gorm.DB {
 	}
 
 	// TODO: learn db connection setup actions
-	// TODO: need db.AutoMigrate(&objects.Categories{}) ?
 	db.SingularTable(true)
 	return db
 }
 
-//TODO: переделать под структуру Models
 func initControllers(r *mux.Router, m *models.Models) {
 	controllers.InitCategories(r, m.Category)
 	controllers.InitRecipes(r, m.Recipes)

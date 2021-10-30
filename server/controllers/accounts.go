@@ -23,7 +23,6 @@ func InitAccount(r *mux.Router, model *models.AccountM) {
 	r.HandleFunc("/accounts/logout", ctrl.LogOut).Methods("POST")
 }
 
-// TODO: Check me out
 // @Tags Accounts
 // @Router /accounts/login [post]
 // @Param account body objects.AccountDTO false "Authentication data"
@@ -55,13 +54,13 @@ func (this *account) LogIn(w http.ResponseWriter, r *http.Request) {
 // @Success 200
 func (this *account) LogOut(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
-	Name:    "token",
-	Value:   "",
-	Expires: time.Unix(0, 0),
-	Path:    "/",
+		Name:    "token",
+		Value:   "",
+		Expires: time.Unix(0, 0),
+		Path:    "/",
 
-	HttpOnly: true,
+		HttpOnly: true,
 	})
 
-	responses.Success(w, "Logout was successful")
+	responses.TextSuccess(w, "Logout was successful")
 }

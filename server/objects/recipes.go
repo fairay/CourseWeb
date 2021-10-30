@@ -57,9 +57,10 @@ type RecipeDTO struct {
 }
 
 func (this *RecipeDTO) ToModel() *Recipe {
-	dto := new(Recipe)
-	jsonStr, _ := json.Marshal(this)
-	json.Unmarshal(jsonStr, dto) 
-	return dto
-}
+	mod := new(Recipe)
+	if (this.CreatedAt == "") { this.CreatedAt = "0001-01-01T00:00:00.000Z" }
 
+	jsonStr, _ := json.Marshal(this)
+	json.Unmarshal(jsonStr, mod)
+	return mod
+}

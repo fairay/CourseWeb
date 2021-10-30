@@ -145,9 +145,7 @@ var doc = `{
                         }
                     }
                 }
-            }
-        },
-        "/recipes/add": {
+            },
             "post": {
                 "produces": [
                     "application/json"

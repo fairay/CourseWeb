@@ -11,6 +11,12 @@ func JsonSuccess(w http.ResponseWriter, data interface{}) {
 	w.Header().Set("Response-Desc", "Success")
 	json.NewEncoder(w).Encode(data)
 }
+func TextSuccess(w http.ResponseWriter, msg string) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(msg)
+}
+
 
 func TokenIsMissed(w http.ResponseWriter) {
 	msg := "Missing auth token"
@@ -46,8 +52,3 @@ func BadRequest(w http.ResponseWriter, msg string) {
 	json.NewEncoder(w).Encode(msg)
 }
 
-func Success(w http.ResponseWriter, msg string) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(msg)
-}

@@ -114,7 +114,6 @@ paths:
       summary: Retrieves all recipes
       tags:
       - Recipes
-  /recipes/add:
     post:
       parameters:
       - description: Recipe data

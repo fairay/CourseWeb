@@ -25,11 +25,7 @@ func (this *RecipeM) AddRecipe(obj *objects.Recipe) (err error) {
 		return err
 	}
 
-	/* TODO: check for right categories (возможно и не надо, если из
-	выпадающего списка...)
-
-	TODO: validate other data
-	*/
+	// TODO: validate other data
 	err = this.rep.Create(obj)
 	return
 }
