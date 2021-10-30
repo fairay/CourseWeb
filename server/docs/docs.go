@@ -143,7 +143,8 @@ var doc = `{
                         "type": "string",
                         "description": "Category title",
                         "name": "title",
-                        "in": "path"
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {

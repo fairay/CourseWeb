@@ -34,7 +34,7 @@ func (this *category) getAllCategories(w http.ResponseWriter, r *http.Request) {
 // @Tags Categories
 // @Router /categories/{title} [get]
 // @Summary Retrieves categoriey
-// @Param title path string false "Category title"
+// @Param title path string true "Category title"
 // @Produce json
 // @Success 200 {object} objects.Category
 func (this *category) getCategory(w http.ResponseWriter, r *http.Request) {

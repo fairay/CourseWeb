@@ -109,6 +109,7 @@ paths:
       - description: Category title
         in: path
         name: title
+        required: true
         type: string
       produces:
       - application/json
