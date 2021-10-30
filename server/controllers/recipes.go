@@ -22,7 +22,7 @@ func InitRecipes(r *mux.Router, model *models.RecipeM) {
 	r.HandleFunc("/recipes", ctrl.getAllRecipes).Methods("GET")
 	r.HandleFunc("/accounts/{login}/recipes", ctrl.getRecipesByLogin).Methods("GET")
 	r.HandleFunc("/recipes", ctrl.addRecipe).Methods("POST")
-	r.HandleFunc("/recipes", ctrl.deleteRecipe).Methods("DELETE")
+	r.HandleFunc("/recipes/{id}", ctrl.deleteRecipe).Methods("DELETE")
 }
 
 // @Tags Recipes
