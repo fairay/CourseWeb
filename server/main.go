@@ -34,10 +34,12 @@ func initDBConnection(cnf utils.DBConfiguration) *gorm.DB {
 }
 
 func initControllers(r *mux.Router, m *models.Models) {
+	r.Use(utils.LogHandler)
+	r.Use(auth.JwtAuthentication)
+
 	controllers.InitCategories(r, m.Category)
 	controllers.InitRecipes(r, m.Recipes)
 	controllers.InitAccount(r, m.Accounts)
-	r.Use(auth.JwtAuthentication)
 }
 
 // @title Recipes API
@@ -63,6 +65,8 @@ func main() {
 	))
 
 	utils.Logger.Print("Server started")
-	fmt.Printf("Server is running on http://localhost%s\n", utils.Config.Port)
-	http.ListenAndServe(utils.Config.Port, router)
+	fmt.Printf("Server is running on http://localhost:%d\n", utils.Config.Port)
+	code := http.ListenAndServe(fmt.Sprintf(":%d", utils.Config.Port), router)
+
+	utils.Logger.Printf("Server ended with code %s", code)
 }

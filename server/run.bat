@@ -1,4 +1,4 @@
 cls
 swag init
-go build .
-.\recipes.exe
+go build -o .\build .
+.\build\recipes.exe

@@ -19,7 +19,7 @@ type DBConfiguration struct {
 type Configuration struct {
 	DB				DBConfiguration		`json:"db"`
 	LogFile			string				`json:"log_file"`
-	Port			string				`json:"port"`
+	Port			uint16				`json:"port"`
 	TokenPassword	string				`json:"token_password"`
 	TokenLiveTime	int64				`json:"token_livetime"`
 }

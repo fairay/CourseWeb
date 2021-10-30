@@ -1,8 +1,9 @@
 package utils
 
 import (
-	"os"
 	"log"
+	"net/http"
+	"os"
 )
 
 var (
@@ -16,9 +17,18 @@ func InitLogger() {
 		log.Fatal(err)
 	}
 
-	Logger = log.New(logFile, "DEBUG\t", log.Ldate|log.Ltime)
+	Logger = log.New(logFile, "", log.Ldate|log.Ltime)
 }
 
 func CloseLogger() {
 	logFile.Close()
+}
+
+
+var LogHandler = func(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		Logger.Printf("%s REQUEST\t URL:%s \tAddress: %s", r.Method, r.URL, r.RemoteAddr)
+
+		next.ServeHTTP(w, r)
+	}) 
 }
