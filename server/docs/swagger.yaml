@@ -36,7 +36,7 @@ info:
   title: Recipes API
   version: "0.1"
 paths:
-  /account/{login}/recipes:
+  /accounts/{login}/recipes:
     get:
       parameters:
       - description: Category title
