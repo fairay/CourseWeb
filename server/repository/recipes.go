@@ -8,6 +8,7 @@ import (
 
 type RecipesRep interface {
 	List() ([]objects.Recipe)
+	FindByLogin(login string) ([]objects.Recipe)
 	Create(rcp *objects.Recipe) error
 }
 
@@ -22,6 +23,12 @@ func NewRecipesRep (db *gorm.DB) *PGRecipesRep {
 func (this *PGRecipesRep) List() ([]objects.Recipe) {
 	temp := []objects.Recipe{}
 	this.db.Find(&temp)
+	return temp
+}
+
+func (this *PGRecipesRep) FindByLogin(login string) ([]objects.Recipe) {
+	temp := []objects.Recipe{}
+	this.db.Where("login = ?", login).Find(&temp)
 	return temp
 }
 

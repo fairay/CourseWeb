@@ -19,6 +19,17 @@ func (this *RecipeM) GetAll() ([]objects.Recipe) {
 	return temp
 }
 
+//TODO: return array and error? or only array
+func (this *RecipeM) FindByLogin(login string) ([]objects.Recipe) {
+	isExist := this.models.Accounts.IsExists(login)
+	if isExist == false {
+		return nil
+	}
+
+	temp := this.rep.FindByLogin(login)
+	return temp
+}
+
 func (this *RecipeM) AddRecipe(obj *objects.Recipe) (err error) {
 	_, err = this.models.Accounts.find(obj.Author);
 	if err != nil {

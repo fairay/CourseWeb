@@ -30,6 +30,16 @@ func (this *AccountM) find(login string) (*objects.Account, error) {
 	return this.rep.Find(login)
 }
 
+func (this *AccountM) IsExists(login string) bool {
+	_, err := this.find(login)
+
+	if err != nil {
+		return false
+	}
+
+	return true
+}
+
 func (this *AccountM) LogIn(login string, password string) (*objects.Account, error){
 	acc, err := this.find(login)
 

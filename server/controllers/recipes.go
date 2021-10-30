@@ -31,6 +31,19 @@ func (this *recipe) getAllRecipes(w http.ResponseWriter, r *http.Request) {
 	responses.JsonSuccess(w, objects.Recipe{}.ArrToDTO(data))
 }
 
+func (this *recipe) getRecipeByLogin(w http.ResponseWriter, r *http.Request) {
+	rcpDTO := new(objects.RecipeDTO)
+	err := json.NewDecoder(r.Body).Decode(rcpDTO)
+	if err != nil {
+		responses.BadRequest(w, "Invalid request")
+		return
+	}
+
+	// TODO: доделать!!!
+	data := this.model.FindByLogin(rcpDTO.Author)
+
+}
+
 // @Tags Recipes
 // @Router /recipes [post]
 // @Param recipe body objects.RecipeDTO false "Recipe data"
@@ -52,6 +65,6 @@ func (this *recipe) addRecipe(w http.ResponseWriter, r *http.Request) {
 	} else {
 		rcpDTO.Author = login
 	}
-	
+
 	err = this.model.AddRecipe(rcpDTO.ToModel())
 }
