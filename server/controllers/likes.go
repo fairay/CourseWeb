@@ -17,8 +17,8 @@ func InitLikes(r *mux.Router, recM *models.RecipeM, accM *models.AccountM) {
 
 	r.HandleFunc("/recipes/{id}/like", ctrl.add).Methods("PUT")
 	r.HandleFunc("/recipes/{id}/like", ctrl.del).Methods("DELETE")
-	r.HandleFunc("/recipes/{id}/like", nil).Methods("GET")
-	r.HandleFunc("/accounts/like", nil).Methods("GET")
+	r.HandleFunc("/recipes/{id}/like", ctrl.getByRecipe).Methods("GET")
+	r.HandleFunc("/accounts/like", ctrl.getByUser).Methods("GET")
 }
 
 // TODO:

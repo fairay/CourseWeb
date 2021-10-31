@@ -251,6 +251,37 @@ var doc = `{
                 }
             }
         },
+        "/categories/{title}/recipes": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Retrieves all liked recipes of user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Searched category",
+                        "name": "title",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.RecipeDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/recipes": {
             "get": {
                 "produces": [
@@ -323,6 +354,121 @@ var doc = `{
                 }
             }
         },
+        "/recipes/{id}/categories": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Retrieves all categories",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.CategoryDTO"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Adding category",
+                "parameters": [
+                    {
+                        "description": "Category",
+                        "name": "recipe",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/objects.CategoryDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Posts all categories",
+                "parameters": [
+                    {
+                        "description": "Categories",
+                        "name": "recipes",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.CategoryDTO"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.CategoryDTO"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Deleting category",
+                "parameters": [
+                    {
+                        "description": "Category",
+                        "name": "recipe",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/objects.CategoryDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/recipes/{id}/like": {
             "get": {
                 "produces": [
@@ -331,7 +477,16 @@ var doc = `{
                 "tags": [
                     "Likes"
                 ],
-                "summary": "Retrieves all liked users of user",
+                "summary": "Retrieves all liked users",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -352,6 +507,15 @@ var doc = `{
                     "Likes"
                 ],
                 "summary": "Adds like to recipe from authorized user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": ""
@@ -365,7 +529,16 @@ var doc = `{
                 "tags": [
                     "Likes"
                 ],
-                "summary": "Adds like to recipe from authorized user",
+                "summary": "Deletes like to recipe from authorized user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": ""

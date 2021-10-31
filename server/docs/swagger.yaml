@@ -181,6 +181,26 @@ paths:
       summary: Retrieves categoriey
       tags:
       - Categories
+  /categories/{title}/recipes:
+    get:
+      parameters:
+      - description: Searched category
+        in: path
+        name: title
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/objects.RecipeDTO'
+            type: array
+      summary: Retrieves all liked recipes of user
+      tags:
+      - Likes
   /recipes:
     get:
       produces:
@@ -227,17 +247,103 @@ paths:
       summary: Deletion the recipe by its id
       tags:
       - Recipes
-  /recipes/{id}/like:
+  /recipes/{id}/categories:
     delete:
+      parameters:
+      - description: Category
+        in: body
+        name: recipe
+        required: true
+        schema:
+          $ref: '#/definitions/objects.CategoryDTO'
       produces:
       - application/json
       responses:
         "200":
           description: ""
-      summary: Adds like to recipe from authorized user
+      summary: Deleting category
+      tags:
+      - Categories
+    get:
+      parameters:
+      - description: Recipe id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/objects.CategoryDTO'
+            type: array
+      summary: Retrieves all categories
+      tags:
+      - Categories
+    post:
+      parameters:
+      - description: Categories
+        in: body
+        name: recipes
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/objects.CategoryDTO'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            items:
+              $ref: '#/definitions/objects.CategoryDTO'
+            type: array
+      summary: Posts all categories
+      tags:
+      - Categories
+    put:
+      parameters:
+      - description: Category
+        in: body
+        name: recipe
+        required: true
+        schema:
+          $ref: '#/definitions/objects.CategoryDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: Adding category
+      tags:
+      - Categories
+  /recipes/{id}/like:
+    delete:
+      parameters:
+      - description: Recipe id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: Deletes like to recipe from authorized user
       tags:
       - Likes
     get:
+      parameters:
+      - description: Recipe id
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -247,10 +353,16 @@ paths:
             items:
               $ref: '#/definitions/objects.AccountDTO'
             type: array
-      summary: Retrieves all liked users of user
+      summary: Retrieves all liked users
       tags:
       - Likes
     put:
+      parameters:
+      - description: Recipe id
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
