@@ -51,9 +51,9 @@ func (this *category) get(w http.ResponseWriter, r *http.Request) {
 }
 
 // TODO:
-// @Tags Likes
+// @Tags Categories
 // @Router /categories/{title}/recipes [get]
-// @Summary Retrieves all liked recipes of user
+// @Summary Retrieves all recipes with such category
 // @Param title path string true "Searched category"
 // @Produce json
 // @Success 200 {object} []objects.RecipeDTO

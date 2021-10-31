@@ -289,9 +289,9 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Likes"
+                    "Categories"
                 ],
-                "summary": "Retrieves all liked recipes of user",
+                "summary": "Retrieves all recipes with such category",
                 "parameters": [
                     {
                         "type": "string",
@@ -795,6 +795,11 @@ var doc = `{
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "BasicAuth": {
+            "type": "basic"
         }
     }
 }`

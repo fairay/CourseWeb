@@ -226,9 +226,9 @@ paths:
             items:
               $ref: '#/definitions/objects.RecipeDTO'
             type: array
-      summary: Retrieves all liked recipes of user
+      summary: Retrieves all recipes with such category
       tags:
-      - Likes
+      - Categories
   /recipes:
     get:
       produces:
@@ -503,4 +503,7 @@ paths:
       summary: Adds like to recipe from authorized user
       tags:
       - Likes
+securityDefinitions:
+  BasicAuth:
+    type: basic
 swagger: "2.0"
