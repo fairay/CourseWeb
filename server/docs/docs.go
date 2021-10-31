@@ -31,7 +31,7 @@ var doc = `{
                 "tags": [
                     "Accounts"
                 ],
-                "summary": "Creation a new account",
+                "summary": "Creates a new account",
                 "parameters": [
                     {
                         "description": "Account data",
@@ -344,7 +344,7 @@ var doc = `{
                 "tags": [
                     "Recipes"
                 ],
-                "summary": "Creation a new recipe",
+                "summary": "Creates a new recipe",
                 "parameters": [
                     {
                         "description": "Recipe data",
@@ -371,7 +371,7 @@ var doc = `{
                 "tags": [
                     "Recipes"
                 ],
-                "summary": "Deletion the recipe by its id",
+                "summary": "Deletes the recipe",
                 "parameters": [
                     {
                         "type": "integer",
@@ -425,7 +425,7 @@ var doc = `{
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Adding category",
+                "summary": "Adds category",
                 "parameters": [
                     {
                         "type": "integer",
@@ -498,7 +498,7 @@ var doc = `{
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Deleting category",
+                "summary": "Removes category",
                 "parameters": [
                     {
                         "type": "integer",
@@ -561,7 +561,7 @@ var doc = `{
                 "tags": [
                     "Ingredients"
                 ],
-                "summary": "Adding ingredient",
+                "summary": "Adds ingredient",
                 "parameters": [
                     {
                         "type": "integer",
@@ -634,7 +634,7 @@ var doc = `{
                 "tags": [
                     "Ingredients"
                 ],
-                "summary": "Deleting ingredient",
+                "summary": "Removes ingredient",
                 "parameters": [
                     {
                         "type": "integer",
@@ -736,6 +736,170 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/recipes/{id}/steps": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Steps"
+                ],
+                "summary": "Retrieves all steps",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.StepDTO"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Steps"
+                ],
+                "summary": "Posts step",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Step",
+                        "name": "step",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/objects.StepDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/objects.StepDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/recipes/{id}/steps/{step}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Steps"
+                ],
+                "summary": "Retrieves step",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Step's number",
+                        "name": "step",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/objects.StepDTO"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Steps"
+                ],
+                "summary": "Removes step",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Step's number",
+                        "name": "step",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Steps"
+                ],
+                "summary": "Updates step",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Step's number",
+                        "name": "step",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/objects.StepDTO"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -791,6 +955,23 @@ var doc = `{
                     "type": "integer"
                 },
                 "portion_num": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "objects.StepDTO": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "num": {
+                    "type": "integer"
+                },
+                "recipe": {
                     "type": "integer"
                 },
                 "title": {

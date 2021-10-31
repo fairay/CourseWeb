@@ -45,7 +45,7 @@ func (this *ingredientCtrl) postToRecipe(w http.ResponseWriter, r *http.Request)
 // TODO:
 // @Tags Ingredients
 // @Router /recipes/{id}/ingredients [put]
-// @Summary Adding ingredient
+// @Summary Adds ingredient
 // @Param id path int true "Recipe's id"
 // @Param recipe body objects.IngredientDTO true "Ingredient"
 // @Produce json
@@ -56,7 +56,7 @@ func (this *ingredientCtrl) putToRecipe(w http.ResponseWriter, r *http.Request) 
 // TODO:
 // @Tags Ingredients
 // @Router /recipes/{id}/ingredients [delete]
-// @Summary Deleting ingredient
+// @Summary Removes ingredient
 // @Param id path int true "Recipe's id"
 // @Param recipe body objects.IngredientDTO true "Ingredient"
 // @Produce json

@@ -38,16 +38,16 @@ CREATE TABLE IF NOT EXISTS Steps (
 
 DROP TABLE IF EXISTS Grades CASCADE;
 CREATE TABLE IF NOT EXISTS Grades (
-	recipe			INT 			REFERENCES Recipes(id) NOT NULL,
-	account			VARCHAR(64)		REFERENCES Accounts(login) NOT NULL,
-	PRIMARY KEY (recipe, account)
+	recipe_id		INT 			REFERENCES Recipes(id) NOT NULL,
+	account_login	VARCHAR(64)		REFERENCES Accounts(login) NOT NULL,
+	PRIMARY KEY (recipe_id, account_login)
 );
 
 DROP TABLE IF EXISTS Recipe_Category CASCADE;
 CREATE TABLE IF NOT EXISTS Recipe_Category (
-	recipe			INT 			REFERENCES Recipes(id) NOT NULL,
-	category		VARCHAR(64)		REFERENCES Categories(title) NOT NULL,
-	PRIMARY KEY (recipe, category)
+	recipe_id		INT 			REFERENCES Recipes(id) NOT NULL,
+	category_title	VARCHAR(64)		REFERENCES Categories(title) NOT NULL,
+	PRIMARY KEY (recipe_id, category_title)
 );
 
 DROP TABLE IF EXISTS Recipe_Ingredient CASCADE;

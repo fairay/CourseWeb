@@ -53,7 +53,7 @@ func (this *recipe) getRecipesByLogin(w http.ResponseWriter, r *http.Request) {
 // @Tags Recipes
 // @Router /recipes [post]
 // @Param recipe body objects.RecipeDTO true "Recipe data"
-// @Summary Creation a new recipe
+// @Summary Creates a new recipe
 // @Produce json
 // @Success 201 {object} objects.RecipeDTO
 func (this *recipe) addRecipe(w http.ResponseWriter, r *http.Request) {
@@ -78,7 +78,7 @@ func (this *recipe) addRecipe(w http.ResponseWriter, r *http.Request) {
 // @Tags Recipes
 // @Router /recipes/{id} [delete]
 // @Param id path int true "Recipe's id"
-// @Summary Deletion the recipe by its id
+// @Summary Deletes the recipe
 // @Success 200
 func (this *recipe) deleteRecipe(w http.ResponseWriter, r *http.Request) {
 	urlParams := mux.Vars(r)

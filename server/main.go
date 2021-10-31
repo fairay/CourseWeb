@@ -43,10 +43,10 @@ func initControllers(r *mux.Router, m *models.Models) {
 	controllers.InitLikes(r, m.Recipes, m.Accounts)
 }
 
-// @title Recipes API
-// @version 0.1
-// @description API for culinary recipes (BMSTU Web development cource project)
-// @securityDefinitions.basic BasicAuth
+// @Title Recipes API
+// @Version 0.1
+// @Description API for culinary recipes (BMSTU Web development cource project)
+// @SecurityDefinitions.basic BasicAuth
 func main() {
 	utils.InitConfig()
 	utils.InitLogger()

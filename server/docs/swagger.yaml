@@ -37,6 +37,17 @@ definitions:
       title:
         type: string
     type: object
+  objects.StepDTO:
+    properties:
+      description:
+        type: string
+      num:
+        type: integer
+      recipe:
+        type: integer
+      title:
+        type: string
+    type: object
 info:
   contact: {}
   description: API for culinary recipes (BMSTU Web development cource project)
@@ -59,7 +70,7 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/objects.AccountDTO'
-      summary: Creation a new account
+      summary: Creates a new account
       tags:
       - Accounts
   /accounts/{login}:
@@ -259,7 +270,7 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/objects.RecipeDTO'
-      summary: Creation a new recipe
+      summary: Creates a new recipe
       tags:
       - Recipes
   /recipes/{id}:
@@ -273,7 +284,7 @@ paths:
       responses:
         "200":
           description: ""
-      summary: Deletion the recipe by its id
+      summary: Deletes the recipe
       tags:
       - Recipes
   /recipes/{id}/categories:
@@ -295,7 +306,7 @@ paths:
       responses:
         "200":
           description: ""
-      summary: Deleting category
+      summary: Removes category
       tags:
       - Categories
     get:
@@ -362,7 +373,7 @@ paths:
       responses:
         "200":
           description: ""
-      summary: Adding category
+      summary: Adds category
       tags:
       - Categories
   /recipes/{id}/ingredients:
@@ -384,7 +395,7 @@ paths:
       responses:
         "200":
           description: ""
-      summary: Deleting ingredient
+      summary: Removes ingredient
       tags:
       - Ingredients
     get:
@@ -451,7 +462,7 @@ paths:
       responses:
         "200":
           description: ""
-      summary: Adding ingredient
+      summary: Adds ingredient
       tags:
       - Ingredients
   /recipes/{id}/like:
@@ -504,6 +515,114 @@ paths:
       summary: Adds like to recipe from authorized user
       tags:
       - Likes
+  /recipes/{id}/steps:
+    get:
+      parameters:
+      - description: Recipe's id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/objects.StepDTO'
+            type: array
+      summary: Retrieves all steps
+      tags:
+      - Steps
+    post:
+      parameters:
+      - description: Recipe's id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Step
+        in: body
+        name: step
+        required: true
+        schema:
+          $ref: '#/definitions/objects.StepDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/objects.StepDTO'
+      summary: Posts step
+      tags:
+      - Steps
+  /recipes/{id}/steps/{step}:
+    delete:
+      parameters:
+      - description: Recipe's id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Step's number
+        in: path
+        name: step
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: Removes step
+      tags:
+      - Steps
+    get:
+      parameters:
+      - description: Recipe's id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Step's number
+        in: path
+        name: step
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/objects.StepDTO'
+      summary: Retrieves step
+      tags:
+      - Steps
+    patch:
+      parameters:
+      - description: Recipe's id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Step's number
+        in: path
+        name: step
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/objects.StepDTO'
+      summary: Updates step
+      tags:
+      - Steps
 securityDefinitions:
   BasicAuth:
     type: basic

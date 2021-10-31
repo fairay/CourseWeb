@@ -72,7 +72,7 @@ func (this *account) LogOut(w http.ResponseWriter, r *http.Request) {
 // @Tags Accounts
 // @Router /accounts [post]
 // @Param account body objects.AccountDTO true "Account data"
-// @Summary Creation a new account
+// @Summary Creates a new account
 // @Produce json
 // @Success 201 {object} objects.AccountDTO
 func (this *account) add(w http.ResponseWriter, r *http.Request) {
