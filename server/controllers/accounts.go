@@ -5,6 +5,7 @@ import (
 	auth "api/recipes/controllers/token"
 	"api/recipes/models"
 	"api/recipes/objects"
+	"api/recipes/errors"
 	"time"
 
 	"encoding/json"
@@ -67,7 +68,6 @@ func (this *account) LogOut(w http.ResponseWriter, r *http.Request) {
 	responses.TextSuccess(w, "Logout was successful")
 }
 
-// TODO:
 // @Tags Accounts
 // @Router /accounts [post]
 // @Param account body objects.AccountDTO true "Account data"
@@ -75,7 +75,22 @@ func (this *account) LogOut(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Success 201 {object} objects.AccountDTO
 func (this *account) addAccount(w http.ResponseWriter, r *http.Request) {
-	// _ := new(objects.AccountDTO)
+	accDTO := new(objects.AccountDTO)
+	err := json.NewDecoder(r.Body).Decode(accDTO)
+	if err != nil {
+		responses.BadRequest(w, "Invalid request")
+		return
+	}
+
+	err = this.model.Create(accDTO.ToModel())
+	switch err {
+	case nil:
+		responses.TextSuccess(w, "Account creation was successful")
+	case errors.AccountExists:
+		responses.BadRequest(w, "Account associated with such login is already exists")
+	case errors.DBAdditionError:
+		responses.BadRequest(w, "Error in addition to DB")
+	}
 }
 
 // @Tags Accounts

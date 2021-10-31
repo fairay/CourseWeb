@@ -35,3 +35,12 @@ func (Account) ArrToDTO(src []Account) []AccountDTO {
 	}
 	return dst
 }
+
+func (this *AccountDTO) ToModel() *Account {
+	mod := new(Account)
+
+	jsonStr, _ := json.Marshal(this)
+	json.Unmarshal(jsonStr, mod)
+	mod.HashedPassword = this.Password
+	return mod
+}

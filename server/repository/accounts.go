@@ -8,6 +8,7 @@ import (
 )
 
 type AccountsRep interface {
+	Create(obj *objects.Account) error
 	Find(login string) (*objects.Account, error)
 }
 
@@ -17,6 +18,10 @@ type PGAccountsRep struct {
 
 func NewAccountsRep (db *gorm.DB) *PGAccountsRep {
 	return &PGAccountsRep{db}
+}
+
+func (this *PGAccountsRep) Create(obj *objects.Account) error {
+	return this.db.Create(obj).Error
 }
 
 func (this *PGAccountsRep) Find(login string) (*objects.Account, error) { 

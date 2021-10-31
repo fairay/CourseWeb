@@ -22,15 +22,21 @@ func NewAccount(rep repository.AccountsRep, models *Models) *AccountM {
 	return &AccountM{rep, models}
 }
 
-/*func (this *AccountM) GetAll() ([]objects.Account) {
-	temp := this.rep.List()
-	return temp
-}
+func (this *AccountM) Create(obj *objects.Account) error {
+	if this.IsExists(obj.Login) {
+		return errors.AccountExists
+	}
 
-func (this *AccountM) Get(ctg string) (objects.Account) {
-	temp := this.rep.Get(ctg)
-	return temp
-}*/
+	obj.Role = UserRole
+	obj.Salt = ""
+
+	err := this.rep.Create(obj)
+	if err != nil {
+		return errors.DBAdditionError
+	}
+
+	return err
+}
 
 func (this *AccountM) Find(login string) (*objects.Account, error) {
 	return this.rep.Find(login)
