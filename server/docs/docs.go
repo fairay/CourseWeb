@@ -466,7 +466,7 @@ var doc = `{
                     },
                     {
                         "description": "Categories",
-                        "name": "recipes",
+                        "name": "categories",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -512,6 +512,142 @@ var doc = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/objects.CategoryDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/recipes/{id}/ingredients": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Ingredients"
+                ],
+                "summary": "Retrieves all ingredients",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.IngredientDTO"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Ingredients"
+                ],
+                "summary": "Adding ingredient",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Ingredient",
+                        "name": "recipe",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/objects.IngredientDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Ingredients"
+                ],
+                "summary": "Posts all ingredients",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Ingredients",
+                        "name": "recipes",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.IngredientDTO"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.IngredientDTO"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Ingredients"
+                ],
+                "summary": "Deleting ingredient",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Ingredient",
+                        "name": "recipe",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/objects.IngredientDTO"
                         }
                     }
                 ],
@@ -618,6 +754,17 @@ var doc = `{
         "objects.CategoryDTO": {
             "type": "object",
             "properties": {
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "objects.IngredientDTO": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string"
+                },
                 "title": {
                     "type": "string"
                 }

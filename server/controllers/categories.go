@@ -75,7 +75,7 @@ func (this *category) getByRecipe(w http.ResponseWriter, r *http.Request) {
 // @Router /recipes/{id}/categories [post]
 // @Summary Posts all categories
 // @Param id path int true "Recipe's id"
-// @Param recipes body []objects.CategoryDTO true "Categories"
+// @Param categories body []objects.CategoryDTO true "Categories"
 // @Produce json
 // @Success 201 {object} []objects.CategoryDTO
 func (this *category) postToRecipe(w http.ResponseWriter, r *http.Request) {
