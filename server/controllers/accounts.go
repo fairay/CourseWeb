@@ -90,6 +90,8 @@ func (this *account) addAccount(w http.ResponseWriter, r *http.Request) {
 		responses.BadRequest(w, "Account associated with such login is already exists")
 	case errors.DBAdditionError:
 		responses.BadRequest(w, "Error in addition to DB")
+	default:
+		responses.BadRequest(w, "Error in addition the account")
 	}
 }
 
