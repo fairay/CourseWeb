@@ -14,7 +14,7 @@ type Recipe struct {
 	Duration    int 		`json:"duration"`
 	PortionNum  int			`json:"portion_num"`
 
-	Categories []Category	`gorm:"many2many:recipe_category;"`
+	Categories []*Category	`gorm:"many2many:recipe_category;"`
 }
 
 func (Recipe) TableName() string {

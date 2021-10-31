@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"api/recipes/controllers/responses"
+	"api/recipes/errors"
 	"api/recipes/models"
 	"api/recipes/objects"
+
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -34,7 +36,7 @@ func InitCategories(r *mux.Router, model *models.CategoryM) {
 func (this *category) getAll(w http.ResponseWriter, r *http.Request) {
 	urlParams := r.URL.Query()
 	search := urlParams.Get("search")
-	data := this.model.Find(search)
+	data, _ := this.model.Find(search)
 	responses.JsonSuccess(w, objects.Category{}.ArrToDTO(data))
 }
 
@@ -58,6 +60,18 @@ func (this *category) get(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Success 200 {object} []objects.RecipeDTO
 func (this *category) getRecipes(w http.ResponseWriter, r *http.Request) {
+	urlParams := mux.Vars(r)
+	ctg := urlParams["title"]
+
+	data, err := this.model.GetRecipes(ctg)
+	switch err {
+	case nil:
+		responses.JsonSuccess(w, objects.Recipe{}.ArrToDTO(data))
+	case errors.UnknownRecipe:
+		responses.RecordNotFound(w, "category")
+	default:
+		responses.BadRequest(w, "Error in getting recipes")
+	}
 }
 
 // TODO:
