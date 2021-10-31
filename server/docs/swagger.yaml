@@ -80,27 +80,6 @@ paths:
       summary: Retrieves account
       tags:
       - Accounts
-    patch:
-      parameters:
-      - description: Account login
-        in: path
-        name: login
-        required: true
-        type: string
-      - description: Account data
-        in: body
-        name: account
-        required: true
-        schema:
-          $ref: '#/definitions/objects.AccountDTO'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ""
-      summary: Patching existing account
-      tags:
-      - Accounts
   /accounts/{login}/recipes:
     get:
       parameters:
@@ -121,6 +100,28 @@ paths:
       summary: Retrieves recipes of user
       tags:
       - Recipes
+  /accounts/{login}/role:
+    patch:
+      parameters:
+      - description: Account login
+        in: path
+        name: login
+        required: true
+        type: string
+      - description: Account data
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/objects.AccountDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: Change user's role
+      tags:
+      - Accounts
   /accounts/like:
     get:
       parameters:

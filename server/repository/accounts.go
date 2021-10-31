@@ -1,14 +1,15 @@
 package repository
 
 import (
-	"api/recipes/objects"
 	"api/recipes/errors"
+	"api/recipes/objects"
 
 	"github.com/jinzhu/gorm"
 )
 
 type AccountsRep interface {
 	Create(obj *objects.Account) error
+	UpdateRole(login, role string) error
 	Find(login string) (*objects.Account, error)
 }
 
@@ -16,7 +17,7 @@ type PGAccountsRep struct {
 	db *gorm.DB
 }
 
-func NewAccountsRep (db *gorm.DB) *PGAccountsRep {
+func NewAccountsRep(db *gorm.DB) *PGAccountsRep {
 	return &PGAccountsRep{db}
 }
 
@@ -24,8 +25,12 @@ func (this *PGAccountsRep) Create(obj *objects.Account) error {
 	return this.db.Create(obj).Error
 }
 
-func (this *PGAccountsRep) Find(login string) (*objects.Account, error) { 
-	temp := new (objects.Account)
+func (this *PGAccountsRep) UpdateRole(login, role string) error {
+	return this.db.Model(&objects.Account{}).Where("login = ?", login).Update("role", role).Error
+}
+
+func (this *PGAccountsRep) Find(login string) (*objects.Account, error) {
+	temp := new(objects.Account)
 	err := this.db.Where("login = ?", login).First(temp).Error
 	switch err {
 	case nil:

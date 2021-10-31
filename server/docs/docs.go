@@ -160,38 +160,6 @@ var doc = `{
                         }
                     }
                 }
-            },
-            "patch": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Accounts"
-                ],
-                "summary": "Patching existing account",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Account login",
-                        "name": "login",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Account data",
-                        "name": "account",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/objects.AccountDTO"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": ""
-                    }
-                }
             }
         },
         "/accounts/{login}/recipes": {
@@ -221,6 +189,40 @@ var doc = `{
                                 "$ref": "#/definitions/objects.RecipeDTO"
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/accounts/{login}/role": {
+            "patch": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Change user's role",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Account login",
+                        "name": "login",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Account data",
+                        "name": "account",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/objects.AccountDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
                     }
                 }
             }

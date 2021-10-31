@@ -3,9 +3,9 @@ package controllers
 import (
 	"api/recipes/controllers/responses"
 	auth "api/recipes/controllers/token"
+	"api/recipes/errors"
 	"api/recipes/models"
 	"api/recipes/objects"
-	"api/recipes/errors"
 	"time"
 
 	"encoding/json"
@@ -24,7 +24,7 @@ func InitAccount(r *mux.Router, model *models.AccountM) {
 	r.HandleFunc("/accounts/logout", ctrl.LogOut).Methods("POST")
 	r.HandleFunc("/accounts", ctrl.add).Methods("POST")
 	r.HandleFunc("/accounts/{login}", ctrl.get).Methods("GET")
-	r.HandleFunc("/accounts/{login}", ctrl.patch).Methods("PATCH")
+	r.HandleFunc("/accounts/{login}/role", ctrl.patch).Methods("PATCH")
 }
 
 // @Tags Accounts
@@ -111,11 +111,32 @@ func (this *account) get(w http.ResponseWriter, r *http.Request) {
 }
 
 // @Tags Accounts
-// @Router /accounts/{login} [patch]
+// @Router /accounts/{login}/role [patch]
 // @Param login path string true "Account login"
 // @Param account body objects.AccountDTO true "Account data"
-// @Summary Patching existing account
+// @Summary Change user's role
 // @Produce json
 // @Success 200
 func (this *account) patch(w http.ResponseWriter, r *http.Request) {
+	accDTO := new(objects.AccountDTO)
+	err := json.NewDecoder(r.Body).Decode(accDTO)
+	if err != nil {
+		responses.BadRequest(w, "Invalid request")
+		return
+	}
+
+	urlParams := mux.Vars(r)
+	login := urlParams["login"]
+
+	err = this.model.UpdateRole(login, accDTO.Role)
+	switch err {
+	case nil:
+		responses.TextSuccess(w, "Account updation was successful")
+	case errors.UnknownAccount:
+		responses.RecordNotFound(w, "user")
+	case errors.UnknownRole:
+		responses.BadRequest(w, "Wrong role")
+	default:
+		responses.BadRequest(w, "Error in changing role")
+	}
 }

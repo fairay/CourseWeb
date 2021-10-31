@@ -1,7 +1,6 @@
 package models
 
 import (
-	//"api/recipes/objects"
 	"api/recipes/objects"
 	"api/recipes/repository"
 	"api/recipes/errors"
@@ -38,6 +37,20 @@ func (this *AccountM) Create(obj *objects.Account) error {
 	return err
 }
 
+func (this *AccountM) UpdateRole(login, role string) error {
+	if this.IsExists(login) == false {
+		return errors.UnknownAccount
+	}
+
+	if role != AdminRole && role != UserRole {
+		return errors.UnknownRole
+	}
+
+	// FIXME: current role == admin
+
+	return this.rep.UpdateRole(login, role)
+}
+
 func (this *AccountM) Find(login string) (*objects.Account, error) {
 	return this.rep.Find(login)
 }
@@ -45,9 +58,7 @@ func (this *AccountM) Find(login string) (*objects.Account, error) {
 func (this *AccountM) IsExists(login string) bool {
 	_, err := this.Find(login)
 
-	if err != nil {
-		return false
-	}
+	if err != nil { return false }
 
 	return true
 }
