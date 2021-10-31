@@ -84,7 +84,7 @@ func (this *category) postToRecipe(w http.ResponseWriter, r *http.Request) {
 // TODO:
 // @Tags Categories
 // @Router /recipes/{id}/categories [put]
-// @Summary Adding category
+// @Summary Adds category
 // @Param id path int true "Recipe's id"
 // @Param recipe body objects.CategoryDTO true "Category"
 // @Produce json
@@ -95,7 +95,7 @@ func (this *category) putToRecipe(w http.ResponseWriter, r *http.Request) {
 // TODO:
 // @Tags Categories
 // @Router /recipes/{id}/categories [delete]
-// @Summary Deleting category
+// @Summary Removes category
 // @Param id path int true "Recipe's id"
 // @Param recipe body objects.CategoryDTO true "Category"
 // @Produce json
