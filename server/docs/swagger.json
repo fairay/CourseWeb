@@ -200,7 +200,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/objects.Category"
+                                "$ref": "#/definitions/objects.CategoryDTO"
                             }
                         }
                     }
@@ -229,7 +229,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/objects.Category"
+                            "$ref": "#/definitions/objects.CategoryDTO"
                         }
                     }
                 }
@@ -373,7 +373,7 @@
                 }
             }
         },
-        "objects.Category": {
+        "objects.CategoryDTO": {
             "type": "object",
             "properties": {
                 "title": {

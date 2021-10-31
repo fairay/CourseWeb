@@ -8,7 +8,7 @@ definitions:
       role:
         type: string
     type: object
-  objects.Category:
+  objects.CategoryDTO:
     properties:
       title:
         type: string
@@ -158,7 +158,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/objects.Category'
+              $ref: '#/definitions/objects.CategoryDTO'
             type: array
       summary: Retrieves all categories
       tags:
@@ -177,7 +177,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/objects.Category'
+            $ref: '#/definitions/objects.CategoryDTO'
       summary: Retrieves categoriey
       tags:
       - Categories

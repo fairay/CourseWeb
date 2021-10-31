@@ -216,7 +216,7 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/objects.Category"
+                                "$ref": "#/definitions/objects.CategoryDTO"
                             }
                         }
                     }
@@ -245,7 +245,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/objects.Category"
+                            "$ref": "#/definitions/objects.CategoryDTO"
                         }
                     }
                 }
@@ -389,7 +389,7 @@ var doc = `{
                 }
             }
         },
-        "objects.Category": {
+        "objects.CategoryDTO": {
             "type": "object",
             "properties": {
                 "title": {
