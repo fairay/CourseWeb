@@ -38,9 +38,9 @@ func (this *CategoryM) GetRecipes(ctg string) ([]objects.Recipe, error) {
 }
 
 func (this *CategoryM) IsExists(ctg string) bool {
-	_, err := this.Find(ctg)
+	data, _ := this.Find(ctg)
 
-	if err != nil { return false }
+	if len(data) == 0 { return false }
 
 	return true
 }

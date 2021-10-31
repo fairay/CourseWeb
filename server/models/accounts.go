@@ -56,9 +56,9 @@ func (this *AccountM) Find(login string) (*objects.Account, error) {
 }
 
 func (this *AccountM) IsExists(login string) bool {
-	_, err := this.Find(login)
+	data, _ := this.Find(login)
 
-	if err != nil { return false }
+	if data == nil { return false }
 
 	return true
 }
