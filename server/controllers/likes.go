@@ -25,6 +25,7 @@ func InitLikes(r *mux.Router, recM *models.RecipeM, accM *models.AccountM) {
 // @Tags Likes
 // @Router /recipes/{id}/like [put]
 // @Summary Adds like to recipe from authorized user
+// @Param id path int true "Recipe id"
 // @Produce json
 // @Success 201
 func (this *likesCtrl) add(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +34,8 @@ func (this *likesCtrl) add(w http.ResponseWriter, r *http.Request) {
 // TODO:
 // @Tags Likes
 // @Router /recipes/{id}/like [delete]
-// @Summary Adds like to recipe from authorized user
+// @Summary Deletes like to recipe from authorized user
+// @Param id path int true "Recipe id"
 // @Produce json
 // @Success 200
 func (this *likesCtrl) del(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +44,8 @@ func (this *likesCtrl) del(w http.ResponseWriter, r *http.Request) {
 // TODO:
 // @Tags Likes
 // @Router /recipes/{id}/like [get]
-// @Summary Retrieves all liked users of user
+// @Summary Retrieves all liked users
+// @Param id path int true "Recipe id"
 // @Produce json
 // @Success 200 {object} []objects.AccountDTO
 func (this *likesCtrl) getByRecipe(w http.ResponseWriter, r *http.Request) {
