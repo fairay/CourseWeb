@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"api/recipes/controllers/responses"
-	"api/recipes/controllers/token"
+	auth "api/recipes/controllers/token"
 	"api/recipes/models"
 	"api/recipes/objects"
 	"time"
@@ -22,7 +22,7 @@ func InitAccount(r *mux.Router, model *models.AccountM) {
 	r.HandleFunc("/accounts/login", ctrl.LogIn).Methods("POST")
 	r.HandleFunc("/accounts/logout", ctrl.LogOut).Methods("POST")
 	r.HandleFunc("/accounts", ctrl.addAccount).Methods("POST")
-	r.HandleFunc("/accounts/{id}", ctrl.getAccount).Methods("GET")
+	r.HandleFunc("/accounts/{login}", ctrl.getAccount).Methods("GET")
 }
 
 // @Tags Accounts
@@ -78,7 +78,6 @@ func (this *account) addAccount(w http.ResponseWriter, r *http.Request) {
 	// _ := new(objects.AccountDTO)
 }
 
-// TODO:
 // @Tags Accounts
 // @Router /accounts/{login} [get]
 // @Summary Retrieves account
@@ -86,5 +85,9 @@ func (this *account) addAccount(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Success 200 {object} objects.AccountDTO
 func (this *account) getAccount(w http.ResponseWriter, r *http.Request) {
-	// 
+	urlParams := mux.Vars(r)
+	login := urlParams["login"]
+
+	data, _ := this.model.Find(login)
+	responses.JsonSuccess(w, data.ToDTO())
 }
