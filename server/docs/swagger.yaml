@@ -2,10 +2,13 @@ definitions:
   objects.AccountDTO:
     properties:
       login:
+        example: admin
         type: string
       password:
+        example: "0"
         type: string
       role:
+        example: admin
         type: string
     type: object
   objects.CategoryDTO:
@@ -624,8 +627,6 @@ paths:
       tags:
       - Steps
 securityDefinitions:
-  OAuth2Password:
-    flow: password
-    tokenUrl: /accounts/login
-    type: oauth2
+  BasicAuth:
+    type: basic
 swagger: "2.0"

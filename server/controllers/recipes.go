@@ -73,6 +73,7 @@ func (this *recipe) addRecipe(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = this.model.AddRecipe(rcpDTO.ToModel())
+	// FIXME: return new recipe + 201 code
 }
 
 // @Tags Recipes

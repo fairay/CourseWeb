@@ -907,13 +907,16 @@ var doc = `{
             "type": "object",
             "properties": {
                 "login": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "admin"
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "0"
                 },
                 "role": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "admin"
                 }
             }
         },
@@ -981,10 +984,8 @@ var doc = `{
         }
     },
     "securityDefinitions": {
-        "OAuth2Password": {
-            "type": "oauth2",
-            "flow": "password",
-            "tokenUrl": "/accounts/login"
+        "BasicAuth": {
+            "type": "basic"
         }
     }
 }`

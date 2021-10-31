@@ -12,9 +12,9 @@ type Account struct {
 }
 
 type AccountDTO struct {
-	Login			string `json:"login"`
-	Role			string `json:"role"`
-	Password		string `json:"password"`
+	Login			string `json:"login" example:"admin"`
+	Role			string `json:"role" example:"admin"`
+	Password		string `json:"password" example:"0"`
 }
 
 func (Account) TableName() string {
