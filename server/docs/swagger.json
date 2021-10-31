@@ -350,7 +350,7 @@
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Recipe id",
+                        "description": "Recipe's id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -378,6 +378,13 @@
                 "summary": "Adding category",
                 "parameters": [
                     {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
                         "description": "Category",
                         "name": "recipe",
                         "in": "body",
@@ -402,6 +409,13 @@
                 ],
                 "summary": "Posts all categories",
                 "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "Categories",
                         "name": "recipes",
@@ -436,6 +450,13 @@
                 ],
                 "summary": "Deleting category",
                 "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "Category",
                         "name": "recipe",

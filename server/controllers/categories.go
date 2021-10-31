@@ -20,9 +20,9 @@ func InitCategories(r *mux.Router, model *models.CategoryM) {
 	r.HandleFunc("/categories/{title}/recipes", ctrl.getRecipes).Methods("GET")
 
 	r.HandleFunc("/recipes/{id}/categories", ctrl.getByRecipe).Methods("GET")
-	r.HandleFunc("/recipes/{id}/categories", nil).Methods("PUT")
-	r.HandleFunc("/recipes/{id}/categories", nil).Methods("POST")
-	r.HandleFunc("/recipes/{id}/categories", nil).Methods("DELETE")
+	r.HandleFunc("/recipes/{id}/categories", ctrl.putToRecipe).Methods("PUT")
+	r.HandleFunc("/recipes/{id}/categories", ctrl.postToRecipe).Methods("POST")
+	r.HandleFunc("/recipes/{id}/categories", ctrl.delFromRecipe).Methods("DELETE")
 }
 
 // @Tags Categories
@@ -64,7 +64,7 @@ func (this *category) getRecipes(w http.ResponseWriter, r *http.Request) {
 // @Tags Categories
 // @Router /recipes/{id}/categories [get]
 // @Summary Retrieves all categories
-// @Param id path int true "Recipe id"
+// @Param id path int true "Recipe's id"
 // @Produce json
 // @Success 200 {object} []objects.CategoryDTO
 func (this *category) getByRecipe(w http.ResponseWriter, r *http.Request) {
@@ -74,6 +74,7 @@ func (this *category) getByRecipe(w http.ResponseWriter, r *http.Request) {
 // @Tags Categories
 // @Router /recipes/{id}/categories [post]
 // @Summary Posts all categories
+// @Param id path int true "Recipe's id"
 // @Param recipes body []objects.CategoryDTO true "Categories"
 // @Produce json
 // @Success 201 {object} []objects.CategoryDTO
@@ -84,6 +85,7 @@ func (this *category) postToRecipe(w http.ResponseWriter, r *http.Request) {
 // @Tags Categories
 // @Router /recipes/{id}/categories [put]
 // @Summary Adding category
+// @Param id path int true "Recipe's id"
 // @Param recipe body objects.CategoryDTO true "Category"
 // @Produce json
 // @Success 200
@@ -94,6 +96,7 @@ func (this *category) putToRecipe(w http.ResponseWriter, r *http.Request) {
 // @Tags Categories
 // @Router /recipes/{id}/categories [delete]
 // @Summary Deleting category
+// @Param id path int true "Recipe's id"
 // @Param recipe body objects.CategoryDTO true "Category"
 // @Produce json
 // @Success 200

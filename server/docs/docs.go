@@ -366,7 +366,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Recipe id",
+                        "description": "Recipe's id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -394,6 +394,13 @@ var doc = `{
                 "summary": "Adding category",
                 "parameters": [
                     {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
                         "description": "Category",
                         "name": "recipe",
                         "in": "body",
@@ -418,6 +425,13 @@ var doc = `{
                 ],
                 "summary": "Posts all categories",
                 "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "Categories",
                         "name": "recipes",
@@ -452,6 +466,13 @@ var doc = `{
                 ],
                 "summary": "Deleting category",
                 "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "Category",
                         "name": "recipe",
