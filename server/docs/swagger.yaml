@@ -36,6 +36,43 @@ info:
   title: Recipes API
   version: "0.1"
 paths:
+  /accounts:
+    post:
+      parameters:
+      - description: Account data
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/objects.AccountDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/objects.AccountDTO'
+      summary: Creation a new account
+      tags:
+      - Accounts
+  /accounts/{login}:
+    get:
+      parameters:
+      - description: Account login
+        in: path
+        name: login
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/objects.AccountDTO'
+      summary: Retrieves account
+      tags:
+      - Accounts
   /accounts/{login}/recipes:
     get:
       parameters:

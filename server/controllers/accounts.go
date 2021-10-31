@@ -21,6 +21,8 @@ func InitAccount(r *mux.Router, model *models.AccountM) {
 	ctrl := &account{model}
 	r.HandleFunc("/accounts/login", ctrl.LogIn).Methods("POST")
 	r.HandleFunc("/accounts/logout", ctrl.LogOut).Methods("POST")
+	r.HandleFunc("/accounts", ctrl.addAccount).Methods("POST")
+	r.HandleFunc("/accounts/{id}", ctrl.getAccount).Methods("GET")
 }
 
 // @Tags Accounts
@@ -63,4 +65,26 @@ func (this *account) LogOut(w http.ResponseWriter, r *http.Request) {
 	})
 
 	responses.TextSuccess(w, "Logout was successful")
+}
+
+// TODO:
+// @Tags Accounts
+// @Router /accounts [post]
+// @Param account body objects.AccountDTO true "Account data"
+// @Summary Creation a new account
+// @Produce json
+// @Success 201 {object} objects.AccountDTO
+func (this *account) addAccount(w http.ResponseWriter, r *http.Request) {
+	// _ := new(objects.AccountDTO)
+}
+
+// TODO:
+// @Tags Accounts
+// @Router /accounts/{login} [get]
+// @Summary Retrieves account
+// @Param login path string true "Account login"
+// @Produce json
+// @Success 200 {object} objects.AccountDTO
+func (this *account) getAccount(w http.ResponseWriter, r *http.Request) {
+	// 
 }
