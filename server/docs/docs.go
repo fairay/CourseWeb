@@ -53,6 +53,42 @@ var doc = `{
                 }
             }
         },
+        "/accounts/like": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Retrieves all liked recipes of user",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "description": "Requested account",
+                        "name": "login",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Request by current user",
+                        "name": "me",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.RecipeDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/accounts/login": {
             "post": {
                 "produces": [
@@ -280,6 +316,56 @@ var doc = `{
                         "required": true
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/recipes/{id}/like": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Retrieves all liked users of user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.AccountDTO"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Adds like to recipe from authorized user",
+                "responses": {
+                    "201": {
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Adds like to recipe from authorized user",
                 "responses": {
                     "200": {
                         "description": ""
