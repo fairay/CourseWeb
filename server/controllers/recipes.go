@@ -105,11 +105,8 @@ func (this *recipe) deleteRecipe(w http.ResponseWriter, r *http.Request) {
 		responses.RecordNotFound(w, "user")
 	case errors.UnknownAccount:
 		responses.RecordNotFound(w, "author")
-	case errors.UnknownAccount:
-		responses.RecordNotFound(w, "author")
 	case errors.UnknownRecipe:
 		responses.RecordNotFound(w, "recipe")
 	}
 }
 
-//TODO:
