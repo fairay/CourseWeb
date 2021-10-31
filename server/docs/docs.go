@@ -265,7 +265,7 @@ var doc = `{
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Retrieves categoriey",
+                "summary": "Retrieves category",
                 "parameters": [
                     {
                         "type": "string",
@@ -981,8 +981,10 @@ var doc = `{
         }
     },
     "securityDefinitions": {
-        "BasicAuth": {
-            "type": "basic"
+        "OAuth2Password": {
+            "type": "oauth2",
+            "flow": "password",
+            "tokenUrl": "/accounts/login"
         }
     }
 }`

@@ -218,7 +218,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/objects.CategoryDTO'
-      summary: Retrieves categoriey
+      summary: Retrieves category
       tags:
       - Categories
   /categories/{title}/recipes:
@@ -624,6 +624,8 @@ paths:
       tags:
       - Steps
 securityDefinitions:
-  BasicAuth:
-    type: basic
+  OAuth2Password:
+    flow: password
+    tokenUrl: /accounts/login
+    type: oauth2
 swagger: "2.0"

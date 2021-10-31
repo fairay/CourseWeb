@@ -46,7 +46,9 @@ func initControllers(r *mux.Router, m *models.Models) {
 // @Title Recipes API
 // @Version 0.1
 // @Description API for culinary recipes (BMSTU Web development cource project)
-// @SecurityDefinitions.basic BasicAuth
+// @Securitydefinitions.oauth2.password OAuth2Password
+// @tokenUrl /accounts/login
+// @in Body
 func main() {
 	utils.InitConfig()
 	utils.InitLogger()

@@ -249,7 +249,7 @@
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Retrieves categoriey",
+                "summary": "Retrieves category",
                 "parameters": [
                     {
                         "type": "string",
@@ -965,8 +965,10 @@
         }
     },
     "securityDefinitions": {
-        "BasicAuth": {
-            "type": "basic"
+        "OAuth2Password": {
+            "type": "oauth2",
+            "flow": "password",
+            "tokenUrl": "/accounts/login"
         }
     }
 }

@@ -42,7 +42,7 @@ func (this *category) getAll(w http.ResponseWriter, r *http.Request) {
 
 // @Tags Categories
 // @Router /categories/{title} [get]
-// @Summary Retrieves categoriey
+// @Summary Retrieves category
 // @Param title path string true "Category title"
 // @Produce json
 // @Success 200 {object} objects.CategoryDTO
