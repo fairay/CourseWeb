@@ -265,7 +265,7 @@ var doc = `{
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Retrieves category",
+                "summary": "Retrieves category by title",
                 "parameters": [
                     {
                         "type": "string",
@@ -293,7 +293,7 @@ var doc = `{
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Retrieves all recipes with such category",
+                "summary": "Retrieves all recipes at this category",
                 "parameters": [
                     {
                         "type": "string",
@@ -396,7 +396,7 @@ var doc = `{
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Retrieves all categories",
+                "summary": "Retrieves all recipes' categories",
                 "parameters": [
                     {
                         "type": "integer",

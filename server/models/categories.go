@@ -37,6 +37,15 @@ func (this *CategoryM) GetRecipes(ctg string) ([]objects.Recipe, error) {
 	return this.rep.FindRecipes(ctg)
 }
 
+func (this *CategoryM) GetByRecipe(id_rcp int) ([]objects.Category, error) {
+	_, err := this.models.Recipes.FindById(id_rcp)
+	if err != nil {
+		return nil, errors.UnknownRecipe
+	}
+
+	return this.rep.FindByRecipe(id_rcp)
+}
+
 func (this *CategoryM) IsExists(ctg string) bool {
 	data, _ := this.Find(ctg)
 

@@ -218,7 +218,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/objects.CategoryDTO'
-      summary: Retrieves category
+      summary: Retrieves category by title
       tags:
       - Categories
   /categories/{title}/recipes:
@@ -238,7 +238,7 @@ paths:
             items:
               $ref: '#/definitions/objects.RecipeDTO'
             type: array
-      summary: Retrieves all recipes with such category
+      summary: Retrieves all recipes at this category
       tags:
       - Categories
   /recipes:
@@ -325,7 +325,7 @@ paths:
             items:
               $ref: '#/definitions/objects.CategoryDTO'
             type: array
-      summary: Retrieves all categories
+      summary: Retrieves all recipes' categories
       tags:
       - Categories
     post:

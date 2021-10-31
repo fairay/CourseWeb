@@ -8,34 +8,35 @@ import (
 )
 
 type CategoriesRep interface {
-	List() ([]objects.Category)
+	List() []objects.Category
 	Find(ctg string) ([]objects.Category, error)
 	FindRecipes(ctg string) ([]objects.Recipe, error)
+	FindByRecipe(id_rcp int) ([]objects.Category, error)
 
-	Get(ctg string) (objects.Category)
+	Get(ctg string) objects.Category
 }
 
 type PGCategoriesRep struct {
 	db *gorm.DB
 }
 
-func NewCategotiesRep (db *gorm.DB) *PGCategoriesRep {
+func NewCategotiesRep(db *gorm.DB) *PGCategoriesRep {
 	return &PGCategoriesRep{db}
 }
 
-func (this *PGCategoriesRep) List() ([]objects.Category) {
+func (this *PGCategoriesRep) List() []objects.Category {
 	temp := []objects.Category{}
 	this.db.Find(&temp)
 	return temp
 }
 
-func (this *PGCategoriesRep) Find(ctg string) ([]objects.Category, error) { 
+func (this *PGCategoriesRep) Find(ctg string) ([]objects.Category, error) {
 	temp := []objects.Category{}
-	err := this.db.Where("LOWER(title) LIKE ?", "%" + strings.ToLower(ctg) + "%").Find(&temp).Error
+	err := this.db.Where("LOWER(title) LIKE ?", "%"+strings.ToLower(ctg)+"%").Find(&temp).Error
 	return temp, err
 }
 
-func (this *PGCategoriesRep) FindRecipes(ctg string) ([]objects.Recipe, error) { 
+func (this *PGCategoriesRep) FindRecipes(ctg string) ([]objects.Recipe, error) {
 	temp := []objects.Recipe{}
 	category := objects.Category{Title: ctg}
 
@@ -44,7 +45,16 @@ func (this *PGCategoriesRep) FindRecipes(ctg string) ([]objects.Recipe, error) {
 	return temp, err
 }
 
-func (this *PGCategoriesRep) Get(ctg string) (objects.Category) { 
+func (this *PGCategoriesRep) FindByRecipe(id_rcp int) ([]objects.Category, error) {
+	temp := []objects.Category{}
+	recipe := objects.Recipe{Id: id_rcp}
+
+	err := this.db.Model(&recipe).Association("Categories").Find(&temp).Error
+
+	return temp, err
+}
+
+func (this *PGCategoriesRep) Get(ctg string) objects.Category {
 	temp := objects.Category{}
 	this.db.Where("LOWER(title) = ?", strings.ToLower(ctg)).Find(&temp)
 	return temp

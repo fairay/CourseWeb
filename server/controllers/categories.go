@@ -5,6 +5,7 @@ import (
 	"api/recipes/errors"
 	"api/recipes/models"
 	"api/recipes/objects"
+	"strconv"
 
 	"net/http"
 
@@ -42,7 +43,7 @@ func (this *category) getAll(w http.ResponseWriter, r *http.Request) {
 
 // @Tags Categories
 // @Router /categories/{title} [get]
-// @Summary Retrieves category
+// @Summary Retrieves category by title
 // @Param title path string true "Category title"
 // @Produce json
 // @Success 200 {object} objects.CategoryDTO
@@ -52,10 +53,9 @@ func (this *category) get(w http.ResponseWriter, r *http.Request) {
 	responses.JsonSuccess(w, data.ToDTO())
 }
 
-// TODO:
 // @Tags Categories
 // @Router /categories/{title}/recipes [get]
-// @Summary Retrieves all recipes with such category
+// @Summary Retrieves all recipes at this category
 // @Param title path string true "Searched category"
 // @Produce json
 // @Success 200 {object} []objects.RecipeDTO
@@ -77,11 +77,26 @@ func (this *category) getRecipes(w http.ResponseWriter, r *http.Request) {
 // TODO:
 // @Tags Categories
 // @Router /recipes/{id}/categories [get]
-// @Summary Retrieves all categories
+// @Summary Retrieves all recipes' categories
 // @Param id path int true "Recipe's id"
 // @Produce json
 // @Success 200 {object} []objects.CategoryDTO
 func (this *category) getByRecipe(w http.ResponseWriter, r *http.Request) {
+	urlParams := mux.Vars(r)
+	strId := urlParams["id"]
+
+	id_rcp, err := strconv.Atoi(strId)
+
+	data, err := this.model.GetByRecipe(id_rcp)
+
+	switch err {
+	case nil:
+		responses.JsonSuccess(w, objects.Category{}.ArrToDTO(data))
+	case errors.UnknownRecipe:
+		responses.RecordNotFound(w, "recipe")
+	default:
+		responses.BadRequest(w, "Error in getting categories")
+	}
 }
 
 // TODO:

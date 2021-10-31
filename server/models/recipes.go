@@ -1,9 +1,9 @@
 package models
 
 import (
+	"api/recipes/errors"
 	"api/recipes/objects"
 	"api/recipes/repository"
-	"api/recipes/errors"
 )
 
 type RecipeM struct {
