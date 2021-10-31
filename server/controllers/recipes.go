@@ -19,10 +19,12 @@ type recipe struct {
 
 func InitRecipes(r *mux.Router, model *models.RecipeM) {
 	ctrl := &recipe{model}
-	r.HandleFunc("/recipes", ctrl.getAllRecipes).Methods("GET")
 	r.HandleFunc("/accounts/{login}/recipes", ctrl.getRecipesByLogin).Methods("GET")
+
+	r.HandleFunc("/recipes", ctrl.getAllRecipes).Methods("GET")
 	r.HandleFunc("/recipes", ctrl.addRecipe).Methods("POST")
 	r.HandleFunc("/recipes/{id}", ctrl.deleteRecipe).Methods("DELETE")
+	r.HandleFunc("/recipes/{id}/like", ctrl.deleteRecipe).Methods("PUT")
 }
 
 // @Tags Recipes
@@ -109,3 +111,5 @@ func (this *recipe) deleteRecipe(w http.ResponseWriter, r *http.Request) {
 		responses.RecordNotFound(w, "recipe")
 	}
 }
+
+//TODO:

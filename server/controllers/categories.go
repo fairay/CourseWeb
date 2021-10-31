@@ -3,6 +3,7 @@ package controllers
 import (
 	"api/recipes/controllers/responses"
 	"api/recipes/models"
+	"api/recipes/objects"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -23,12 +24,12 @@ func InitCategories(r *mux.Router, model *models.CategoryM) {
 // @Summary Retrieves all categories
 // @Param search query string false "Search query"
 // @Produce json
-// @Success 200 {object} []objects.Category
+// @Success 200 {object} []objects.CategoryDTO
 func (this *category) getAllCategories(w http.ResponseWriter, r *http.Request) {
 	urlParams := r.URL.Query()
 	search := urlParams.Get("search")
 	data := this.model.Find(search)
-	responses.JsonSuccess(w, data)
+	responses.JsonSuccess(w, objects.Category{}.ArrToDTO(data))
 }
 
 // @Tags Categories
@@ -36,9 +37,9 @@ func (this *category) getAllCategories(w http.ResponseWriter, r *http.Request) {
 // @Summary Retrieves categoriey
 // @Param title path string true "Category title"
 // @Produce json
-// @Success 200 {object} objects.Category
+// @Success 200 {object} objects.CategoryDTO
 func (this *category) getCategory(w http.ResponseWriter, r *http.Request) {
 	temp := mux.Vars(r)
 	data := this.model.Get(temp["title"])
-	responses.JsonSuccess(w, data)
+	responses.JsonSuccess(w, data.ToDTO())
 }

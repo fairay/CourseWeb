@@ -8,7 +8,7 @@ definitions:
       role:
         type: string
     type: object
-  objects.Category:
+  objects.CategoryDTO:
     properties:
       title:
         type: string
@@ -93,6 +93,29 @@ paths:
       summary: Retrieves recipes of user
       tags:
       - Recipes
+  /accounts/like:
+    get:
+      parameters:
+      - description: Requested account
+        in: query
+        name: login
+        type: boolean
+      - description: Request by current user
+        in: query
+        name: me
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/objects.RecipeDTO'
+            type: array
+      summary: Retrieves all liked recipes of user
+      tags:
+      - Likes
   /accounts/login:
     post:
       parameters:
@@ -135,7 +158,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/objects.Category'
+              $ref: '#/definitions/objects.CategoryDTO'
             type: array
       summary: Retrieves all categories
       tags:
@@ -154,7 +177,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/objects.Category'
+            $ref: '#/definitions/objects.CategoryDTO'
       summary: Retrieves categoriey
       tags:
       - Categories
@@ -204,4 +227,36 @@ paths:
       summary: Deletion the recipe by its id
       tags:
       - Recipes
+  /recipes/{id}/like:
+    delete:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: Adds like to recipe from authorized user
+      tags:
+      - Likes
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/objects.AccountDTO'
+            type: array
+      summary: Retrieves all liked users of user
+      tags:
+      - Likes
+    put:
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: ""
+      summary: Adds like to recipe from authorized user
+      tags:
+      - Likes
 swagger: "2.0"
