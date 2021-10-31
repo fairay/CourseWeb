@@ -22,8 +22,9 @@ func InitAccount(r *mux.Router, model *models.AccountM) {
 	ctrl := &account{model}
 	r.HandleFunc("/accounts/login", ctrl.LogIn).Methods("POST")
 	r.HandleFunc("/accounts/logout", ctrl.LogOut).Methods("POST")
-	r.HandleFunc("/accounts", ctrl.addAccount).Methods("POST")
-	r.HandleFunc("/accounts/{login}", ctrl.getAccount).Methods("GET")
+	r.HandleFunc("/accounts", ctrl.add).Methods("POST")
+	r.HandleFunc("/accounts/{login}", ctrl.get).Methods("GET")
+	r.HandleFunc("/accounts/{login}", ctrl.patch).Methods("PATCH")
 }
 
 // @Tags Accounts
@@ -74,7 +75,7 @@ func (this *account) LogOut(w http.ResponseWriter, r *http.Request) {
 // @Summary Creation a new account
 // @Produce json
 // @Success 201 {object} objects.AccountDTO
-func (this *account) addAccount(w http.ResponseWriter, r *http.Request) {
+func (this *account) add(w http.ResponseWriter, r *http.Request) {
 	accDTO := new(objects.AccountDTO)
 	err := json.NewDecoder(r.Body).Decode(accDTO)
 	if err != nil {
@@ -101,10 +102,20 @@ func (this *account) addAccount(w http.ResponseWriter, r *http.Request) {
 // @Param login path string true "Account login"
 // @Produce json
 // @Success 200 {object} objects.AccountDTO
-func (this *account) getAccount(w http.ResponseWriter, r *http.Request) {
+func (this *account) get(w http.ResponseWriter, r *http.Request) {
 	urlParams := mux.Vars(r)
 	login := urlParams["login"]
 
 	data, _ := this.model.Find(login)
 	responses.JsonSuccess(w, data.ToDTO())
+}
+
+// @Tags Accounts
+// @Router /accounts/{login} [patch]
+// @Param login path string true "Account login"
+// @Param account body objects.AccountDTO true "Account data"
+// @Summary Patching existing account
+// @Produce json
+// @Success 200
+func (this *account) patch(w http.ResponseWriter, r *http.Request) {
 }
