@@ -49,6 +49,12 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/objects.AccountDTO"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             }
@@ -113,6 +119,18 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/objects.AccountDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "Authentication"
                         }
                     }
                 }
@@ -223,6 +241,12 @@ var doc = `{
                 "responses": {
                     "200": {
                         "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             }
@@ -281,6 +305,12 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/objects.CategoryDTO"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             }
@@ -311,6 +341,12 @@ var doc = `{
                             "items": {
                                 "$ref": "#/definitions/objects.RecipeDTO"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
                         }
                     }
                 }
@@ -362,6 +398,18 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/objects.RecipeDTO"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "Authentication"
+                        }
                     }
                 }
             }
@@ -384,6 +432,24 @@ var doc = `{
                 "responses": {
                     "200": {
                         "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "Authentication"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "Access"
+                        }
                     }
                 }
             }
@@ -415,6 +481,12 @@ var doc = `{
                                 "$ref": "#/definitions/objects.CategoryDTO"
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             },
@@ -425,7 +497,7 @@ var doc = `{
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Adds category",
+                "summary": "Adds category to mentioned recipe",
                 "parameters": [
                     {
                         "type": "integer",
@@ -446,7 +518,60 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "type": "Successful"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Sets categories to mentioned recipe",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Categories",
+                        "name": "categories",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.CategoryDTO"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "Successful"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             },
@@ -478,7 +603,16 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "type": "Successful"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             }
@@ -491,7 +625,7 @@ var doc = `{
                 "tags": [
                     "Ingredients"
                 ],
-                "summary": "Retrieves all ingredients",
+                "summary": "Retrieves all recipe's ingredients",
                 "parameters": [
                     {
                         "type": "integer",
@@ -509,6 +643,12 @@ var doc = `{
                             "items": {
                                 "$ref": "#/definitions/objects.IngredientDTO"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
                         }
                     }
                 }

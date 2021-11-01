@@ -73,6 +73,10 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/objects.AccountDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
       summary: Creates a new account
       tags:
       - Accounts
@@ -133,6 +137,10 @@ paths:
       responses:
         "200":
           description: ""
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
       summary: Change user's role
       tags:
       - Accounts
@@ -174,6 +182,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/objects.AccountDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
+        "401":
+          description: Unauthorized
+          schema:
+            type: Authentication
       summary: User's authorization
       tags:
       - Accounts
@@ -221,6 +237,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/objects.CategoryDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
       summary: Retrieves category by title
       tags:
       - Categories
@@ -241,6 +261,10 @@ paths:
             items:
               $ref: '#/definitions/objects.RecipeDTO'
             type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
       summary: Retrieves all recipes at this category
       tags:
       - Categories
@@ -273,6 +297,14 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/objects.RecipeDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
+        "401":
+          description: Unauthorized
+          schema:
+            type: Authentication
       summary: Creates a new recipe
       tags:
       - Recipes
@@ -287,6 +319,18 @@ paths:
       responses:
         "200":
           description: ""
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
+        "401":
+          description: Unauthorized
+          schema:
+            type: Authentication
+        "403":
+          description: Forbidden
+          schema:
+            type: Access
       summary: Deletes the recipe
       tags:
       - Recipes
@@ -308,7 +352,13 @@ paths:
       - application/json
       responses:
         "200":
-          description: ""
+          description: OK
+          schema:
+            type: Successful
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
       summary: Removes category
       tags:
       - Categories
@@ -328,7 +378,40 @@ paths:
             items:
               $ref: '#/definitions/objects.CategoryDTO'
             type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
       summary: Retrieves all recipe's categories
+      tags:
+      - Categories
+    post:
+      parameters:
+      - description: Recipe's id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Categories
+        in: body
+        name: categories
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/objects.CategoryDTO'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: Successful
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
+      summary: Sets categories to mentioned recipe
       tags:
       - Categories
     put:
@@ -348,8 +431,14 @@ paths:
       - application/json
       responses:
         "200":
-          description: ""
-      summary: Adds category
+          description: OK
+          schema:
+            type: Successful
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
+      summary: Adds category to mentioned recipe
       tags:
       - Categories
   /recipes/{id}/ingredients:
@@ -390,7 +479,11 @@ paths:
             items:
               $ref: '#/definitions/objects.IngredientDTO'
             type: array
-      summary: Retrieves all ingredients
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
+      summary: Retrieves all recipe's ingredients
       tags:
       - Ingredients
     post:

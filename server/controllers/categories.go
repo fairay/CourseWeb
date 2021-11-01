@@ -48,10 +48,19 @@ func (this *category) getAll(w http.ResponseWriter, r *http.Request) {
 // @Param title path string true "Category title"
 // @Produce json
 // @Success 200 {object} objects.CategoryDTO
+// @Failure 400 Invalid value
 func (this *category) get(w http.ResponseWriter, r *http.Request) {
 	temp := mux.Vars(r)
-	data := this.model.Get(temp["title"])
-	responses.JsonSuccess(w, data.ToDTO())
+	data, err := this.model.Get(temp["title"])
+	switch err {
+	case nil:
+		responses.JsonSuccess(w, data.ToDTO())
+	case errors.RecordNotFound:
+		responses.RecordNotFound(w, "category")
+	default:
+		responses.BadRequest(w, "Error in getting recipes")
+	}
+	
 }
 
 // @Tags Categories
@@ -60,6 +69,7 @@ func (this *category) get(w http.ResponseWriter, r *http.Request) {
 // @Param title path string true "Searched category"
 // @Produce json
 // @Success 200 {object} []objects.RecipeDTO
+// @Failure 400 Invalid value
 func (this *category) getRecipes(w http.ResponseWriter, r *http.Request) {
 	urlParams := mux.Vars(r)
 	ctg := urlParams["title"]
@@ -68,7 +78,7 @@ func (this *category) getRecipes(w http.ResponseWriter, r *http.Request) {
 	switch err {
 	case nil:
 		responses.JsonSuccess(w, objects.Recipe{}.ArrToDTO(data))
-	case errors.UnknownRecipe:
+	case errors.UnknownCategory:
 		responses.RecordNotFound(w, "category")
 	default:
 		responses.BadRequest(w, "Error in getting recipes")
@@ -81,6 +91,7 @@ func (this *category) getRecipes(w http.ResponseWriter, r *http.Request) {
 // @Param id path int true "Recipe's id"
 // @Produce json
 // @Success 200 {object} []objects.CategoryDTO
+// @Failure 400 Invalid value
 func (this *category) getByRecipe(w http.ResponseWriter, r *http.Request) {
 	urlParams := mux.Vars(r)
 	strId := urlParams["id"]
@@ -103,16 +114,14 @@ func (this *category) getByRecipe(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// FIXME:
 // @Tags Categories
 // @Router /recipes/{id}/categories [post]
 // @Summary Sets categories to mentioned recipe
 // @Param id path int true "Recipe's id"
 // @Param categories body []objects.CategoryDTO true "Categories"
 // @Produce json
-// @Success 201 
-
-//{object} []objects.CategoryDTO
+// @Success 201 Successful opeartion
+// @Failure 400 Invalid value
 func (this *category) postToRecipe(w http.ResponseWriter, r *http.Request) {
 	urlParams := mux.Vars(r)
 	strId := urlParams["id"]
@@ -133,34 +142,92 @@ func (this *category) postToRecipe(w http.ResponseWriter, r *http.Request) {
 	err = this.model.PostToRecipe(id_rcp, objects.ToArrModel(*ctgDTO))
 	switch err {
 	case nil:
-		responses.TextSuccess(w, "Addition category/ies was successful")
+		responses.SuccessCreation(w, "Posting category/ies was successful")
 	case errors.UnknownRecipe:
 		responses.BadRequest(w, "Wrong recipe's id")
-	case errors.UnknownCategory:
-		responses.BadRequest(w, "Wrong name of category")
+	case errors.DBAdditionError:
+		responses.BadRequest(w, "Error in addition a new category")
 	default:
 		responses.BadRequest(w, "Invalid request")
 	}
 }
 
-// TODO:
 // @Tags Categories
 // @Router /recipes/{id}/categories [put]
-// @Summary Adds category
+// @Summary Adds category to mentioned recipe
 // @Param id path int true "Recipe's id"
 // @Param recipe body objects.CategoryDTO true "Category"
 // @Produce json
-// @Success 200
+// @Success 200 Successful opeartion
+// @Failure 400 Invalid value
 func (this *category) putToRecipe(w http.ResponseWriter, r *http.Request) {
+	urlParams := mux.Vars(r)
+	strId := urlParams["id"]
+
+	id_rcp, err := strconv.Atoi(strId)
+	if err != nil {
+		responses.BadRequest(w, "Wrong recipe's id")
+		return
+	}
+
+	ctgDTO := new(objects.CategoryDTO)
+	err = json.NewDecoder(r.Body).Decode(ctgDTO)
+	if err != nil {
+		responses.BadRequest(w, "Invalid request")
+		return
+	}
+
+	err = this.model.AddToRecipe(id_rcp, ctgDTO.ToModel())
+	switch err {
+	case nil:
+		responses.TextSuccess(w, "Addition the category was successful")
+	case errors.UnknownRecipe:
+		responses.BadRequest(w, "Wrong recipe's id")
+	case errors.DBAdditionError:
+		responses.BadRequest(w, "Error in addition a new category")
+	default:
+		responses.BadRequest(w, "Invalid request")
+	}
 }
 
-// TODO:
 // @Tags Categories
 // @Router /recipes/{id}/categories [delete]
 // @Summary Removes category
 // @Param id path int true "Recipe's id"
 // @Param recipe body objects.CategoryDTO true "Category"
 // @Produce json
-// @Success 200
+// @Success 200 Successful opeartion
+// @Failure 400 Invalid value
 func (this *category) delFromRecipe(w http.ResponseWriter, r *http.Request) {
+	urlParams := mux.Vars(r)
+	strId := urlParams["id"]
+
+	id_rcp, err := strconv.Atoi(strId)
+	if err != nil {
+		responses.BadRequest(w, "Wrong recipe's id")
+		return
+	}
+
+	ctgDTO := new(objects.CategoryDTO)
+	err = json.NewDecoder(r.Body).Decode(ctgDTO)
+	if err != nil {
+		responses.BadRequest(w, "Invalid request")
+		return
+	}
+
+	err = this.model.DelFromRecipe(id_rcp, ctgDTO.ToModel())
+	switch err {
+	case nil:
+		responses.TextSuccess(w, "The category was successful deleted")
+	case errors.UnknownRecipe:
+		responses.BadRequest(w, "Wrong recipe's id")
+	case errors.DBAdditionError:
+		responses.BadRequest(w, "Error in addition a new category")
+	case errors.UnknownCategory:
+		responses.BadRequest(w, "Wrong category name")
+	default:
+		responses.BadRequest(w, "Invalid request")
+	}
 }
+
+//TODO: ДЕЛАТЬ ЛИ ПРОВЕРКУ НА ТО, ЧТО ДАННАЯ КАТЕГОРИЯ ЕСТЬ В РЕЦЕПТЕ

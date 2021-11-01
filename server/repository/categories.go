@@ -8,13 +8,15 @@ import (
 )
 
 type CategoriesRep interface {
+	Create(obj *objects.Category) error
 	List() []objects.Category
 	Find(ctg string) ([]objects.Category, error)
+	Get(ctg string) (objects.Category, error)
 	FindRecipes(ctg string) ([]objects.Recipe, error)
 	FindByRecipe(id_rcp int) ([]objects.Category, error)
 	AddToRecipe(id_rcp int, ctg string) error
-
-	Get(ctg string) objects.Category
+	ReplaceInRecipe(id_rcp int, ctg string) error
+	DelFromRecipe(id_rcp int, ctg string) error
 }
 
 type PGCategoriesRep struct {
@@ -23,6 +25,10 @@ type PGCategoriesRep struct {
 
 func NewCategotiesRep(db *gorm.DB) *PGCategoriesRep {
 	return &PGCategoriesRep{db}
+}
+
+func (this *PGCategoriesRep) Create(obj *objects.Category) error {
+	return this.db.Create(obj).Error
 }
 
 func (this *PGCategoriesRep) List() []objects.Category {
@@ -55,14 +61,26 @@ func (this *PGCategoriesRep) FindByRecipe(id_rcp int) ([]objects.Category, error
 	return temp, err
 }
 
-func (this *PGCategoriesRep) Get(ctg string) objects.Category {
+func (this *PGCategoriesRep) Get(ctg string) (objects.Category, error) {
 	temp := objects.Category{}
-	this.db.Where("LOWER(title) = ?", strings.ToLower(ctg)).Find(&temp)
-	return temp
+	err := this.db.Where("LOWER(title) = ?", strings.ToLower(ctg)).Find(&temp).Error
+	return temp, err
 }
 
 func (this *PGCategoriesRep) AddToRecipe(id_rcp int, ctg string) error {
 	recipe := objects.Recipe{Id: id_rcp}
 	err := this.db.Model(&recipe).Association("Categories").Append(&objects.Category{Title: ctg}).Error
+	return err
+}
+
+func (this *PGCategoriesRep) ReplaceInRecipe(id_rcp int, ctg string) error {
+	recipe := objects.Recipe{Id: id_rcp}
+	err := this.db.Model(&recipe).Association("Categories").Replace(&objects.Category{Title: ctg}).Error
+	return err
+}
+
+func (this *PGCategoriesRep) DelFromRecipe(id_rcp int, ctg string) error {
+	recipe := objects.Recipe{Id: id_rcp}
+	err := this.db.Model(&recipe).Association("Categories").Delete(&objects.Category{Title: ctg}).Error
 	return err
 }
