@@ -103,16 +103,13 @@ func (this *category) getByRecipe(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// FIXME:
 // @Tags Categories
 // @Router /recipes/{id}/categories [post]
 // @Summary Sets categories to mentioned recipe
 // @Param id path int true "Recipe's id"
 // @Param categories body []objects.CategoryDTO true "Categories"
 // @Produce json
-// @Success 201 
-
-//{object} []objects.CategoryDTO
+// @Success 201
 func (this *category) postToRecipe(w http.ResponseWriter, r *http.Request) {
 	urlParams := mux.Vars(r)
 	strId := urlParams["id"]
@@ -133,7 +130,7 @@ func (this *category) postToRecipe(w http.ResponseWriter, r *http.Request) {
 	err = this.model.PostToRecipe(id_rcp, objects.ToArrModel(*ctgDTO))
 	switch err {
 	case nil:
-		responses.TextSuccess(w, "Addition category/ies was successful")
+		responses.TextSuccess(w, "Posting category/ies was successful")
 	case errors.UnknownRecipe:
 		responses.BadRequest(w, "Wrong recipe's id")
 	case errors.UnknownCategory:
@@ -143,15 +140,41 @@ func (this *category) postToRecipe(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// TODO:
 // @Tags Categories
 // @Router /recipes/{id}/categories [put]
-// @Summary Adds category
+// @Summary Adds category to mentioned recipe
 // @Param id path int true "Recipe's id"
 // @Param recipe body objects.CategoryDTO true "Category"
 // @Produce json
 // @Success 200
 func (this *category) putToRecipe(w http.ResponseWriter, r *http.Request) {
+	urlParams := mux.Vars(r)
+	strId := urlParams["id"]
+
+	id_rcp, err := strconv.Atoi(strId)
+	if err != nil {
+		responses.BadRequest(w, "Wrong recipe's id")
+		return
+	}
+
+	ctgDTO := new(objects.CategoryDTO)
+	err = json.NewDecoder(r.Body).Decode(ctgDTO)
+	if err != nil {
+		responses.BadRequest(w, "Invalid request")
+		return
+	}
+
+	err = this.model.AddToRecipe(id_rcp, ctgDTO.ToModel())
+	switch err {
+	case nil:
+		responses.TextSuccess(w, "Addition the category was successful")
+	case errors.UnknownRecipe:
+		responses.BadRequest(w, "Wrong recipe's id")
+	case errors.UnknownCategory:
+		responses.BadRequest(w, "Wrong name of category")
+	default:
+		responses.BadRequest(w, "Invalid request")
+	}
 }
 
 // TODO:

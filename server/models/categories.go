@@ -57,10 +57,28 @@ func (this *CategoryM) PostToRecipe(id_rcp int, ctg_arr *[]objects.Category) (er
 			return errors.UnknownCategory
 		}
 
-		err = this.rep.AddToRecipe(id_rcp, ctg.Title)
+		err := this.rep.ReplaceInRecipe(id_rcp, ctg.Title)
 		if err != nil {
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (this *CategoryM) AddToRecipe(id_rcp int, ctg *objects.Category) (error) {
+	_, err := this.models.Recipes.FindById(id_rcp)
+	if err != nil {
+		return errors.UnknownRecipe
+	}
+	
+	if this.IsExists(ctg.Title) == false {
+		return errors.UnknownCategory
+	}
+
+	err = this.rep.AddToRecipe(id_rcp, ctg.Title)
+	if err != nil {
+		return err
 	}
 
 	return nil

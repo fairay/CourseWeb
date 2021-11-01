@@ -425,7 +425,7 @@ var doc = `{
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Adds category",
+                "summary": "Adds category to mentioned recipe",
                 "parameters": [
                     {
                         "type": "integer",
@@ -446,6 +446,41 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Sets categories to mentioned recipe",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe's id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Categories",
+                        "name": "categories",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/objects.CategoryDTO"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
                         "description": ""
                     }
                 }

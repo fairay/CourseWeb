@@ -331,6 +331,29 @@ paths:
       summary: Retrieves all recipe's categories
       tags:
       - Categories
+    post:
+      parameters:
+      - description: Recipe's id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Categories
+        in: body
+        name: categories
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/objects.CategoryDTO'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: ""
+      summary: Sets categories to mentioned recipe
+      tags:
+      - Categories
     put:
       parameters:
       - description: Recipe's id
@@ -349,7 +372,7 @@ paths:
       responses:
         "200":
           description: ""
-      summary: Adds category
+      summary: Adds category to mentioned recipe
       tags:
       - Categories
   /recipes/{id}/ingredients:
