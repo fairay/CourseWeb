@@ -72,7 +72,15 @@ func (this *recipe) addRecipe(w http.ResponseWriter, r *http.Request) {
 		rcpDTO.Author = login
 	}
 
-	err = this.model.AddRecipe(rcpDTO.ToModel())
+	data, err := this.model.AddRecipe(rcpDTO.ToModel())
+	switch err {
+	case nil:
+		responses.JsonSuccess(w, data.ToDTO())
+	case errors.UnknownAccount:
+		responses.RecordNotFound(w, "user")
+	default:
+		responses.BadRequest(w, "Error in creation a new recipe")
+	}
 	// FIXME: return new recipe + 201 code
 }
 
