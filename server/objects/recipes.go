@@ -6,15 +6,16 @@ import (
 )
 
 type Recipe struct {
-	Id          int			`json:"id" gorm:"primary_key;type:serial"`
-	Author      string		`json:"author" gorm:"foreignkey:Login"`
-	Title       string		`json:"title"`
-	CreatedAt   time.Time	`json:"created_at"`
-	Description string     	`json:"description"`
-	Duration    int 		`json:"duration"`
-	PortionNum  int			`json:"portion_num"`
+	Id          int				`json:"id" gorm:"primary_key;type:serial"`
+	Author      string			`json:"author" gorm:"foreignkey:Login"`
+	Title       string			`json:"title"`
+	CreatedAt   time.Time		`json:"created_at"`
+	Description string     		`json:"description"`
+	Duration    int 			`json:"duration"`
+	PortionNum  int				`json:"portion_num"`
 
-	Categories []*Category	`gorm:"many2many:recipe_category;"`
+	Categories []*Category		`gorm:"many2many:recipe_category;"`
+	Ingredients []*Ingredient	`gorm:"many2many:recipe_ingredient;"`
 }
 
 func (Recipe) TableName() string {

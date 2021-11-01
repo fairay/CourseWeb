@@ -3,7 +3,9 @@ package objects
 import "encoding/json"
 
 type Ingredient struct {
-	Title string `json:"title" gorm:"primary_key"`
+	Title string 		`json:"title" gorm:"primary_key"`
+
+	Recipes []*Recipe	`gorm:"many2many:recipe_category;"`
 }
 
 func (Ingredient) TableName() string {

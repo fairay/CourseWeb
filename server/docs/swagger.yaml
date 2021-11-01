@@ -323,6 +323,10 @@ paths:
           description: Bad Request
           schema:
             type: Invalid
+        "401":
+          description: Unauthorized
+          schema:
+            type: Authentication
         "403":
           description: Forbidden
           schema:
@@ -475,7 +479,11 @@ paths:
             items:
               $ref: '#/definitions/objects.IngredientDTO'
             type: array
-      summary: Retrieves all ingredients
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
+      summary: Retrieves all recipe's ingredients
       tags:
       - Ingredients
     post:

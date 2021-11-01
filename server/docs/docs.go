@@ -439,6 +439,12 @@ var doc = `{
                             "type": "Invalid"
                         }
                     },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "Authentication"
+                        }
+                    },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
@@ -619,7 +625,7 @@ var doc = `{
                 "tags": [
                     "Ingredients"
                 ],
-                "summary": "Retrieves all ingredients",
+                "summary": "Retrieves all recipe's ingredients",
                 "parameters": [
                     {
                         "type": "integer",
@@ -637,6 +643,12 @@ var doc = `{
                             "items": {
                                 "$ref": "#/definitions/objects.IngredientDTO"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
                         }
                     }
                 }
