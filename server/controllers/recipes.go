@@ -81,7 +81,6 @@ func (this *recipe) addRecipe(w http.ResponseWriter, r *http.Request) {
 	default:
 		responses.BadRequest(w, "Error in creation a new recipe")
 	}
-	// FIXME: return new recipe + 201 code
 }
 
 // @Tags Recipes

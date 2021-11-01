@@ -74,10 +74,9 @@ func (this *category) getRecipes(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// TODO:
 // @Tags Categories
 // @Router /recipes/{id}/categories [get]
-// @Summary Retrieves all recipes' categories
+// @Summary Retrieves all recipe's categories
 // @Param id path int true "Recipe's id"
 // @Produce json
 // @Success 200 {object} []objects.CategoryDTO
