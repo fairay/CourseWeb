@@ -8,6 +8,10 @@ type Category struct {
 	Recipes []*Recipe	`gorm:"many2many:recipe_category;"`
 }
 
+type CategoryDTO struct {
+	Title string `json:"title"`
+}
+
 func (Category) TableName() string {
 	return "categories"
 }
@@ -25,6 +29,18 @@ func (Category) ArrToDTO(src []Category) []CategoryDTO {
 	return dst
 }
 
-type CategoryDTO struct {
-	Title string `json:"title"`
+func (this *CategoryDTO) ToModel() *Category {
+	mod := new(Category)
+
+	jsonStr, _ := json.Marshal(this)
+	json.Unmarshal(jsonStr, mod)
+	return mod
+}
+
+func ToArrModel(src []CategoryDTO) *[]Category {
+	dst := make([]Category, len(src))
+	for i, value := range src {
+		dst[i] = *value.ToModel()
+	}
+	return &dst
 }

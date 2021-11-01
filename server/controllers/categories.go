@@ -5,6 +5,7 @@ import (
 	"api/recipes/errors"
 	"api/recipes/models"
 	"api/recipes/objects"
+	"encoding/json"
 	"strconv"
 
 	"net/http"
@@ -85,6 +86,10 @@ func (this *category) getByRecipe(w http.ResponseWriter, r *http.Request) {
 	strId := urlParams["id"]
 
 	id_rcp, err := strconv.Atoi(strId)
+	if err != nil {
+		responses.BadRequest(w, "Wrong recipe's id")
+		return
+	}
 
 	data, err := this.model.GetByRecipe(id_rcp)
 
@@ -98,15 +103,44 @@ func (this *category) getByRecipe(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// TODO:
+// FIXME:
 // @Tags Categories
 // @Router /recipes/{id}/categories [post]
-// @Summary Posts all categories
+// @Summary Sets categories to mentioned recipe
 // @Param id path int true "Recipe's id"
 // @Param categories body []objects.CategoryDTO true "Categories"
 // @Produce json
-// @Success 201 {object} []objects.CategoryDTO
+// @Success 201 
+
+//{object} []objects.CategoryDTO
 func (this *category) postToRecipe(w http.ResponseWriter, r *http.Request) {
+	urlParams := mux.Vars(r)
+	strId := urlParams["id"]
+
+	id_rcp, err := strconv.Atoi(strId)
+	if err != nil {
+		responses.BadRequest(w, "Wrong recipe's id")
+		return
+	}
+
+	ctgDTO := new([]objects.CategoryDTO)
+	err = json.NewDecoder(r.Body).Decode(ctgDTO)
+	if err != nil {
+		responses.BadRequest(w, "Invalid request")
+		return
+	}
+
+	err = this.model.PostToRecipe(id_rcp, objects.ToArrModel(*ctgDTO))
+	switch err {
+	case nil:
+		responses.TextSuccess(w, "Addition category/ies was successful")
+	case errors.UnknownRecipe:
+		responses.BadRequest(w, "Wrong recipe's id")
+	case errors.UnknownCategory:
+		responses.BadRequest(w, "Wrong name of category")
+	default:
+		responses.BadRequest(w, "Invalid request")
+	}
 }
 
 // TODO:

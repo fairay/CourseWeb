@@ -12,6 +12,7 @@ type CategoriesRep interface {
 	Find(ctg string) ([]objects.Category, error)
 	FindRecipes(ctg string) ([]objects.Recipe, error)
 	FindByRecipe(id_rcp int) ([]objects.Category, error)
+	AddToRecipe(id_rcp int, ctg string) error
 
 	Get(ctg string) objects.Category
 }
@@ -58,4 +59,10 @@ func (this *PGCategoriesRep) Get(ctg string) objects.Category {
 	temp := objects.Category{}
 	this.db.Where("LOWER(title) = ?", strings.ToLower(ctg)).Find(&temp)
 	return temp
+}
+
+func (this *PGCategoriesRep) AddToRecipe(id_rcp int, ctg string) error {
+	recipe := objects.Recipe{Id: id_rcp}
+	err := this.db.Model(&recipe).Association("Categories").Append(&objects.Category{Title: ctg}).Error
+	return err
 }

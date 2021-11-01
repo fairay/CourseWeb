@@ -46,6 +46,26 @@ func (this *CategoryM) GetByRecipe(id_rcp int) ([]objects.Category, error) {
 	return this.rep.FindByRecipe(id_rcp)
 }
 
+func (this *CategoryM) PostToRecipe(id_rcp int, ctg_arr *[]objects.Category) (error) {
+	_, err := this.models.Recipes.FindById(id_rcp)
+	if err != nil {
+		return errors.UnknownRecipe
+	}
+
+	for _, ctg := range *ctg_arr {
+		if this.IsExists(ctg.Title) == false {
+			return errors.UnknownCategory
+		}
+
+		err = this.rep.AddToRecipe(id_rcp, ctg.Title)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (this *CategoryM) IsExists(ctg string) bool {
 	data, _ := this.Find(ctg)
 
