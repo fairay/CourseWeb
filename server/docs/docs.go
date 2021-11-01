@@ -281,6 +281,12 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/objects.CategoryDTO"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             }
@@ -311,6 +317,12 @@ var doc = `{
                             "items": {
                                 "$ref": "#/definitions/objects.RecipeDTO"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
                         }
                     }
                 }
@@ -415,6 +427,12 @@ var doc = `{
                                 "$ref": "#/definitions/objects.CategoryDTO"
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             },
@@ -446,7 +464,16 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "type": "Successful"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             },
@@ -481,7 +508,16 @@ var doc = `{
                 ],
                 "responses": {
                     "201": {
-                        "description": ""
+                        "description": "Created",
+                        "schema": {
+                            "type": "Successful"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             },
@@ -513,7 +549,16 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "type": "Successful"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             }

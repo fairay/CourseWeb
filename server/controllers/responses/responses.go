@@ -17,6 +17,11 @@ func TextSuccess(w http.ResponseWriter, msg string) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(msg)
 }
+func SuccessCreation(w http.ResponseWriter, msg string) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(msg)
+}
 
 
 func TokenIsMissed(w http.ResponseWriter) {

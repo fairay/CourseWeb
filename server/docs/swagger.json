@@ -265,6 +265,12 @@
                         "schema": {
                             "$ref": "#/definitions/objects.CategoryDTO"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             }
@@ -295,6 +301,12 @@
                             "items": {
                                 "$ref": "#/definitions/objects.RecipeDTO"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
                         }
                     }
                 }
@@ -399,6 +411,12 @@
                                 "$ref": "#/definitions/objects.CategoryDTO"
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             },
@@ -430,7 +448,16 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "type": "Successful"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             },
@@ -465,7 +492,16 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": ""
+                        "description": "Created",
+                        "schema": {
+                            "type": "Successful"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             },
@@ -497,7 +533,16 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "type": "Successful"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
                     }
                 }
             }

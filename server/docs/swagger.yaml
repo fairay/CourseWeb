@@ -221,6 +221,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/objects.CategoryDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
       summary: Retrieves category by title
       tags:
       - Categories
@@ -241,6 +245,10 @@ paths:
             items:
               $ref: '#/definitions/objects.RecipeDTO'
             type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
       summary: Retrieves all recipes at this category
       tags:
       - Categories
@@ -308,7 +316,13 @@ paths:
       - application/json
       responses:
         "200":
-          description: ""
+          description: OK
+          schema:
+            type: Successful
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
       summary: Removes category
       tags:
       - Categories
@@ -328,6 +342,10 @@ paths:
             items:
               $ref: '#/definitions/objects.CategoryDTO'
             type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
       summary: Retrieves all recipe's categories
       tags:
       - Categories
@@ -350,7 +368,13 @@ paths:
       - application/json
       responses:
         "201":
-          description: ""
+          description: Created
+          schema:
+            type: Successful
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
       summary: Sets categories to mentioned recipe
       tags:
       - Categories
@@ -371,7 +395,13 @@ paths:
       - application/json
       responses:
         "200":
-          description: ""
+          description: OK
+          schema:
+            type: Successful
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
       summary: Adds category to mentioned recipe
       tags:
       - Categories
