@@ -328,34 +328,7 @@ paths:
             items:
               $ref: '#/definitions/objects.CategoryDTO'
             type: array
-      summary: Retrieves all recipes' categories
-      tags:
-      - Categories
-    post:
-      parameters:
-      - description: Recipe's id
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Categories
-        in: body
-        name: categories
-        required: true
-        schema:
-          items:
-            $ref: '#/definitions/objects.CategoryDTO'
-          type: array
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            items:
-              $ref: '#/definitions/objects.CategoryDTO'
-            type: array
-      summary: Posts all categories
+      summary: Retrieves all recipe's categories
       tags:
       - Categories
     put:

@@ -51,15 +51,15 @@ func (this *RecipeM) FindById(id int) (*objects.Recipe, error) {
 	return &rcp, err
 }
 
-func (this *RecipeM) AddRecipe(obj *objects.Recipe) (err error) {
-	_, err = this.models.Accounts.Find(obj.Author)
+func (this *RecipeM) AddRecipe(obj *objects.Recipe) (*objects.Recipe, error) {
+	_, err := this.models.Accounts.Find(obj.Author)
 	if err != nil {
-		return err
+		return nil, errors.UnknownAccount
 	}
 
 	// TODO: validate other data
 	err = this.rep.Create(obj)
-	return err
+	return obj, err
 }
 
 func (this *RecipeM) DeleteRecipe(id int, login string) (err error) {

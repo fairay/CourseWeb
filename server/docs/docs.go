@@ -396,7 +396,7 @@ var doc = `{
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Retrieves all recipes' categories",
+                "summary": "Retrieves all recipe's categories",
                 "parameters": [
                     {
                         "type": "integer",
@@ -447,47 +447,6 @@ var doc = `{
                 "responses": {
                     "200": {
                         "description": ""
-                    }
-                }
-            },
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Categories"
-                ],
-                "summary": "Posts all categories",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Recipe's id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Categories",
-                        "name": "categories",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/objects.CategoryDTO"
-                            }
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/objects.CategoryDTO"
-                            }
-                        }
                     }
                 }
             },
