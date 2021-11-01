@@ -2,7 +2,9 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
+	"strconv"
 )
 
 type DBConfiguration struct {
@@ -29,7 +31,7 @@ var (
 )
 
 // TODO: returnable error
-func InitConfig() {
+func InitConfig(osArgs []string) {
 	file, err := os.Open("config.json")
 	if err != nil {
 		panic(err)
@@ -41,4 +43,15 @@ func InitConfig() {
 	if err != nil {
 		panic(err)
 	}
+
+	switch len(osArgs) {
+	case 2:
+		new_port, err := strconv.Atoi(os.Args[1])
+		if err != nil {
+			panic(err)
+		}
+		Config.Port = uint16(new_port)
+	}
+
+	Config.LogFile = fmt.Sprintf(Config.LogFile, Config.Port)
 }

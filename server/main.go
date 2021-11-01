@@ -9,6 +9,7 @@ import (
 	"api/recipes/utils"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -48,7 +49,7 @@ func initControllers(r *mux.Router, m *models.Models) {
 // @Description API for culinary recipes (BMSTU Web development cource project)
 // @securityDefinitions.basic BasicAuth
 func main() {
-	utils.InitConfig()
+	utils.InitConfig(os.Args)
 	utils.InitLogger()
 	defer utils.CloseLogger()
 
