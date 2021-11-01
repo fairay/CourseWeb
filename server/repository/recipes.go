@@ -46,5 +46,10 @@ func (this *PGRecipesRep) Create(obj *objects.Recipe) error {
 }
 
 func (this *PGRecipesRep) Delete(id int) error {
+	recipe := objects.Recipe{Id: id}
+
+	err := this.db.Model(&recipe).Association("Categories").Clear().Error
+	if err != nil { return err }
+	
 	return this.db.Where("id = ?", id).Delete(&objects.Recipe{}).Error
 }

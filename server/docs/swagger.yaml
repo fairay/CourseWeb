@@ -73,6 +73,10 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/objects.AccountDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
       summary: Creates a new account
       tags:
       - Accounts
@@ -133,6 +137,10 @@ paths:
       responses:
         "200":
           description: ""
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
       summary: Change user's role
       tags:
       - Accounts
@@ -174,6 +182,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/objects.AccountDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
+        "401":
+          description: Unauthorized
+          schema:
+            type: Authentication
       summary: User's authorization
       tags:
       - Accounts
@@ -281,6 +297,14 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/objects.RecipeDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
+        "401":
+          description: Unauthorized
+          schema:
+            type: Authentication
       summary: Creates a new recipe
       tags:
       - Recipes
@@ -295,6 +319,14 @@ paths:
       responses:
         "200":
           description: ""
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
+        "403":
+          description: Forbidden
+          schema:
+            type: Access
       summary: Deletes the recipe
       tags:
       - Recipes

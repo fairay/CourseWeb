@@ -56,6 +56,8 @@ func (this *recipe) getRecipesByLogin(w http.ResponseWriter, r *http.Request) {
 // @Summary Creates a new recipe
 // @Produce json
 // @Success 201 {object} objects.RecipeDTO
+// @Failure 400 Invalid value
+// @Failure 401 Authentication failed
 func (this *recipe) addRecipe(w http.ResponseWriter, r *http.Request) {
 	rcpDTO := new(objects.RecipeDTO)
 	err := json.NewDecoder(r.Body).Decode(rcpDTO)
@@ -88,6 +90,9 @@ func (this *recipe) addRecipe(w http.ResponseWriter, r *http.Request) {
 // @Param id path int true "Recipe's id"
 // @Summary Deletes the recipe
 // @Success 200
+// @Failure 400 Invalid value
+// @Failure 401 Authentication failed
+// @Failure 403 Access denied
 func (this *recipe) deleteRecipe(w http.ResponseWriter, r *http.Request) {
 	urlParams := mux.Vars(r)
 	strId := urlParams["id"]
@@ -101,12 +106,13 @@ func (this *recipe) deleteRecipe(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(strId)
 	if err != nil {
 		responses.BadRequest(w, "Invalid request")
+		return
 	}
 
 	err = this.model.DeleteRecipe(id, login)
 	switch err {
 	case nil:
-		responses.TextSuccess(w, "Deletion was successful")
+		responses.TextSuccess(w, "Delete operation was successful")
 	case errors.AccessDeleteDenied:
 		responses.AccessDenied(w)
 	case errors.RecordNotFound:
@@ -115,6 +121,8 @@ func (this *recipe) deleteRecipe(w http.ResponseWriter, r *http.Request) {
 		responses.RecordNotFound(w, "author")
 	case errors.UnknownRecipe:
 		responses.RecordNotFound(w, "recipe")
+	default:
+		responses.BadRequest(w, "Delete operation was successful")
 	}
 }
 

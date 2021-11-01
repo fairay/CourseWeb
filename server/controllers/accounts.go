@@ -33,6 +33,8 @@ func InitAccount(r *mux.Router, model *models.AccountM) {
 // @Summary User's authorization
 // @Produce json
 // @Success 200 {object} objects.AccountDTO
+// @Failure 400 Invalid value
+// @Failure 401 Authentication failed
 func (this *account) LogIn(w http.ResponseWriter, r *http.Request) {
 	accDTO := &objects.AccountDTO{}
 
@@ -75,6 +77,7 @@ func (this *account) LogOut(w http.ResponseWriter, r *http.Request) {
 // @Summary Creates a new account
 // @Produce json
 // @Success 201 {object} objects.AccountDTO
+// @Failure 400 Invalid value
 func (this *account) add(w http.ResponseWriter, r *http.Request) {
 	accDTO := new(objects.AccountDTO)
 	err := json.NewDecoder(r.Body).Decode(accDTO)
@@ -117,6 +120,7 @@ func (this *account) get(w http.ResponseWriter, r *http.Request) {
 // @Summary Change user's role
 // @Produce json
 // @Success 200
+// @Failure 400 Invalid value
 func (this *account) patch(w http.ResponseWriter, r *http.Request) {
 	accDTO := new(objects.AccountDTO)
 	err := json.NewDecoder(r.Body).Decode(accDTO)
