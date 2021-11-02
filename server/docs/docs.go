@@ -692,7 +692,7 @@ var doc = `{
                 "tags": [
                     "Ingredients"
                 ],
-                "summary": "Posts all ingredients",
+                "summary": "Posts all recipe's ingredients",
                 "parameters": [
                     {
                         "type": "integer",
@@ -718,10 +718,13 @@ var doc = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/objects.IngredientDTO"
-                            }
+                            "type": "Successful"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
                         }
                     }
                 }

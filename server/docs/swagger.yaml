@@ -507,10 +507,12 @@ paths:
         "201":
           description: Created
           schema:
-            items:
-              $ref: '#/definitions/objects.IngredientDTO'
-            type: array
-      summary: Posts all ingredients
+            type: Successful
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
+      summary: Posts all recipe's ingredients
       tags:
       - Ingredients
     put:
