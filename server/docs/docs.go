@@ -161,8 +161,7 @@ var doc = `{
                         "type": "string",
                         "description": "Requested account",
                         "name": "login",
-                        "in": "path",
-                        "required": true
+                        "in": "path"
                     }
                 ],
                 "responses": {
@@ -777,7 +776,7 @@ var doc = `{
                 "tags": [
                     "Likes"
                 ],
-                "summary": "Retrieves all liked users",
+                "summary": "Retrieves all users who liked mentioned recipe",
                 "parameters": [
                     {
                         "type": "integer",

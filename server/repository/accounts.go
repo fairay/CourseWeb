@@ -11,6 +11,7 @@ type AccountsRep interface {
 	Create(obj *objects.Account) error
 	UpdateRole(login, role string) error
 	Find(login string) (*objects.Account, error)
+	FindLikedRecipe(id_rcp int) ([]objects.Account, error)
 }
 
 type PGAccountsRep struct {
@@ -41,6 +42,15 @@ func (this *PGAccountsRep) Find(login string) (*objects.Account, error) {
 	default:
 		err = errors.UnknownError
 	}
+
+	return temp, err
+}
+
+func (this *PGAccountsRep) FindLikedRecipe(id_rcp int) ([]objects.Account, error) {
+	temp := []objects.Account{}
+	recipe := objects.Recipe{Id: id_rcp}
+
+	err := this.db.Model(&recipe).Association("Accounts").Find(&temp).Error
 
 	return temp, err
 }
