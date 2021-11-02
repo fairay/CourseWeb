@@ -17,3 +17,4 @@
 config.json
 *.log
 logs/
+cache/
