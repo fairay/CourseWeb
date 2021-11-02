@@ -15,7 +15,7 @@ func NewIngredient(rep repository.IngredientsRep, models *Models) *IngredientM {
 	return &IngredientM{rep, models}
 }
 
-func (this *IngredientM) GetByRecipe(id_rcp int) ([]objects.IngredientDTO, error) {
+func (this *IngredientM) GetByRecipe(id_rcp int) ([]objects.RecipeIngredient, error) {
 	_, err := this.models.Recipes.FindById(id_rcp)
 	if err != nil {
 		return nil, errors.UnknownRecipe
