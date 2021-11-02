@@ -23,3 +23,10 @@ func (this *IngredientM) GetByRecipe(id_rcp int) ([]objects.IngredientDTO, error
 
 	return this.rep.FindByRecipe(id_rcp)
 }
+
+func (this *IngredientM) PostToRecipe(id_rcp int, ing_arr *[]objects.Ingredient) error {
+	_, err := this.models.Recipes.FindById(id_rcp)
+	if err != nil {
+		return errors.UnknownRecipe
+	}
+}

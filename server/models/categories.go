@@ -7,7 +7,7 @@ import (
 )
 
 type CategoryM struct {
-	rep repository.CategoriesRep
+	rep    repository.CategoriesRep
 	models *Models
 }
 
@@ -28,7 +28,7 @@ func (this *CategoryM) Create(obj *objects.Category) error {
 	return err
 }
 
-func (this *CategoryM) GetAll() ([]objects.Category) {
+func (this *CategoryM) GetAll() []objects.Category {
 	temp := this.rep.List()
 	return temp
 }
@@ -71,7 +71,9 @@ func (this *CategoryM) PostToRecipe(id_rcp int, ctg_arr *[]objects.Category) err
 	for _, ctg := range *ctg_arr {
 		if this.IsExists(ctg.Title) == false {
 			err = this.Create(&ctg)
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 		}
 
 		err := this.rep.ReplaceInRecipe(id_rcp, ctg.Title)
@@ -88,10 +90,12 @@ func (this *CategoryM) AddToRecipe(id_rcp int, ctg *objects.Category) error {
 	if err != nil {
 		return errors.UnknownRecipe
 	}
-	
+
 	if this.IsExists(ctg.Title) == false {
 		err = this.Create(ctg)
-		if err != nil { return err }
+		if err != nil {
+			return err
+		}
 	}
 
 	err = this.rep.AddToRecipe(id_rcp, ctg.Title)
@@ -107,7 +111,7 @@ func (this *CategoryM) DelFromRecipe(id_rcp int, ctg *objects.Category) error {
 	if err != nil {
 		return errors.UnknownRecipe
 	}
-	
+
 	if this.IsExists(ctg.Title) == false {
 		return errors.UnknownCategory
 	}
@@ -123,7 +127,9 @@ func (this *CategoryM) DelFromRecipe(id_rcp int, ctg *objects.Category) error {
 func (this *CategoryM) IsExistsLike(ctg string) bool {
 	data, _ := this.Find(ctg)
 
-	if len(data) == 0 { return false }
+	if len(data) == 0 {
+		return false
+	}
 
 	return true
 }
@@ -131,7 +137,9 @@ func (this *CategoryM) IsExistsLike(ctg string) bool {
 func (this *CategoryM) IsExists(ctg string) bool {
 	_, err := this.Get(ctg)
 
-	if err != nil { return false }
+	if err != nil {
+		return false
+	}
 
 	return true
 }

@@ -37,3 +37,11 @@ func (this *IngredientDTO) ToModel() *Ingredient {
 	json.Unmarshal(jsonStr, mod)
 	return mod
 }
+
+func ToArrModelI(src []IngredientDTO) *[]Ingredient {
+	dst := make([]Ingredient, len(src))
+	for i, value := range src {
+		dst[i] = *value.ToModel()
+	}
+	return &dst
+}
