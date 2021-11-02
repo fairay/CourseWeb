@@ -1,9 +1,9 @@
 package models
 
 import (
+	"api/recipes/errors"
 	"api/recipes/objects"
 	"api/recipes/repository"
-	"api/recipes/errors"
 )
 
 const (
@@ -56,9 +56,9 @@ func (this *AccountM) Find(login string) (*objects.Account, error) {
 }
 
 func (this *AccountM) IsExists(login string) bool {
-	data, _ := this.Find(login)
+	_, err := this.Find(login)
 
-	if data == nil { return false }
+	if err != nil { return false }
 
 	return true
 }

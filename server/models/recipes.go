@@ -62,6 +62,27 @@ func (this *RecipeM) AddRecipe(obj *objects.Recipe) (*objects.Recipe, error) {
 	return obj, err
 }
 
+func (this *RecipeM) AddGrade(id int, login string) error {
+	_, err := this.models.Recipes.FindById(id)
+	if err != nil {
+		return errors.UnknownRecipe
+	}
+
+	if this.models.Accounts.IsExists(login) == false {
+		return errors.UnknownAccount
+	}
+
+	return this.rep.AddGrade(id, login)
+}
+
+func (this *RecipeM) GetLikedByLogin(login string) ([]objects.Recipe, error) {
+	if this.models.Accounts.IsExists(login) == false {
+		return nil, errors.UnknownAccount
+	}
+
+	return this.rep.GetLikedByLogin(login)
+}
+
 func (this *RecipeM) DeleteRecipe(id int, login string) (err error) {
 	userRole, err := this.models.Accounts.GetRole(login)
 	if err != nil {

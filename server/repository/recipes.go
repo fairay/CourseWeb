@@ -12,6 +12,8 @@ type RecipesRep interface {
 	FindById(id int) (objects.Recipe, error)
 	Create(rcp *objects.Recipe) error
 	Delete(id int) error
+	AddGrade(id int, login string) error
+	GetLikedByLogin(login string) ([]objects.Recipe, error)
 }
 
 type PGRecipesRep struct {
@@ -50,6 +52,23 @@ func (this *PGRecipesRep) Delete(id int) error {
 
 	err := this.db.Model(&recipe).Association("Categories").Clear().Error
 	if err != nil { return err }
+	err = this.db.Model(&recipe).Association("Ingredients").Clear().Error
+	if err != nil { return err }
+	err = this.db.Model(&recipe).Association("Grades").Clear().Error
+	if err != nil { return err }
 	
 	return this.db.Where("id = ?", id).Delete(&objects.Recipe{}).Error
+}
+
+func (this *PGRecipesRep) AddGrade(id int, login string) error {
+	recipe := objects.Recipe{Id: id}
+	return this.db.Model(&recipe).Association("Grades").Append(&objects.Account{Login: login}).Error
+}
+
+func (this *PGRecipesRep) GetLikedByLogin(login string) ([]objects.Recipe, error) {
+	temp := []objects.Recipe{}
+	account := objects.Account{Login: login}
+
+	err := this.db.Model(&account).Association("Grades").Find(&temp).Error
+	return temp, err
 }

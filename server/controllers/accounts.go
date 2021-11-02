@@ -57,7 +57,7 @@ func (this *account) LogIn(w http.ResponseWriter, r *http.Request) {
 // @Router /accounts/logout [post]
 // @Summary Logging out
 // @Produce json
-// @Success 200
+// @Success 200 Successful opeartion
 func (this *account) LogOut(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
@@ -119,7 +119,7 @@ func (this *account) get(w http.ResponseWriter, r *http.Request) {
 // @Param account body objects.AccountDTO true "Account data"
 // @Summary Change user's role
 // @Produce json
-// @Success 200
+// @Success 200 Successful operation
 // @Failure 400 Invalid value
 func (this *account) patch(w http.ResponseWriter, r *http.Request) {
 	accDTO := new(objects.AccountDTO)

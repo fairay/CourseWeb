@@ -98,6 +98,28 @@ paths:
       summary: Retrieves account
       tags:
       - Accounts
+  /accounts/{login}/like:
+    get:
+      parameters:
+      - description: Requested account
+        in: path
+        name: login
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/objects.RecipeDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
+      summary: Retrieves all user's liked recipes
+      tags:
+      - Likes
   /accounts/{login}/recipes:
     get:
       parameters:
@@ -136,7 +158,9 @@ paths:
       - application/json
       responses:
         "200":
-          description: ""
+          description: OK
+          schema:
+            type: Successful
         "400":
           description: Bad Request
           schema:
@@ -144,29 +168,6 @@ paths:
       summary: Change user's role
       tags:
       - Accounts
-  /accounts/like:
-    get:
-      parameters:
-      - description: Requested account
-        in: query
-        name: login
-        type: boolean
-      - description: Request by current user
-        in: query
-        name: me
-        type: boolean
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/objects.RecipeDTO'
-            type: array
-      summary: Retrieves all liked recipes of user
-      tags:
-      - Likes
   /accounts/login:
     post:
       parameters:
@@ -199,7 +200,9 @@ paths:
       - application/json
       responses:
         "200":
-          description: ""
+          description: OK
+          schema:
+            type: Successful
       summary: Logging out
       tags:
       - Accounts
@@ -318,7 +321,9 @@ paths:
         type: integer
       responses:
         "200":
-          description: ""
+          description: OK
+          schema:
+            type: Successful
         "400":
           description: Bad Request
           schema:
@@ -582,7 +587,17 @@ paths:
       - application/json
       responses:
         "201":
-          description: ""
+          description: Created
+          schema:
+            type: Successful
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
+        "401":
+          description: Unauthorized
+          schema:
+            type: Authentication
       summary: Adds like to recipe from authorized user
       tags:
       - Likes

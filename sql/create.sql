@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS Steps (
 
 DROP TABLE IF EXISTS Grades CASCADE;
 CREATE TABLE IF NOT EXISTS Grades (
-	recipe_id		INT 			REFERENCES Recipes(id) NOT NULL,
+	grades_recipe	INT 			REFERENCES Recipes(id) NOT NULL,
 	account_login	VARCHAR(64)		REFERENCES Accounts(login) NOT NULL,
 	PRIMARY KEY (recipe_id, account_login)
 );

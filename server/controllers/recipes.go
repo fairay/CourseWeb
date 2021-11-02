@@ -24,7 +24,6 @@ func InitRecipes(r *mux.Router, model *models.RecipeM) {
 	r.HandleFunc("/recipes", ctrl.getAllRecipes).Methods("GET")
 	r.HandleFunc("/recipes", ctrl.addRecipe).Methods("POST")
 	r.HandleFunc("/recipes/{id}", ctrl.deleteRecipe).Methods("DELETE")
-	r.HandleFunc("/recipes/{id}/like", ctrl.deleteRecipe).Methods("PUT")
 }
 
 // @Tags Recipes
@@ -89,7 +88,7 @@ func (this *recipe) addRecipe(w http.ResponseWriter, r *http.Request) {
 // @Router /recipes/{id} [delete]
 // @Param id path int true "Recipe's id"
 // @Summary Deletes the recipe
-// @Success 200
+// @Success 200 Successful operation
 // @Failure 400 Invalid value
 // @Failure 401 Authentication failed
 // @Failure 403 Access denied

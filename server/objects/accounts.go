@@ -9,6 +9,8 @@ type Account struct {
 	Role           string `json:"role"`
 	Salt           string `json:"salt"`
 	HashedPassword string `json:"hashed_password"`
+
+	Grades []*Recipe			`gorm:"many2many:grades;"`
 }
 
 type AccountDTO struct {

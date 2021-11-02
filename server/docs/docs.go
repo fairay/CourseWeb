@@ -59,42 +59,6 @@ var doc = `{
                 }
             }
         },
-        "/accounts/like": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Likes"
-                ],
-                "summary": "Retrieves all liked recipes of user",
-                "parameters": [
-                    {
-                        "type": "boolean",
-                        "description": "Requested account",
-                        "name": "login",
-                        "in": "query"
-                    },
-                    {
-                        "type": "boolean",
-                        "description": "Request by current user",
-                        "name": "me",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/objects.RecipeDTO"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/accounts/login": {
             "post": {
                 "produces": [
@@ -147,7 +111,10 @@ var doc = `{
                 "summary": "Logging out",
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "type": "Successful"
+                        }
                     }
                 }
             }
@@ -175,6 +142,40 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/objects.AccountDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/accounts/{login}/like": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Retrieves all user's liked recipes",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Requested account",
+                        "name": "login",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/objects.RecipeDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
                         }
                     }
                 }
@@ -240,7 +241,10 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "type": "Successful"
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
@@ -431,7 +435,10 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "type": "Successful"
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
@@ -811,7 +818,22 @@ var doc = `{
                 ],
                 "responses": {
                     "201": {
-                        "description": ""
+                        "description": "Created",
+                        "schema": {
+                            "type": "Successful"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "Authentication"
+                        }
                     }
                 }
             },
