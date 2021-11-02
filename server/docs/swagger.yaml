@@ -104,7 +104,6 @@ paths:
       - description: Requested account
         in: path
         name: login
-        required: true
         type: string
       produces:
       - application/json
@@ -573,7 +572,7 @@ paths:
             items:
               $ref: '#/definitions/objects.AccountDTO'
             type: array
-      summary: Retrieves all liked users
+      summary: Retrieves all users who liked mentioned recipe
       tags:
       - Likes
     put:

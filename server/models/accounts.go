@@ -55,6 +55,15 @@ func (this *AccountM) Find(login string) (*objects.Account, error) {
 	return this.rep.Find(login)
 }
 
+func (this *AccountM) FindLikedRecipe(id_rcp int) ([]objects.Account, error) {
+	_, err := this.models.Recipes.FindById(id_rcp)
+	if err != nil {
+		return nil, errors.UnknownRecipe
+	}
+
+	return this.rep.FindLikedRecipe(id_rcp)
+}
+
 func (this *AccountM) IsExists(login string) bool {
 	_, err := this.Find(login)
 
