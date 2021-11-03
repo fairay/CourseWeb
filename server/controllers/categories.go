@@ -229,5 +229,3 @@ func (this *category) delFromRecipe(w http.ResponseWriter, r *http.Request) {
 		responses.BadRequest(w, "Invalid request")
 	}
 }
-
-//TODO: ДЕЛАТЬ ЛИ ПРОВЕРКУ НА ТО, ЧТО ДАННАЯ КАТЕГОРИЯ ЕСТЬ В РЕЦЕПТЕ
