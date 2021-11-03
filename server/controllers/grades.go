@@ -75,7 +75,6 @@ func (this *likesCtrl) del(w http.ResponseWriter, r *http.Request) {
 	fmt.Print("del")
 }
 
-// TODO:
 // @Tags Likes
 // @Router /recipes/{id}/like [get]
 // @Summary Retrieves all users who liked mentioned recipe
