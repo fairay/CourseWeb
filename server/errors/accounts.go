@@ -12,5 +12,6 @@ var (
 
 	UnknownAccount = errors.New("Account is not found")
 	UnknownRole = errors.New("Role is not found")
+	AccessDenied = errors.New("Access denied")
 	AccountExists = errors.New("Account associated with such login is already exists")
 )

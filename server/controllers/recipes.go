@@ -113,7 +113,7 @@ func (this *recipe) deleteRecipe(w http.ResponseWriter, r *http.Request) {
 	case nil:
 		responses.TextSuccess(w, "Delete operation was successful")
 	case errors.AccessDeleteDenied:
-		responses.AccessDenied(w)
+		responses.JwtAccessDenied(w)
 	case errors.RecordNotFound:
 		responses.RecordNotFound(w, "user")
 	case errors.UnknownAccount:

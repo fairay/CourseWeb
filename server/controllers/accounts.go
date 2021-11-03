@@ -121,6 +121,7 @@ func (this *account) get(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Success 200 Successful operation
 // @Failure 400 Invalid value
+// @Failure 403 Access denied
 func (this *account) patch(w http.ResponseWriter, r *http.Request) {
 	accDTO := new(objects.AccountDTO)
 	err := json.NewDecoder(r.Body).Decode(accDTO)
@@ -132,12 +133,20 @@ func (this *account) patch(w http.ResponseWriter, r *http.Request) {
 	urlParams := mux.Vars(r)
 	login := urlParams["login"]
 
-	err = this.model.UpdateRole(login, accDTO.Role)
+	cur_login, err := auth.LoginFromCookie(r)
+	if err != nil {
+		responses.AuthenticationFailed(w)
+		return
+	}
+
+	err = this.model.UpdateRole(cur_login, login, accDTO.Role)
 	switch err {
 	case nil:
 		responses.TextSuccess(w, "Account updation was successful")
 	case errors.UnknownAccount:
 		responses.RecordNotFound(w, "user")
+	case errors.AccessDenied:
+		responses.AccessDenied(w)
 	case errors.UnknownRole:
 		responses.BadRequest(w, "Wrong role")
 	default:

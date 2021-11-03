@@ -88,7 +88,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		})
 
 		if err != nil || !token.Valid { 
-			responses.AccessDenied(w)
+			responses.JwtAccessDenied(w)
 			return
 		}
 
