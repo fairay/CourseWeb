@@ -75,6 +75,19 @@ func (this *RecipeM) AddGrade(id int, login string) error {
 	return this.rep.AddGrade(id, login)
 }
 
+func (this *RecipeM) DeleteGrade(id_rcp int, login string) error {
+	_, err := this.models.Recipes.FindById(id_rcp)
+	if err != nil {
+		return errors.UnknownRecipe
+	}
+
+	if this.models.Accounts.IsExists(login) == false {
+		return errors.UnknownAccount
+	}
+
+	return this.rep.DeleteGrade(id_rcp, login)
+}
+
 func (this *RecipeM) GetLikedByLogin(login string) ([]objects.Recipe, error) {
 	if this.models.Accounts.IsExists(login) == false {
 		return nil, errors.UnknownAccount

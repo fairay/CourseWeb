@@ -69,18 +69,15 @@ func (this *PGCategoriesRep) Get(ctg string) (objects.Category, error) {
 
 func (this *PGCategoriesRep) AddToRecipe(id_rcp int, ctg string) error {
 	recipe := objects.Recipe{Id: id_rcp}
-	err := this.db.Model(&recipe).Association("Categories").Append(&objects.Category{Title: ctg}).Error
-	return err
+	return this.db.Model(&recipe).Association("Categories").Append(&objects.Category{Title: ctg}).Error
 }
 
 func (this *PGCategoriesRep) ReplaceInRecipe(id_rcp int, ctg string) error {
 	recipe := objects.Recipe{Id: id_rcp}
-	err := this.db.Model(&recipe).Association("Categories").Replace(&objects.Category{Title: ctg}).Error
-	return err
+	return this.db.Model(&recipe).Association("Categories").Replace(&objects.Category{Title: ctg}).Error
 }
 
 func (this *PGCategoriesRep) DelFromRecipe(id_rcp int, ctg string) error {
 	recipe := objects.Recipe{Id: id_rcp}
-	err := this.db.Model(&recipe).Association("Categories").Delete(&objects.Category{Title: ctg}).Error
-	return err
+	return this.db.Model(&recipe).Association("Categories").Delete(&objects.Category{Title: ctg}).Error
 }
