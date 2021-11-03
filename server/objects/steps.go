@@ -4,7 +4,7 @@ import "encoding/json"
 
 type Step struct {
 	Recipe      int    `json:"recipe" gorm:"primary_key;foreignkey:Id"`
-	Num         int    `json:"num" gorm:"type:serial;primary_key"`
+	Num         int    `json:"num" gorm:"autoincrement:true;primary_key"`
 	Description string `json:"description"`
 	Title       string `json:"title"`
 }

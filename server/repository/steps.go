@@ -10,6 +10,7 @@ type StepsRep interface {
 	List(recipeId int) ([]objects.Step, error)
 	FindSteps(id_rcp int) ([]objects.Step, error)
 	FindStepByNum(id_rcp, step int) (objects.Step, error)
+	FindStepLast(id_rcp int) objects.Step
 	Create(obj *objects.Step) error
 	Delete(id_rcp, step int) error
 	UpdateStep(id_rcp int, step int, obj *objects.Step) error
@@ -40,6 +41,13 @@ func (this *PGStepsRep) FindStepByNum(id_rcp, step int) (objects.Step, error) {
 	err := this.db.Where("recipe = ? AND num = ?", id_rcp, step).Find(&temp).Error
 
 	return temp, err
+}
+
+func (this *PGStepsRep) FindStepLast(id_rcp int) objects.Step {
+	temp := objects.Step{}
+	this.db.Where("recipe = ?", id_rcp).Order("num desc").First(&temp)
+
+	return temp
 }
 
 func (this *PGStepsRep) Create(obj *objects.Step) error {

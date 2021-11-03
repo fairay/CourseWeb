@@ -145,7 +145,6 @@ func (this *stepCtrl) get(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// TODO:
 // @Tags Steps
 // @Router /recipes/{id}/steps/{step} [patch]
 // @Summary Updates step
