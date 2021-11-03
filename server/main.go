@@ -43,6 +43,7 @@ func initControllers(r *mux.Router, m *models.Models) {
 	controllers.InitAccount(r, m.Accounts)
 	controllers.InitIngredients(r, m.Ingredients)
 	controllers.InitLikes(r, m.Recipes, m.Accounts)
+	controllers.InitSteps(r, m.Steps)
 }
 
 // @Title Recipes API

@@ -132,9 +132,6 @@ func (this *CategoryM) IsExistsLike(ctg string) bool {
 func (this *CategoryM) IsExists(ctg string) bool {
 	_, err := this.Get(ctg)
 
-	if err != nil {
-		return false
-	}
-
+	if err != nil { return false }
 	return true
 }
