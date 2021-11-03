@@ -67,6 +67,15 @@ func main() {
 		httpSwagger.DocExpansion("none"),
 		httpSwagger.DomID("#swagger-ui"),
 	))
+	
+	// tlsConfig := tls.Config{}
+	// tlsConfig.NextProtos = []string{"http/1.1"}
+	// srv := &http.Server{
+	// 	Addr: fmt.Sprintf(":%d", utils.Config.Port),
+	// 	Handler: router,
+	// 	TLSConfig: &tlsConfig,
+	// }
+	// code := srv.ListenAndServeTLS("server.rsa.crt", "server.rsa.key")
 
 	utils.Logger.Print("Server started")
 	fmt.Printf("Server is running on http://localhost:%d\n", utils.Config.Port)
