@@ -82,7 +82,7 @@ func (this *ingredientCtrl) postToRecipe(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	err = this.model.PostToRecipe(id_rcp, objects.ToArrModelI(*ingDTO))
+	err = this.model.PostToRecipe(id_rcp, objects.IngredientDTO{}.ToArrModel(id_rcp, *ingDTO))
 	switch err {
 	case nil:
 		responses.SuccessCreation(w, "Posting ingredient/s was successful")
@@ -104,6 +104,33 @@ func (this *ingredientCtrl) postToRecipe(w http.ResponseWriter, r *http.Request)
 // @Produce json
 // @Success 200
 func (this *ingredientCtrl) putToRecipe(w http.ResponseWriter, r *http.Request) {
+	urlParams := mux.Vars(r)
+	strId := urlParams["id"]
+
+	id_rcp, err := strconv.Atoi(strId)
+	if err != nil {
+		responses.BadRequest(w, "Wrong recipe's id")
+		return
+	}
+
+	ingDTO := new(objects.IngredientDTO)
+	err = json.NewDecoder(r.Body).Decode(ingDTO)
+	if err != nil {
+		responses.BadRequest(w, "Invalid request")
+		return
+	}
+
+	err = this.model.AddToRecipe(id_rcp, ingDTO.ToModel(id_rcp))
+	switch err {
+	case nil:
+		responses.SuccessCreation(w, "Adding ingredient was successful")
+	case errors.UnknownRecipe:
+		responses.BadRequest(w, "Wrong recipe's id")
+	case errors.DBAdditionError:
+		responses.BadRequest(w, "Error in addition a new ingredient")
+	default:
+		responses.BadRequest(w, "Invalid request")
+	}
 }
 
 // TODO:

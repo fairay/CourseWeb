@@ -30,18 +30,18 @@ type IngredientDTO struct {
 	Amount string `json:"amount"`
 }
 
-func (this *IngredientDTO) ToModel() *Ingredient {
-	mod := new(Ingredient)
-
-	jsonStr, _ := json.Marshal(this)
-	json.Unmarshal(jsonStr, mod)
+func (this *IngredientDTO) ToModel(idRecipe int) *RecipeIngredient {
+	mod := new(RecipeIngredient)
+	mod.Recipe = idRecipe
+	mod.Amount = this.Amount
+	mod.Item = this.Title
 	return mod
 }
 
-func ToArrModelI(src []IngredientDTO) *[]Ingredient {
-	dst := make([]Ingredient, len(src))
+func (IngredientDTO) ToArrModel(idRecipe int, src []IngredientDTO) *[]RecipeIngredient {
+	dst := make([]RecipeIngredient, len(src))
 	for i, value := range src {
-		dst[i] = *value.ToModel()
+		dst[i] = *value.ToModel(idRecipe)
 	}
 	return &dst
 }
