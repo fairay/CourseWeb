@@ -13,7 +13,9 @@ type RecipesRep interface {
 	Create(rcp *objects.Recipe) error
 	Delete(id int) error
 	AddGrade(id int, login string) error
+	DeleteGrade(id int, login string) error
 	GetLikedByLogin(login string) ([]objects.Recipe, error)
+	GetAmountGrades(id int) int
 }
 
 type PGRecipesRep struct {
@@ -65,10 +67,20 @@ func (this *PGRecipesRep) AddGrade(id int, login string) error {
 	return this.db.Model(&recipe).Association("Grades").Append(&objects.Account{Login: login}).Error
 }
 
+func (this *PGRecipesRep) DeleteGrade(id int, login string) error {
+	recipe := objects.Recipe{Id: id}
+	return this.db.Model(&recipe).Association("Grades").Delete(&objects.Account{Login: login}).Error
+}
+
 func (this *PGRecipesRep) GetLikedByLogin(login string) ([]objects.Recipe, error) {
 	temp := []objects.Recipe{}
 	account := objects.Account{Login: login}
 
 	err := this.db.Model(&account).Association("Grades").Find(&temp).Error
 	return temp, err
+}
+
+func (this *PGRecipesRep) GetAmountGrades(id int) int {
+	recipe := objects.Recipe{Id: id}
+	return this.db.Model(&recipe).Association("Grades").Count()
 }

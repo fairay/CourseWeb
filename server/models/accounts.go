@@ -37,7 +37,20 @@ func (this *AccountM) Create(obj *objects.Account) error {
 	return err
 }
 
-func (this *AccountM) UpdateRole(login, role string) error {
+func (this *AccountM) UpdateRole(cur_login, login, role string) error {
+	if this.models.Accounts.IsExists(cur_login) == false {
+		return errors.UnknownAccount
+	}
+
+	cur_role, err := this.GetRole(cur_login)
+	if err != nil {
+		return errors.UnknownAccount
+	}
+
+	if cur_role != AdminRole {
+		return errors.AccessDenied
+	}
+
 	if this.IsExists(login) == false {
 		return errors.UnknownAccount
 	}
@@ -45,8 +58,6 @@ func (this *AccountM) UpdateRole(login, role string) error {
 	if role != AdminRole && role != UserRole {
 		return errors.UnknownRole
 	}
-
-	// FIXME: current role == admin
 
 	return this.rep.UpdateRole(login, role)
 }

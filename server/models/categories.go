@@ -116,12 +116,7 @@ func (this *CategoryM) DelFromRecipe(id_rcp int, ctg *objects.Category) error {
 		return errors.UnknownCategory
 	}
 
-	err = this.rep.DelFromRecipe(id_rcp, ctg.Title)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return this.rep.DelFromRecipe(id_rcp, ctg.Title)
 }
 
 func (this *CategoryM) IsExistsLike(ctg string) bool {

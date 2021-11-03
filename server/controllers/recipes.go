@@ -38,7 +38,7 @@ func (this *recipe) getAllRecipes(w http.ResponseWriter, r *http.Request) {
 
 // @Tags Recipes
 // @Router /accounts/{login}/recipes [get]
-// @Summary Retrieves recipes of user
+// @Summary Retrieves user's recipes
 // @Param login path string true "Category title"
 // @Produce json
 // @Success 200 {object} []objects.RecipeDTO
@@ -113,7 +113,7 @@ func (this *recipe) deleteRecipe(w http.ResponseWriter, r *http.Request) {
 	case nil:
 		responses.TextSuccess(w, "Delete operation was successful")
 	case errors.AccessDeleteDenied:
-		responses.AccessDenied(w)
+		responses.JwtAccessDenied(w)
 	case errors.RecordNotFound:
 		responses.RecordNotFound(w, "user")
 	case errors.UnknownAccount:

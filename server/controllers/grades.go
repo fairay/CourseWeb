@@ -6,7 +6,6 @@ import (
 	"api/recipes/errors"
 	"api/recipes/models"
 	"api/recipes/objects"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -25,6 +24,7 @@ func InitLikes(r *mux.Router, recM *models.RecipeM, accM *models.AccountM) {
 	r.HandleFunc("/recipes/{id}/like", ctrl.del).Methods("DELETE")
 	r.HandleFunc("/recipes/{id}/like", ctrl.getByRecipe).Methods("GET")
 	r.HandleFunc("/accounts/{login}/like", ctrl.getByUser).Methods("GET")
+	r.HandleFunc("/recipes/{id}/like/amount", ctrl.getAmount).Methods("GET")
 }
 
 // @Tags Likes
@@ -41,7 +41,7 @@ func (this *likesCtrl) add(w http.ResponseWriter, r *http.Request) {
 		responses.AuthenticationFailed(w)
 		return
 	}
-	
+
 	urlParams := mux.Vars(r)
 	strId := urlParams["id"]
 
@@ -64,18 +64,44 @@ func (this *likesCtrl) add(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// TODO:
 // @Tags Likes
 // @Router /recipes/{id}/like [delete]
 // @Summary Deletes like to recipe from authorized user
 // @Param id path int true "Recipe id"
 // @Produce json
-// @Success 200
+// @Success 200 Successful operation
+// @Failure 400 Invalid value
+// @Failure 401 Authentication failed
 func (this *likesCtrl) del(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("del")
+	login, err := auth.LoginFromCookie(r)
+	if err != nil {
+		responses.AuthenticationFailed(w)
+		return
+	}
+
+	urlParams := mux.Vars(r)
+	strId := urlParams["id"]
+
+	id_rcp, err := strconv.Atoi(strId)
+	if err != nil {
+		responses.BadRequest(w, "Wrong recipe's id")
+		return
+	}
+
+	err = this.recM.DeleteGrade(id_rcp, login)
+	switch err {
+	case nil:
+		responses.TextSuccess(w, "The like was successfully deleted")
+	case errors.UnknownRecipe:
+		responses.RecordNotFound(w, "recipe")
+	case errors.UnknownAccount:
+		responses.RecordNotFound(w, "user")
+	default:
+		responses.BadRequest(w, "Failed to delete like")
+	}
+
 }
 
-// TODO:
 // @Tags Likes
 // @Router /recipes/{id}/like [get]
 // @Summary Retrieves all users who liked mentioned recipe
@@ -105,7 +131,7 @@ func (this *likesCtrl) getByRecipe(w http.ResponseWriter, r *http.Request) {
 
 // @Tags Likes
 // @Router /accounts/{login}/like [get]
-// @Summary Retrieves all user's liked recipes 
+// @Summary Retrieves all user's liked recipes
 // @Param login path string false "Requested account"
 // @Produce json
 // @Success 200 {object} objects.RecipeDTO
@@ -125,5 +151,33 @@ func (this *likesCtrl) getByUser(w http.ResponseWriter, r *http.Request) {
 		responses.RecordNotFound(w, "user")
 	default:
 		responses.BadRequest(w, "Error in getting liked recipes")
+	}
+}
+
+// @Tags Likes
+// @Router /recipes/{id}/like/amount [get]
+// @Summary Retrieves the recipe's amount of likes
+// @Param id path int true "Recipe id"
+// @Produce json
+// @Success 200 {string} string 
+// @Failure 400 Invalid value
+func (this *likesCtrl) getAmount(w http.ResponseWriter, r *http.Request) {
+	urlParams := mux.Vars(r)
+	strId := urlParams["id"]
+
+	id_rcp, err := strconv.Atoi(strId)
+	if err != nil {
+		responses.BadRequest(w, "Wrong recipe's id")
+		return
+	}
+
+	data, err := this.recM.GetAmountGrades(id_rcp)
+	switch err {
+	case nil:
+		responses.JsonSuccess(w, strconv.Itoa(data))
+	case errors.UnknownRecipe:
+		responses.RecordNotFound(w, "recipe")
+	default:
+		responses.BadRequest(w, "Error in getting amount of likes")
 	}
 }

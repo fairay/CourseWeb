@@ -50,7 +50,7 @@ func (this *PGAccountsRep) FindLikedRecipe(id_rcp int) ([]objects.Account, error
 	temp := []objects.Account{}
 	recipe := objects.Recipe{Id: id_rcp}
 
-	err := this.db.Model(&recipe).Association("Accounts").Find(&temp).Error
+	err := this.db.Model(&recipe).Association("Grades").Find(&temp).Error
 
 	return temp, err
 }
