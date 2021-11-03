@@ -47,7 +47,8 @@ func (this *ingredientCtrl) getByRecipe(w http.ResponseWriter, r *http.Request) 
 
 	switch err {
 	case nil:
-		responses.JsonSuccess(w, data)
+		t := new(objects.RecipeIngredient)
+		responses.JsonSuccess(w, t.ArrToDTO(data))
 	case errors.UnknownRecipe:
 		responses.RecordNotFound(w, "recipe")
 	default:
