@@ -38,7 +38,7 @@ func (this *recipe) getAllRecipes(w http.ResponseWriter, r *http.Request) {
 
 // @Tags Recipes
 // @Router /accounts/{login}/recipes [get]
-// @Summary Retrieves recipes of user
+// @Summary Retrieves user's recipes
 // @Param login path string true "Category title"
 // @Produce json
 // @Success 200 {object} []objects.RecipeDTO

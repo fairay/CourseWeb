@@ -188,7 +188,7 @@ var doc = `{
                 "tags": [
                     "Recipes"
                 ],
-                "summary": "Retrieves recipes of user",
+                "summary": "Retrieves user's recipes",
                 "parameters": [
                     {
                         "type": "string",
@@ -249,6 +249,12 @@ var doc = `{
                         "description": "Bad Request",
                         "schema": {
                             "type": "Invalid"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "Access"
                         }
                     }
                 }
@@ -870,6 +876,40 @@ var doc = `{
                         "description": "Unauthorized",
                         "schema": {
                             "type": "Authentication"
+                        }
+                    }
+                }
+            }
+        },
+        "/recipes/{id}/like/amount": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Retrieves the recipe's amount of likes",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
                         }
                     }
                 }
