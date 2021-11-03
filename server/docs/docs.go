@@ -923,7 +923,7 @@ var doc = `{
                 "tags": [
                     "Steps"
                 ],
-                "summary": "Retrieves all steps",
+                "summary": "Retrieves all recipe's steps",
                 "parameters": [
                     {
                         "type": "integer",
@@ -941,6 +941,12 @@ var doc = `{
                             "items": {
                                 "$ref": "#/definitions/objects.StepDTO"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
                         }
                     }
                 }
@@ -977,6 +983,24 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/objects.StepDTO"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "Authentication"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "Access"
+                        }
                     }
                 }
             }
@@ -989,7 +1013,7 @@ var doc = `{
                 "tags": [
                     "Steps"
                 ],
-                "summary": "Retrieves step",
+                "summary": "Retrieves recipe's step by its number",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1011,6 +1035,12 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/objects.StepDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
                         }
                     }
                 }
@@ -1041,7 +1071,22 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "type": "Successful"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "Authentication"
+                        }
                     }
                 }
             },
@@ -1067,13 +1112,22 @@ var doc = `{
                         "name": "step",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Step data",
+                        "name": "value",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/objects.StepDTO"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/objects.StepDTO"
+                            "type": "Successful"
                         }
                     }
                 }
