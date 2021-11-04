@@ -12,6 +12,7 @@ type IngredientsRep interface {
 	Get(title string) (*objects.Ingredient, error)
 	FindByRecipe(idRecipe int) ([]objects.RecipeIngredient, error)
 	AddToRecipe(obj *objects.RecipeIngredient) error
+	ReplaceInRecipe(id_rcp int, arr []objects.RecipeIngredient) error
 	DelFromRecipe(idRecipe int, title string) error
 }
 
@@ -45,6 +46,12 @@ func (this *PGIngredientsRep) FindByRecipe(idRecipe int) ([]objects.RecipeIngred
 
 func (this *PGIngredientsRep) AddToRecipe(obj *objects.RecipeIngredient) error {
 	return this.db.Create(&obj).Error
+}
+
+// FIXME: pq: столбец "recipe_id" в таблице "recipe_ingredient" не существует 
+func (this *PGIngredientsRep) ReplaceInRecipe(id_rcp int, arr []objects.RecipeIngredient) error {
+	recipe := objects.Recipe{Id: id_rcp}
+	return this.db.Model(&recipe).Association("Ingredients").Replace(arr).Error
 }
 
 func (this *PGIngredientsRep) DelFromRecipe(idRecipe int, title string) error {

@@ -15,7 +15,7 @@ type CategoriesRep interface {
 	FindRecipes(ctg string) ([]objects.Recipe, error)
 	FindByRecipe(id_rcp int) ([]objects.Category, error)
 	AddToRecipe(id_rcp int, ctg string) error
-	ReplaceInRecipe(id_rcp int, ctg string) error
+	ReplaceInRecipe(id_rcp int, arr []objects.Category) error
 	DelFromRecipe(id_rcp int, ctg string) error
 }
 
@@ -72,9 +72,9 @@ func (this *PGCategoriesRep) AddToRecipe(id_rcp int, ctg string) error {
 	return this.db.Model(&recipe).Association("Categories").Append(&objects.Category{Title: ctg}).Error
 }
 
-func (this *PGCategoriesRep) ReplaceInRecipe(id_rcp int, ctg string) error {
+func (this *PGCategoriesRep) ReplaceInRecipe(id_rcp int, arr []objects.Category) error {
 	recipe := objects.Recipe{Id: id_rcp}
-	return this.db.Model(&recipe).Association("Categories").Replace(&objects.Category{Title: ctg}).Error
+	return this.db.Model(&recipe).Association("Categories").Replace(arr).Error
 }
 
 func (this *PGCategoriesRep) DelFromRecipe(id_rcp int, ctg string) error {

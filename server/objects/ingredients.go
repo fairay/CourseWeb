@@ -1,6 +1,9 @@
 package objects
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"strings"
+)
 
 type Ingredient struct {
 	Title string 		`json:"title" gorm:"primary_key"`
@@ -34,7 +37,7 @@ func (this *IngredientDTO) ToModel(idRecipe int) *RecipeIngredient {
 	mod := new(RecipeIngredient)
 	mod.Recipe = idRecipe
 	mod.Amount = this.Amount
-	mod.Item = this.Title
+	mod.Item = strings.ToLower(this.Title)
 	return mod
 }
 

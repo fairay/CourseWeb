@@ -54,11 +54,23 @@ func (this *IngredientM) GetByRecipe(idRecipe int) ([]objects.RecipeIngredient, 
 	return this.rep.FindByRecipe(idRecipe)
 }
 
-func (this *IngredientM) PostToRecipe(idRecipe int, ingArr *[]objects.RecipeIngredient) error {
-	/*_, err := this.models.Recipes.FindById(id_rcp)
+func (this *IngredientM) PostToRecipe(id_rcp int, ingArr *[]objects.RecipeIngredient) error {
+	_, err := this.models.Recipes.FindById(id_rcp)
 	if err != nil {
 		return errors.UnknownRecipe
-	}*/
+	}
+
+	for _, obj := range *ingArr {
+		err = this.Create(&objects.Ingredient{Title: obj.Item})
+		if err != nil && err != errors.CategoryExists {
+			return err
+		}
+	}
+	err = this.rep.ReplaceInRecipe(id_rcp, *ingArr)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

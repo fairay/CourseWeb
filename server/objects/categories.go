@@ -1,6 +1,9 @@
 package objects
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"strings"
+)
 
 type Category struct {
 	Title string 		`json:"title" gorm:"primary_key"`
@@ -31,9 +34,7 @@ func (Category) ArrToDTO(src []Category) []CategoryDTO {
 
 func (this *CategoryDTO) ToModel() *Category {
 	mod := new(Category)
-
-	jsonStr, _ := json.Marshal(this)
-	json.Unmarshal(jsonStr, mod)
+	mod.Title = strings.ToLower(this.Title)
 	return mod
 }
 

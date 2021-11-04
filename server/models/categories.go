@@ -75,11 +75,11 @@ func (this *CategoryM) PostToRecipe(id_rcp int, ctg_arr *[]objects.Category) err
 				return err
 			}
 		}
+	}
 
-		err := this.rep.ReplaceInRecipe(id_rcp, ctg.Title)
-		if err != nil {
-			return err
-		}
+	err = this.rep.ReplaceInRecipe(id_rcp, *ctg_arr)
+	if err != nil {
+		return err
 	}
 
 	return nil
