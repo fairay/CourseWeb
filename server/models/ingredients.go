@@ -61,7 +61,7 @@ func (this *IngredientM) PostToRecipe(id_rcp int, ingArr *[]objects.RecipeIngred
 	}
 
 	for _, obj := range *ingArr {
-		err = this.Create(&objects.Ingredient{Title: obj.Item})
+		err = this.Create(&objects.Ingredient{Title: obj.Ingredient_id})
 		if err != nil && err != errors.CategoryExists {
 			return err
 		}
@@ -80,7 +80,7 @@ func (this *IngredientM) AddToRecipe(id_rcp int, obj *objects.RecipeIngredient) 
 		return errors.UnknownRecipe
 	}
 
-	err = this.Create(&objects.Ingredient{Title: obj.Item})
+	err = this.Create(&objects.Ingredient{Title: obj.Ingredient_id})
 	if err != nil && err != errors.CategoryExists {
 		return err
 	}
@@ -91,4 +91,17 @@ func (this *IngredientM) AddToRecipe(id_rcp int, obj *objects.RecipeIngredient) 
 	}
 
 	return nil
+}
+
+func (this *IngredientM) DelFromRecipe(id_rcp int, obj *objects.RecipeIngredient) error {
+	_, err := this.models.Recipes.FindById(id_rcp)
+	if err != nil {
+		return errors.UnknownRecipe
+	}
+
+	if this.IsExists(obj.Ingredient_id) == false {
+		return errors.UnknownCategory
+	}
+
+	return this.rep.DelFromRecipe(id_rcp, obj.Ingredient_id)
 }

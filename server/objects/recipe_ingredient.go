@@ -6,8 +6,8 @@ type RecipeIngredient struct {
 	/*Recipe int    `gorm:"primary_key;foreignkey:Id" json:"recipe"`
 	Item   string `gorm:"primary_key;foreignkey:Title" json:"item"`*/
 
-	Recipe int    `json:"recipe" gorm:"primary_key"`
-	Item   string `json:"item" gorm:"primary_key"`
+	Recipe_id int    `json:"recipe" gorm:"primary_key"`
+	Ingredient_id   string `json:"item" gorm:"primary_key"`
 	Amount string `json:"amount"`
 }
 
@@ -16,7 +16,7 @@ func (this *RecipeIngredient) ToDTO() *IngredientDTO {
 	jsonStr, _ := json.Marshal(this)
 	json.Unmarshal(jsonStr, dto)
 
-	dto.Title = this.Item
+	dto.Title = this.Ingredient_id
 	return dto
 }
 func (RecipeIngredient) ArrToDTO(src []RecipeIngredient) []IngredientDTO {

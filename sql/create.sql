@@ -52,8 +52,8 @@ CREATE TABLE IF NOT EXISTS Recipe_Category (
 
 DROP TABLE IF EXISTS Recipe_Ingredient CASCADE;
 CREATE TABLE IF NOT EXISTS Recipe_Ingredient (
-	recipe			INT 			REFERENCES Recipes(id) NOT NULL,
-	item			VARCHAR(64)		REFERENCES Ingredients(title) NOT NULL,
+	recipe_id		INT 			REFERENCES Recipes(id) NOT NULL,
+	ingredient_id	VARCHAR(64)		REFERENCES Ingredients(title) NOT NULL,
 	amount			VARCHAR(64),
-	PRIMARY KEY (recipe, item)
+	PRIMARY KEY (recipe_id, ingredient_id)
 );

@@ -35,9 +35,9 @@ type IngredientDTO struct {
 
 func (this *IngredientDTO) ToModel(idRecipe int) *RecipeIngredient {
 	mod := new(RecipeIngredient)
-	mod.Recipe = idRecipe
+	mod.Recipe_id = idRecipe
 	mod.Amount = this.Amount
-	mod.Item = strings.ToLower(this.Title)
+	mod.Ingredient_id = strings.ToLower(this.Title)
 	return mod
 }
 

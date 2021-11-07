@@ -16,6 +16,7 @@ type Recipe struct {
 
 	Categories []*Category		`gorm:"many2many:recipe_category;"`
 	Ingredients []*Ingredient	`gorm:"many2many:recipe_ingredient;"`
+	RecipeIngredient []*RecipeIngredient
 	Grades []*Account			`gorm:"many2many:grades;"`
 }
 

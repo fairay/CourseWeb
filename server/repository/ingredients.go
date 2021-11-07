@@ -40,7 +40,7 @@ func (this *PGIngredientsRep) FindByRecipe(idRecipe int) ([]objects.RecipeIngred
 
 	//err := this.db.Model(&recipe).Association("Ingredients").Find(&temp).Error
 	//err := this.db.Preload("Ingredients").Preload("Recipes").Find(&temp).Error
-	err := this.db.Where(objects.RecipeIngredient{Recipe: idRecipe}).Find(&temp).Error
+	err := this.db.Where(objects.RecipeIngredient{Recipe_id: idRecipe}).Find(&temp).Error
 	return temp, err
 }
 
@@ -48,13 +48,20 @@ func (this *PGIngredientsRep) AddToRecipe(obj *objects.RecipeIngredient) error {
 	return this.db.Create(&obj).Error
 }
 
-// FIXME: pq: столбец "recipe_id" в таблице "recipe_ingredient" не существует 
 func (this *PGIngredientsRep) ReplaceInRecipe(id_rcp int, arr []objects.RecipeIngredient) error {
 	recipe := objects.Recipe{Id: id_rcp}
-	return this.db.Model(&recipe).Association("Ingredients").Replace(arr).Error
+	return this.db.Model(&recipe).Association("RecipeIngredient").Replace(arr).Error
+	// err := this.db.Model(&recipe).Association("Ingredients").Clear().Error
+	// if err != nil {
+	// 	return err
+	// }
+	// for _, obj := range arr {
+	// 	err = this.db.Create(&obj).Error
+	// }
+	// return nil
 }
 
 func (this *PGIngredientsRep) DelFromRecipe(idRecipe int, title string) error {
-	temp := &objects.RecipeIngredient{Recipe: idRecipe, Item: title}
+	temp := &objects.RecipeIngredient{Recipe_id: idRecipe, Ingredient_id: title}
 	return this.db.Delete(&temp).Error
 }

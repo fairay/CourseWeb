@@ -142,4 +142,31 @@ func (this *ingredientCtrl) putToRecipe(w http.ResponseWriter, r *http.Request) 
 // @Produce json
 // @Success 200
 func (this *ingredientCtrl) delFromRecipe(w http.ResponseWriter, r *http.Request) {
+	urlParams := mux.Vars(r)
+	strId := urlParams["id"]
+
+	id_rcp, err := strconv.Atoi(strId)
+	if err != nil {
+		responses.BadRequest(w, "Wrong recipe's id")
+		return
+	}
+
+	ingDTO := new(objects.IngredientDTO)
+	err = json.NewDecoder(r.Body).Decode(ingDTO)
+	if err != nil {
+		responses.BadRequest(w, "Invalid request")
+		return
+	}
+
+	err = this.model.DelFromRecipe(id_rcp, ingDTO.ToModel(id_rcp))
+	switch err {
+	case nil:
+		responses.TextSuccess(w, "The ingradient was successful deleted")
+	case errors.UnknownRecipe:
+		responses.BadRequest(w, "Wrong recipe's id")
+	case errors.UnknownCategory:
+		responses.BadRequest(w, "Wrong category name")
+	default:
+		responses.BadRequest(w, "Invalid request")
+	}
 }
