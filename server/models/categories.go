@@ -42,7 +42,7 @@ func (this *CategoryM) Get(ctg string) (*objects.Category, error) {
 	if err != nil {
 		return nil, errors.RecordNotFound
 	}
-	return &data, err
+	return data, err
 }
 
 func (this *CategoryM) GetRecipes(ctg string) ([]objects.Recipe, error) {
@@ -132,6 +132,5 @@ func (this *CategoryM) IsExistsLike(ctg string) bool {
 func (this *CategoryM) IsExists(ctg string) bool {
 	_, err := this.Get(ctg)
 
-	if err != nil { return false }
-	return true
+	return err == nil
 }
