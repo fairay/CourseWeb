@@ -60,7 +60,7 @@ func (this *category) get(w http.ResponseWriter, r *http.Request) {
 	default:
 		responses.BadRequest(w, "Error in getting recipes")
 	}
-	
+
 }
 
 // @Tags Categories

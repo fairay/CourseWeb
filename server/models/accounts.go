@@ -78,9 +78,7 @@ func (this *AccountM) FindLikedRecipe(id_rcp int) ([]objects.Account, error) {
 func (this *AccountM) IsExists(login string) bool {
 	_, err := this.Find(login)
 
-	if err != nil { return false }
-
-	return true
+	return err == nil
 }
 
 func (this *AccountM) GetRole(login string) (role string, err error) {

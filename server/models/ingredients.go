@@ -17,11 +17,8 @@ func NewIngredient(rep repository.IngredientsRep, models *Models) *IngredientM {
 
 func (this *IngredientM) IsExists(ctg string) bool {
 	_, err := this.Get(ctg)
-	if err != nil {
-		return false
-	}
 
-	return true
+	return err == nil
 }
 
 func (this *IngredientM) Create(obj *objects.Ingredient) error {
@@ -66,12 +63,8 @@ func (this *IngredientM) PostToRecipe(id_rcp int, ingArr *[]objects.RecipeIngred
 			return err
 		}
 	}
-	err = this.rep.ReplaceInRecipe(id_rcp, *ingArr)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	
+	return this.rep.ReplaceInRecipe(id_rcp, *ingArr)
 }
 
 func (this *IngredientM) AddToRecipe(id_rcp int, obj *objects.RecipeIngredient) error {
@@ -85,12 +78,7 @@ func (this *IngredientM) AddToRecipe(id_rcp int, obj *objects.RecipeIngredient) 
 		return err
 	}
 
-	err = this.rep.AddToRecipe(obj)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return this.rep.AddToRecipe(obj)
 }
 
 func (this *IngredientM) DelFromRecipe(id_rcp int, obj *objects.RecipeIngredient) error {

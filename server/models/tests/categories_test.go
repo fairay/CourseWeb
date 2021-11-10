@@ -11,6 +11,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+/*
+Create recipe - successful operation
+*/
 func TestCreateCategory(t *testing.T) {
 	mockRep := new(mocks.CategoriesRep)
 	model := models.NewCategory(mockRep, nil)
@@ -21,11 +24,31 @@ func TestCreateCategory(t *testing.T) {
 
 	err := model.Create(obj)
 
-	assert.Nil(t, err, "Create have unexpected error")
+	assert.Nil(t, err, "Create category have unexpected error")
 	mockRep.AssertExpectations(t)
 }
 
+/*
 func TestAddCategoryRecipe(t *testing.T) {
+	mockRec := new(mocks.RecipesRep)
+	mockCat := new(mocks.CategoriesRep)
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRec, allM)
+	allM.Category = models.NewCategory(mockCat, allM)
+	obj := dbuilder.CategoryMother{}.Obj0()
+
+	mockRec.On("")
+	mockCat.On("Get", obj.Title).Return(nil, errors.RecordNotFound).Once()
+	mockCat.On("Create", obj).Return(nil).Once()
+
+	err := allM.Category.Create(obj)
+
+	assert.Nil(t, err, "Create have unexpected error")
+	mockCat.AssertExpectations(t)
+}
+
+func TestDelCategoryRecipe(t *testing.T) {
 	mockRec := new(mocks.RecipesRep)
 	mockCat := new(mocks.CategoriesRep)
 
@@ -42,3 +65,4 @@ func TestAddCategoryRecipe(t *testing.T) {
 	assert.Nil(t, err, "Create have unexpected error")
 	mockCat.AssertExpectations(t)
 }
+*/

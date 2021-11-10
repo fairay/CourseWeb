@@ -77,12 +77,7 @@ func (this *CategoryM) PostToRecipe(id_rcp int, ctg_arr *[]objects.Category) err
 		}
 	}
 
-	err = this.rep.ReplaceInRecipe(id_rcp, *ctg_arr)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return this.rep.ReplaceInRecipe(id_rcp, *ctg_arr)
 }
 
 func (this *CategoryM) AddToRecipe(id_rcp int, ctg *objects.Category) error {
@@ -98,12 +93,7 @@ func (this *CategoryM) AddToRecipe(id_rcp int, ctg *objects.Category) error {
 		}
 	}
 
-	err = this.rep.AddToRecipe(id_rcp, ctg.Title)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return this.rep.AddToRecipe(id_rcp, ctg.Title)
 }
 
 func (this *CategoryM) DelFromRecipe(id_rcp int, ctg *objects.Category) error {
