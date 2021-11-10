@@ -1,0 +1,3 @@
+cls
+mockery -dir .\repository\ -all
+go test .\...

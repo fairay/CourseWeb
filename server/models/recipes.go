@@ -48,18 +48,18 @@ func (this *RecipeM) FindById(id int) (*objects.Recipe, error) {
 		return nil, err
 	}
 
-	return &rcp, err
+	return rcp, err
 }
 
-func (this *RecipeM) AddRecipe(obj *objects.Recipe) (*objects.Recipe, error) {
+func (this *RecipeM) AddRecipe(obj *objects.Recipe) error {
 	_, err := this.models.Accounts.Find(obj.Author)
 	if err != nil {
-		return nil, errors.UnknownAccount
+		return errors.UnknownAccount
 	}
 
 	// TODO: validate other data
 	err = this.rep.Create(obj)
-	return obj, err
+	return err
 }
 
 func (this *RecipeM) AddGrade(id int, login string) error {

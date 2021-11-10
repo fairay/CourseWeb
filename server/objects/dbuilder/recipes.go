@@ -38,7 +38,7 @@ func (RecipeMother) Obj0() *objects.Recipe {
 }
 func (RecipeMother) Obj1() *objects.Recipe {
 	b := newRecipeBuilder()
-	b.Id = 1
+	b.Id = 2
 	b.Author = "test1"
 	b.Title = "Сырники"
 	b.Description = "На завтрак"
@@ -47,3 +47,15 @@ func (RecipeMother) Obj1() *objects.Recipe {
 
 	return b.Build()
 }
+func (RecipeMother) Obj2() *objects.Recipe {
+	b := newRecipeBuilder()
+	b.Id = 3
+	b.Author = "test2"
+	b.Title = "Оладьи"
+	b.Description = "Из остатков кефира"
+	b.Duration = 25
+	b.PortionNum = 7
+
+	return b.Build()
+}
+

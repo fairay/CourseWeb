@@ -5,16 +5,15 @@ import (
 	"api/recipes/mocks"
 	"api/recipes/models"
 	"api/recipes/objects/dbuilder"
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 /*
-Create step - successful operation
+Create step (by recipe admin) - successful operation
 */
-func TestCreateStep(t *testing.T) {
+func TestCreateStepAdmin(t *testing.T) {
 	mockStp := new(mocks.StepsRep)
 	mockRec := new(mocks.RecipesRep)
 	mockAcc := new(mocks.AccountsRep)
@@ -28,22 +27,38 @@ func TestCreateStep(t *testing.T) {
 	objRec := dbuilder.RecipeMother{}.Obj0()
 	obj := dbuilder.StepMother{}.Obj0()
 	
-	fmt.Println(objAcc, objRec, obj)
+	mockAcc.On("Find", objAcc.Login).Return(objAcc, nil).Once() 
+	mockRec.On("FindById", objRec.Id).Return(objRec, nil).Once()
+	mockStp.On("Create", obj).Return(nil).Once()
 
-	mockAcc.On("Find", objAcc.Login).Return(nil, nil) //FIXME: return values here
+	err := allM.Steps.AddStep(objRec.Id, obj, objAcc.Login)
 
-	mockRec.On("FindById", objRec.Id).Return(nil, nil)  //FIXME: return values here
-	mockAcc.On("Find", objAcc.Login).Return(nil, nil) //TODO: переписать код функций, второй раз вызывается
+	assert.Nil(t, err, "Create step have unexpected error")
+	mockRec.AssertExpectations(t)
+}
 
-	mockRec.On("FindById", objRec.Id).Return(nil, nil)  //TODO: встречается второй раз, но без этого кажется никак
+/*
+Create step (by recipe author) - successful operation
+*/
+func TestCreateStepAuthor(t *testing.T) {
+	mockStp := new(mocks.StepsRep)
+	mockRec := new(mocks.RecipesRep)
+	mockAcc := new(mocks.AccountsRep)
 
-	mockRec.On("Create", obj).Return(nil).Once()
+	allM := new(models.Models)
+	allM.Steps = models.NewStep(mockStp, allM)
+	allM.Recipes = models.NewRecipe(mockRec, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
 
-	mockRec.On("FindById", objRec.Id).Return(nil, nil) //TODO: третий раз, скорее всего можно убрать эту проверку из функции
-	mockStp.On("FindStepLast", obj.Recipe).Return(nil, nil)
+	objAcc := dbuilder.AccountMother{}.Obj1()
+	objRec := dbuilder.RecipeMother{}.Obj2()
+	obj := dbuilder.StepMother{}.Obj2()
+	
+	mockAcc.On("Find", objAcc.Login).Return(objAcc, nil).Twice() 
+	mockRec.On("FindById", objRec.Id).Return(objRec, nil).Twice()
+	mockStp.On("Create", obj).Return(nil).Once()
 
-	_, err := allM.Steps.AddStep(objRec.Id, obj, objAcc.Login)
-	//FIXME: 2 values: data (because auto filling, error)
+	err := allM.Steps.AddStep(objRec.Id, obj, objAcc.Login)
 
 	assert.Nil(t, err, "Create step have unexpected error")
 	mockRec.AssertExpectations(t)

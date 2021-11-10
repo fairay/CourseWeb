@@ -43,30 +43,23 @@ func (this *StepM) GetStepLast(id_rcp int) (*objects.Step, error) {
 	return &data, err
 }
 
-func (this *StepM) AddStep(id_rcp int, obj *objects.Step, login string) (*objects.Step, error) {
+func (this *StepM) AddStep(id_rcp int, obj *objects.Step, login string) error {
 	cur_acc, err := this.models.Accounts.Find(login)
-	if err != nil { return nil, errors.UnknownAccount }
+	if err != nil { return errors.UnknownAccount }
 
 	if cur_acc.Role != AdminRole {
 		auth_acc, err := this.models.Recipes.GetAuthor(id_rcp)
-		if err != nil { return nil, err }
+		if err != nil { return err }
 
-		if auth_acc.Login != login { return nil, errors.AccessDenied }
+		if auth_acc.Login != login { return errors.AccessDenied }
 	}
 
 	_, err = this.models.Recipes.FindById(id_rcp)
-	if err != nil { return nil, errors.UnknownRecipe }
+	if err != nil { return errors.UnknownRecipe }
 
 	obj.Recipe = id_rcp
 
-	err = this.rep.Create(obj)
-	if err == nil { 
-		obj, _ = this.GetStepLast(id_rcp) 
-	} else { 
-		obj = nil 
-	}
-
-	return obj, err
+	return this.rep.Create(obj)
 }
 
 func (this *StepM) DeleteStep(id_rcp, step int, login string) error {

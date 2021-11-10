@@ -9,7 +9,7 @@ import (
 type RecipesRep interface {
 	List() []objects.Recipe
 	FindByLogin(login string) []objects.Recipe
-	FindById(id int) (objects.Recipe, error)
+	FindById(id int) (*objects.Recipe, error)
 	Create(rcp *objects.Recipe) error
 	Delete(id int) error
 	AddGrade(id int, login string) error
@@ -38,9 +38,9 @@ func (this *PGRecipesRep) FindByLogin(login string) []objects.Recipe {
 	return temp
 }
 
-func (this *PGRecipesRep) FindById(id int) (objects.Recipe, error) {
-	temp := objects.Recipe{}
-	err := this.db.Where("id = ?", id).Find(&temp).Error
+func (this *PGRecipesRep) FindById(id int) (*objects.Recipe, error) {
+	temp := new(objects.Recipe)
+	err := this.db.Where("id = ?", id).Find(temp).Error
 	return temp, err
 }
 

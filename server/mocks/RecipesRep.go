@@ -70,14 +70,16 @@ func (_m *RecipesRep) DeleteGrade(id int, login string) error {
 }
 
 // FindById provides a mock function with given fields: id
-func (_m *RecipesRep) FindById(id int) (objects.Recipe, error) {
+func (_m *RecipesRep) FindById(id int) (*objects.Recipe, error) {
 	ret := _m.Called(id)
 
-	var r0 objects.Recipe
-	if rf, ok := ret.Get(0).(func(int) objects.Recipe); ok {
+	var r0 *objects.Recipe
+	if rf, ok := ret.Get(0).(func(int) *objects.Recipe); ok {
 		r0 = rf(id)
 	} else {
-		r0 = ret.Get(0).(objects.Recipe)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*objects.Recipe)
+		}
 	}
 
 	var r1 error

@@ -21,12 +21,12 @@ func TestCreateRecipe(t *testing.T) {
 	allM.Recipes = models.NewRecipe(mockRec, allM)
 	allM.Accounts = models.NewAccount(mockAcc, allM)
 	obj := dbuilder.RecipeMother{}.Obj0()
+	author := dbuilder.AccountMother{}.Obj0()
 	
-	mockAcc.On("Find", obj.Author).Return(nil, nil) //FIXME: return values here
+	mockAcc.On("Find", obj.Author).Return(author, nil).Once()
 	mockRec.On("Create", obj).Return(nil).Once()
 
-	_, err := allM.Recipes.AddRecipe(obj)
-	//FIXME: 2 values: data (because auto filling, error)
+	err := allM.Recipes.AddRecipe(obj)
 
 	assert.Nil(t, err, "Create recipe have unexpected error")
 	mockRec.AssertExpectations(t)

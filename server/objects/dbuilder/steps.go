@@ -35,3 +35,11 @@ func (StepMother) Obj1() *objects.Step {
 	b.Title = "Шаг 2"
 	return b.Build()
 }
+func (StepMother) Obj2() *objects.Step {
+	b := newStepBuilder()
+	b.Recipe = 3
+	b.Num = 1
+	b.Description = "Подогреваем кефир"
+	b.Title = "Шаг 1"
+	return b.Build()
+}

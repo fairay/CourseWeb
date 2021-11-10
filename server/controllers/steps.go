@@ -89,9 +89,10 @@ func (this *stepCtrl) post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := this.model.AddStep(id_rcp, stepDTO.ToModel(), login)
+	err = this.model.AddStep(id_rcp, stepDTO.ToModel(), login)
 	switch err {
 	case nil:
+		data, _ := this.model.GetStepLast(id_rcp)
 		responses.JsonSuccess(w, data.ToDTO())
 	case errors.UnknownAccount:
 		responses.RecordNotFound(w, "user")
