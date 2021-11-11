@@ -25,10 +25,20 @@ func (AccountMother) Obj0() *objects.Account {
 	b.HashedPassword = ""
 	return b.Build()
 }
+
 func (AccountMother) Obj1() *objects.Account {
 	b := newAccountBuilder()
 	b.Login = "test2"
 	b.Role = "user"
+	b.Salt = ""
+	b.HashedPassword = ""
+	return b.Build()
+}
+
+func (AccountMother) ObjUdp() *objects.Account {
+	b := newAccountBuilder()
+	b.Login = "test2"
+	b.Role = "admin"
 	b.Salt = ""
 	b.HashedPassword = ""
 	return b.Build()

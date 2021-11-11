@@ -15,7 +15,7 @@ func (this *CategoryBuilder) Build() *objects.Category {
 type CategoryMother struct{}
 func (CategoryMother) Obj0() *objects.Category {
 	b := newCategoryBuilder()
-	b.Title = "супы"
+	b.Title = "завтраки"
 	return b.Build()
 }
 func (CategoryMother) Obj1() *objects.Category {

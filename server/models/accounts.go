@@ -38,10 +38,6 @@ func (this *AccountM) Create(obj *objects.Account) error {
 }
 
 func (this *AccountM) UpdateRole(cur_login, login, role string) error {
-	if this.models.Accounts.IsExists(cur_login) == false {
-		return errors.UnknownAccount
-	}
-
 	cur_role, err := this.GetRole(cur_login)
 	if err != nil {
 		return errors.UnknownAccount
