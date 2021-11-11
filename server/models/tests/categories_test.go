@@ -16,8 +16,8 @@ import (
 /// CLASSIC STYLE (Stub)
 
 /*
-*
- */
+Get all category - sucess
+*/
 func TestGetAll(t *testing.T) {
 	db, err := stubConnecton();
 	if err != nil { panic(err); }
