@@ -26,9 +26,6 @@ type PGCategoriesRep struct {
 func NewCategotiesRep(db *gorm.DB) *PGCategoriesRep {
 	return &PGCategoriesRep{db}
 }
-func NewCategotiesStub(db *gorm.DB) *PGCategoriesRep {
-	return &PGCategoriesRep{db}
-}
 
 func (this *PGCategoriesRep) Create(obj *objects.Category) error {
 	return this.db.Create(obj).Error

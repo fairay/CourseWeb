@@ -43,3 +43,11 @@ func (AccountMother) ObjUdp() *objects.Account {
 	b.HashedPassword = ""
 	return b.Build()
 }
+
+func (this AccountMother) All() []objects.Account {
+	objArr := []objects.Account{
+		*this.Obj0(), 
+		*this.Obj1(),
+	}
+	return objArr
+}

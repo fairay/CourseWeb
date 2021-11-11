@@ -5,14 +5,100 @@ import (
 	"api/recipes/mocks"
 	"api/recipes/models"
 	"api/recipes/objects/dbuilder"
+	"api/recipes/repository"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
+/// CLASSIC STYLE (Stub)
+
+/*
+Get account - account exists
+*/
+func TestFindAccount(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	objArr := dbuilder.AccountMother{}.All()
+	objAcc := dbuilder.AccountMother{}.Obj0()
+
+	mockRep := repository.NewAccountsRep(db)
+	for _, obj := range objArr {
+		err := mockRep.Create(&obj)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	model := models.NewAccount(mockRep, nil)
+	res, err := model.Find(objAcc.Login)
+
+	assert.Nil(t, err, "Find has unexpected error")
+	assert.Equal(t, res, objAcc, "Find has unexpected error")
+}
+
+/*
+Get role - account exists
+*/
+func TestGetRoleAccount(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	objArr := dbuilder.AccountMother{}.All()
+	objAcc := dbuilder.AccountMother{}.Obj0()
+
+	mockRep := repository.NewAccountsRep(db)
+	for _, obj := range objArr {
+		err := mockRep.Create(&obj)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	model := models.NewAccount(mockRep, nil)
+	resRole, err := model.GetRole(objAcc.Login)
+
+	assert.Nil(t, err, "GetRole has unexpected error")
+	assert.Equal(t, resRole, objAcc.Role, "GetRole has unexpected error")
+}
+
+/*
+Account exists
+*/
+func TestLogIn(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	objArr := dbuilder.AccountMother{}.All()
+	objAcc := dbuilder.AccountMother{}.Obj0()
+
+	mockRep := repository.NewAccountsRep(db)
+	for _, obj := range objArr {
+		err := mockRep.Create(&obj)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	model := models.NewAccount(mockRep, nil)
+	res, err := model.LogIn(objAcc.Login, objAcc.HashedPassword)
+
+	assert.Nil(t, err, "GetRole has unexpected error")
+	assert.Equal(t, res, objAcc, "GetRole has unexpected error")
+}
+
+/// LONDON STYLE (Mock)
+
 /*
 Create account - successful operation
- */
+*/
 func TestCreateAccount(t *testing.T) {
 	mockRep := new(mocks.AccountsRep)
 	model := models.NewAccount(mockRep, nil)
