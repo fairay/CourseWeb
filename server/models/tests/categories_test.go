@@ -8,7 +8,6 @@ import (
 	_ "api/recipes/objects"
 	"api/recipes/objects/dbuilder"
 	"api/recipes/repository"
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -20,20 +19,23 @@ import (
 Get all category - sucess
 */
 func TestGetAll(t *testing.T) {
-	db, err := stubConnecton();
-	if err != nil { panic(err); }
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
 
 	objArr := dbuilder.CategoryMother{}.All()
 
 	mockRep := repository.NewCategotiesStub(db)
 	for _, obj := range objArr {
-		if err := mockRep.Create(&obj); err != nil { panic(err); }
+		err := mockRep.Create(&obj);
+		if  err != nil {
+			panic(err)
+		}
 	}
 
 	model := models.NewCategory(mockRep, nil)
-
 	resArr := model.GetAll()
-	fmt.Println(resArr)
 
 	assert.ElementsMatch(t, resArr, objArr)
 }
@@ -44,6 +46,7 @@ func TestGetAll(t *testing.T) {
 Create recipe - successful operation
 */
 func TestCreateCategory(t *testing.T) {
+
 	mockRep := new(mocks.CategoriesRep)
 	model := models.NewCategory(mockRep, nil)
 	obj := dbuilder.CategoryMother{}.Obj0()
@@ -96,7 +99,7 @@ func TestDelCategoryRecipe(t *testing.T) {
 	allM := new(models.Models)
 	allM.Recipes = models.NewRecipe(mockRec, allM)
 	allM.Category = models.NewCategory(mockCat, allM)
-	
+
 	objCat := dbuilder.CategoryMother{}.Obj0()
 	objRcp := dbuilder.RecipeMother{}.Obj0()
 
@@ -127,12 +130,12 @@ func TestPostCategoryRecipe(t *testing.T) {
 	objCatArr := []objects.Category{
 		*dbuilder.CategoryMother{}.Obj0(),
 	}
-	
+
 	objRcp := dbuilder.RecipeMother{}.Obj0()
 
 	mockRec.On("FindById", objRcp.Id).Return(objRcp, nil).Once()
 
-	for _, category := range(objCatArr) {
+	for _, category := range objCatArr {
 		mockCat.On("Get", category.Title).Return(nil, errors.RecordNotFound).Twice()
 		mockCat.On("Create", &category).Return(nil).Once()
 	}

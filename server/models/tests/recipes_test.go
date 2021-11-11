@@ -59,28 +59,57 @@ func TestAddGrade(t *testing.T) {
 }
 
 /*
-Delete category - successful operation (recipe/category exist)
+Delete grade - successful operation (recipe/account exist)
 */
-/*func TestDelCategoryRecipe(t *testing.T) {
+func TestDelGradeRecipe(t *testing.T) {
 	mockRec := new(mocks.RecipesRep)
-	mockCat := new(mocks.CategoriesRep)
+	mockAcc := new(mocks.AccountsRep)
 
 	allM := new(models.Models)
 	allM.Recipes = models.NewRecipe(mockRec, allM)
-	allM.Category = models.NewCategory(mockCat, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
 	
-	objCat := dbuilder.CategoryMother{}.Obj0()
 	objRcp := dbuilder.RecipeMother{}.Obj0()
+	objAcc := dbuilder.AccountMother{}.Obj0()
 
 	mockRec.On("FindById", objRcp.Id).Return(objRcp, nil).Once()
 
-	mockCat.On("Get", objCat.Title).Return(objCat, nil).Once()
+	mockAcc.On("Find", objAcc.Login).Return(objAcc, nil).Once()
 
-	mockCat.On("DelFromRecipe", objRcp.Id, objCat.Title).Return(nil).Once()
+	mockRec.On("DeleteGrade", objRcp.Id, objAcc.Login).Return(nil).Once()
 
-	err := allM.Category.DelFromRecipe(objRcp.Id, objCat)
+	err := allM.Recipes.DeleteGrade(objRcp.Id, objAcc.Login)
 
-	assert.Nil(t, err, "Deletion a category from recipe has unexpected error")
+	assert.Nil(t, err, "Deletion a grade from recipe has unexpected error")
 	mockRec.AssertExpectations(t)
-	mockCat.AssertExpectations(t)
-}*/
+	mockAcc.AssertExpectations(t)
+}
+
+/*
+Delete recipe - successful operation (admin does action)
+*/
+func TestDelRecipe(t *testing.T) {
+	mockRec := new(mocks.RecipesRep)
+	mockAcc := new(mocks.AccountsRep)
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRec, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+	
+	objRcp := dbuilder.RecipeMother{}.Obj2()
+	objAdmin := dbuilder.AccountMother{}.Obj0()
+	objAuthor := dbuilder.AccountMother{}.Obj1()
+
+	mockAcc.On("Find", objAdmin.Login).Return(objAdmin, nil).Once()
+
+	mockRec.On("FindById", objRcp.Id).Return(objRcp, nil).Once()
+	mockAcc.On("Find", objRcp.Author).Return(objAuthor, nil).Once()
+
+	mockRec.On("Delete", objRcp.Id).Return(nil).Once()
+
+	err := allM.Recipes.DeleteRecipe(objRcp.Id, objAdmin.Login)
+
+	assert.Nil(t, err, "Deletion a recipe has unexpected error")
+	mockRec.AssertExpectations(t)
+	mockAcc.AssertExpectations(t)
+}
