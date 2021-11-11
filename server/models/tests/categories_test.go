@@ -7,10 +7,38 @@ import (
 	"api/recipes/objects"
 	_ "api/recipes/objects"
 	"api/recipes/objects/dbuilder"
+	"api/recipes/repository"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+/// CLASSIC STYLE (Stub)
+
+/*
+Get all category - sucess
+*/
+func TestGetAll(t *testing.T) {
+	db, err := stubConnecton();
+	if err != nil { panic(err); }
+
+	objArr := dbuilder.CategoryMother{}.All()
+
+	mockRep := repository.NewCategotiesStub(db)
+	for _, obj := range objArr {
+		if err := mockRep.Create(&obj); err != nil { panic(err); }
+	}
+
+	model := models.NewCategory(mockRep, nil)
+
+	resArr := model.GetAll()
+	fmt.Println(resArr)
+
+	assert.ElementsMatch(t, resArr, objArr)
+}
+
+/// LONDON STYLE (Mock)
 
 /*
 Create recipe - successful operation
