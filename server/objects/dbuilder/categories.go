@@ -23,3 +23,10 @@ func (CategoryMother) Obj1() *objects.Category {
 	b.Title = "салаты"
 	return b.Build()
 }
+func (this CategoryMother) All() []objects.Category {
+	objArr := []objects.Category{
+		*this.Obj0(), 
+		*this.Obj1(),
+	}
+	return objArr
+}
