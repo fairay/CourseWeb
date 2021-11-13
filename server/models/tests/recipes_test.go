@@ -106,15 +106,11 @@ func TestFindRecipesByLogin(t *testing.T) {
 
 	mockRep := repository.NewRecipesRep(db)
 	err = mockRep.CreateList(objRcpArr)
-	if err != nil {
-		panic(err)
-	}
+	if err != nil { panic(err) }
 
 	mockAcc := repository.NewAccountsRep(db)
 	err = mockAcc.CreateList(objAccArr)
-	if err != nil {
-		panic(err)
-	}
+	if err != nil { panic(err) }
 
 	allM := new(models.Models)
 	allM.Recipes = models.NewRecipe(mockRep, allM)

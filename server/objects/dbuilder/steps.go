@@ -43,3 +43,12 @@ func (StepMother) Obj2() *objects.Step {
 	b.Title = "Шаг 1"
 	return b.Build()
 }
+
+func (this StepMother) All() []objects.Step {
+	objArr := []objects.Step{
+		*this.Obj0(), 
+		*this.Obj1(),
+		*this.Obj2(),
+	}
+	return objArr
+}

@@ -4,11 +4,108 @@ import (
 	//"api/recipes/errors"
 	"api/recipes/mocks"
 	"api/recipes/models"
+	"api/recipes/objects"
 	"api/recipes/objects/dbuilder"
+	"api/recipes/repository"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+/// CLASSIC STYLE (Stub)
+
+/*
+Get all recipe's steps - recipe exists + 2 steps 
+*/
+func TestGetSteps(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	objStpArr := dbuilder.StepMother{}.All()
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	objRcp := dbuilder.RecipeMother{}.Obj0()
+	aimArr := []objects.Step{objStpArr[0], objStpArr[1]}
+
+	mockStp := repository.NewStepsRep(db)
+	err = mockStp.CreateList(objStpArr)
+	if err != nil { panic(err) }
+
+	mockRcp := repository.NewRecipesRep(db)
+	err = mockRcp.CreateList(objRcpArr)
+	if err != nil { panic(err) }
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRcp, allM)
+	allM.Steps = models.NewStep(mockStp, allM)
+
+	resArr, err := allM.Steps.GetSteps(objRcp.Id)
+
+	assert.Nil(t, err, "GetSteps has unexpected error")
+	assert.Contains(t, aimArr, resArr, "GetSteps has unexpected error")
+}
+
+
+/*
+Get step by its number and recipe's id - recipe exists + 2 steps (in test #2)
+*/
+func TestGetStepByNum(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {panic(err)}
+
+	objStpArr := dbuilder.StepMother{}.All()
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	objRcp := dbuilder.RecipeMother{}.Obj0()
+	aimStp := dbuilder.StepMother{}.Obj1()
+
+	mockStp := repository.NewStepsRep(db)
+	err = mockStp.CreateList(objStpArr)
+	if err != nil { panic(err) }
+
+	mockRcp := repository.NewRecipesRep(db)
+	err = mockRcp.CreateList(objRcpArr)
+	if err != nil { panic(err) }
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRcp, allM)
+	allM.Steps = models.NewStep(mockStp, allM)
+
+	resStp, err := allM.Steps.GetStepByNum(objRcp.Id, aimStp.Num)
+
+	assert.Nil(t, err, "GetStepByNum has unexpected error")
+	assert.Contains(t, aimStp, resStp, "GetStepByNum has unexpected error")
+}
+
+/*
+Get last step - sucсess
+*/
+func TestGetStepLast(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil { panic(err) }
+
+	objArr := dbuilder.StepMother{}.All()
+	objRcp := dbuilder.RecipeMother{}.Obj0()
+	aimStp := dbuilder.StepMother{}.Obj1()
+
+	mockRep := repository.NewStepsRep(db)
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
+
+	model := models.NewStep(mockRep, nil)
+
+	resArr, err := model.GetStepLast(objRcp.Id)
+
+	assert.Nil(t, err, "GetStepLast has unexpected error")
+	assert.Contains(t, aimStp, resArr, "GetStepLast has unexpected error")
+}
+
+
+
+
+
+
+/// LONDON STYLE (Mock)
 
 /*
 Create step (by recipe admin) - successful operation
