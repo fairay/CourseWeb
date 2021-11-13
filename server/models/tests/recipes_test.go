@@ -43,22 +43,21 @@ func TestGetAllRecipes(t *testing.T) {
 	objArr := dbuilder.RecipeMother{}.All()
 
 	mockRep := repository.NewRecipesRep(db)
-	for _, obj := range objArr {
-		err := mockRep.Create(&obj);
-		if  err != nil {
-			panic(err)
-		}
-	}
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
 
 	model := models.NewRecipe(mockRep, nil)
+
 	resArr := model.GetAll()
 
-	assert.ElementsMatch(t, resArr, objArr)
+	compareRecipes(t, resArr, objArr)
 }
 
 /*
 Get author - account exists
 */
+
+//FIXME:
 func TestGetAuthor(t *testing.T) {
 	db, err := stubConnecton()
 	if err != nil {
@@ -71,22 +70,18 @@ func TestGetAuthor(t *testing.T) {
 	objAcc := dbuilder.AccountMother{}.Obj0()
 
 	mockRep := repository.NewRecipesRep(db)
-	for _, obj := range objRcpArr {
-		err := mockRep.Create(&obj)
-		if err != nil {
-			panic(err)
-		}
-	}
+	err = mockRep.CreateList(objRcpArr)
+	if err != nil { panic(err) }
+
 	mockAcc := repository.NewAccountsRep(db)
-	for _, obj := range objAccArr {
-		err := mockAcc.Create(&obj)
-		if err != nil {
-			panic(err)
-		}
-	}
+	err = mockAcc.CreateList(objAccArr)
+	if err != nil { panic(err) }
 
 	modelRcp := models.NewRecipe(mockRep, nil)
 	_ = models.NewAccount(mockAcc, nil)
+
+	fmt.Println(objRcpArr)
+
 	resAuthor, err := modelRcp.GetAuthor(objRcp.Id)
 
 	fmt.Println(resAuthor, objAcc)
