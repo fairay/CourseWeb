@@ -161,7 +161,7 @@ func (this *ingredientCtrl) delFromRecipe(w http.ResponseWriter, r *http.Request
 	err = this.model.DelFromRecipe(id_rcp, ingDTO.ToModel(id_rcp))
 	switch err {
 	case nil:
-		responses.TextSuccess(w, "The ingradient was successful deleted")
+		responses.TextSuccess(w, "The ingredient was successful deleted")
 	case errors.UnknownRecipe:
 		responses.BadRequest(w, "Wrong recipe's id")
 	case errors.UnknownCategory:

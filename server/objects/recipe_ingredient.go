@@ -3,8 +3,8 @@ package objects
 import "encoding/json"
 
 type RecipeIngredient struct {
-	Recipe_id int    `json:"recipe" gorm:"primary_key"`
-	Ingredient_id   string `json:"item" gorm:"primary_key"`
+	Recipe_id int    `json:"recipe" gorm:"UNIQUE_INDEX:riindex"`
+	Ingredient_id   string `json:"item" gorm:"UNIQUE_INDEX:riindex"`
 	Amount string `json:"amount"`
 }
 
