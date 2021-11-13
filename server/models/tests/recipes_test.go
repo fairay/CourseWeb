@@ -5,10 +5,89 @@ import (
 	"api/recipes/mocks"
 	"api/recipes/models"
 	"api/recipes/objects/dbuilder"
+	"api/recipes/repository"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+/// CLASSIC STYLE (Stub)
+
+/*
+Get all recipes - sucсess
+*/
+func TestGetAllRecipes(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	objArr := dbuilder.RecipeMother{}.All()
+
+	mockRep := repository.NewRecipesRep(db)
+	for _, obj := range objArr {
+		err := mockRep.Create(&obj);
+		if  err != nil {
+			panic(err)
+		}
+	}
+
+	model := models.NewRecipe(mockRep, nil)
+	resArr := model.GetAll()
+
+	assert.ElementsMatch(t, resArr, objArr)
+}
+
+/*
+Get author - account exists
+*/
+func TestGetAuthor(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	objAccArr := dbuilder.AccountMother{}.All()
+	objRcp := dbuilder.RecipeMother{}.Obj0()
+	objAcc := dbuilder.AccountMother{}.Obj0()
+
+	mockRep := repository.NewRecipesRep(db)
+	for _, obj := range objRcpArr {
+		err := mockRep.Create(&obj)
+		if err != nil {
+			panic(err)
+		}
+	}
+	mockAcc := repository.NewAccountsRep(db)
+	for _, obj := range objAccArr {
+		err := mockAcc.Create(&obj)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	modelRcp := models.NewRecipe(mockRep, nil)
+	_ = models.NewAccount(mockAcc, nil)
+	resAuthor, err := modelRcp.GetAuthor(objRcp.Id)
+
+	fmt.Println(resAuthor, objAcc)
+
+	assert.Nil(t, err, "GetAuthor has unexpected error")
+	assert.Equal(t, resAuthor, objAcc, "GetAuthor has unexpected error")
+}
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 Create recipe - successful operation
