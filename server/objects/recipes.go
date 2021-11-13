@@ -6,7 +6,7 @@ import (
 )
 
 type Recipe struct {
-	Id          int				`json:"id" gorm:"primary_key;type:serial"`
+	Id          int				`json:"id" gorm:"primary_key"`
 	Author      string			`json:"author" gorm:"foreignkey:Login"`
 	Title       string			`json:"title"`
 	CreatedAt   time.Time		`json:"created_at"`
