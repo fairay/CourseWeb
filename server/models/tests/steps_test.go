@@ -43,7 +43,7 @@ func TestGetSteps(t *testing.T) {
 	resArr, err := allM.Steps.GetSteps(objRcp.Id)
 
 	assert.Nil(t, err, "GetSteps has unexpected error")
-	assert.Contains(t, aimArr, resArr, "GetSteps has unexpected error")
+	assert.ElementsMatch(t, aimArr, resArr, "GetSteps has unexpected error")
 }
 
 
@@ -74,7 +74,7 @@ func TestGetStepByNum(t *testing.T) {
 	resStp, err := allM.Steps.GetStepByNum(objRcp.Id, aimStp.Num)
 
 	assert.Nil(t, err, "GetStepByNum has unexpected error")
-	assert.Contains(t, aimStp, resStp, "GetStepByNum has unexpected error")
+	assert.Equal(t, aimStp, resStp, "GetStepByNum has unexpected error")
 }
 
 /*
@@ -88,21 +88,23 @@ func TestGetStepLast(t *testing.T) {
 	objRcp := dbuilder.RecipeMother{}.Obj0()
 	aimStp := dbuilder.StepMother{}.Obj1()
 
-	mockRep := repository.NewStepsRep(db)
-	err = mockRep.CreateList(objArr)
+	mockStp := repository.NewStepsRep(db)
+	err = mockStp.CreateList(objArr)
 	if err != nil { panic(err) }
 
-	model := models.NewStep(mockRep, nil)
+	mockRcp := repository.NewRecipesRep(db)
+	err = mockRcp.Create(objRcp)
+	if err != nil { panic(err) }
 
-	resArr, err := model.GetStepLast(objRcp.Id)
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRcp, allM)
+	allM.Steps = models.NewStep(mockStp, allM)
+
+	resArr, err := allM.Steps.GetStepLast(objRcp.Id)
 
 	assert.Nil(t, err, "GetStepLast has unexpected error")
-	assert.Contains(t, aimStp, resArr, "GetStepLast has unexpected error")
+	assert.Equal(t, aimStp, resArr, "GetStepLast has unexpected error")
 }
-
-
-
-
 
 
 /// LONDON STYLE (Mock)
