@@ -27,12 +27,8 @@ func TestGetAll(t *testing.T) {
 	objArr := dbuilder.CategoryMother{}.All()
 
 	mockRep := repository.NewCategotiesRep(db)
-	for _, obj := range objArr {
-		err := mockRep.Create(&obj);
-		if  err != nil {
-			panic(err)
-		}
-	}
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
 
 	model := models.NewCategory(mockRep, nil)
 	resArr := model.GetAll()
@@ -53,12 +49,8 @@ func TestGet(t *testing.T) {
 	objCat := dbuilder.CategoryMother{}.Obj0()
 
 	mockRep := repository.NewCategotiesRep(db)
-	for _, obj := range objArr {
-		err := mockRep.Create(&obj);
-		if  err != nil {
-			panic(err)
-		}
-	}
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
 
 	model := models.NewCategory(mockRep, nil)
 	res, err := model.Get(objCat.Title)
@@ -84,12 +76,8 @@ func TestFind(t *testing.T) {
 	strFind := ""
 
 	mockRep := repository.NewCategotiesRep(db)
-	for _, obj := range objArr {
-		err := mockRep.Create(&obj);
-		if  err != nil {
-			panic(err)
-		}
-	}
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
 
 	model := models.NewCategory(mockRep, nil)
 	resArr, err := model.Find(strFind)
@@ -97,11 +85,7 @@ func TestFind(t *testing.T) {
 	assert.Nil(t, err, "Get has unexpected error")
 	assert.ElementsMatch(t, resArr, objCatArr)	
 }
-
-/*
-Get recipes by categories - category and recipe with such category exist
-*/
-/*func TestGetRecipes(t *testing.T) {
+func TestFindOne(t *testing.T) {
 	db, err := stubConnecton()
 	if err != nil {
 		panic(err)
@@ -109,31 +93,85 @@ Get recipes by categories - category and recipe with such category exist
 
 	objArr := dbuilder.CategoryMother{}.All()
 	objCat := dbuilder.CategoryMother{}.Obj0()
-	objRcpArr := []objects.Recipe{
-		*dbuilder.CategoryMother{}.Obj0(),
-		*dbuilder.CategoryMother{}.Obj1(),
-	}
+	expArr := []objects.Category{*objCat}
 
-	mockRep := repository.NewCategotiesStub(db)
-	for _, obj := range objArr {
-		err := mockRep.Create(&obj);
-		if  err != nil {
-			panic(err)
-		}
-	}
-	for _, obj := range objArr {
-		err := mockRep.Create(&obj);
-		if  err != nil {
-			panic(err)
-		}
-	}
+	mockRep := repository.NewCategotiesRep(db)
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
 
+	strFind := objCat.Title
 	model := models.NewCategory(mockRep, nil)
 	resArr, err := model.Find(strFind)
 
 	assert.Nil(t, err, "Get has unexpected error")
-	assert.ElementsMatch(t, resArr, objCatArr)	
-}*/
+	assert.ElementsMatch(t, resArr, expArr)	
+}
+
+/*
+Get categories by recipe - category and recipe with such recipe exist
+*/
+func TestGetByRecipe(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	catArr := dbuilder.CategoryMother{}.All()
+	recArr := dbuilder.RecipeMother{}.All()
+
+	mockCat := repository.NewCategotiesRep(db)
+	err = mockCat.CreateList(catArr)
+	if err != nil { panic(err) }
+
+	mockRec := repository.NewRecipesRep(db)
+	err = mockRec.CreateList(recArr)
+	if err != nil { panic(err) }
+
+	mockCat.AddToRecipe(recArr[0].Id, catArr[0].Title)
+	mockCat.AddToRecipe(recArr[1].Id, catArr[0].Title)
+	mockCat.AddToRecipe(recArr[1].Id, catArr[1].Title)
+	expArr := []objects.Category{catArr[0]}
+	
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRec, allM)
+	allM.Category = models.NewCategory(mockCat, allM)
+	resArr, err := allM.Category.GetByRecipe(recArr[0].Id)
+
+	assert.Nil(t, err, "Get has unexpected error")
+	assert.ElementsMatch(t, resArr, expArr)	
+}
+
+/*
+Get recipes by categories - category and recipe with such category exist
+*/
+func TestGetRecipes(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	catArr := dbuilder.CategoryMother{}.All()
+	recArr := dbuilder.RecipeMother{}.All()
+
+	mockCat := repository.NewCategotiesRep(db)
+	err = mockCat.CreateList(catArr)
+	if err != nil { panic(err) }
+
+	mockRec := repository.NewRecipesRep(db)
+	err = mockRec.CreateList(recArr)
+	if err != nil { panic(err) }
+	
+	mockCat.AddToRecipe(recArr[0].Id, catArr[0].Title)
+	mockCat.AddToRecipe(recArr[1].Id, catArr[0].Title)
+	mockCat.AddToRecipe(recArr[1].Id, catArr[1].Title)
+	expArr := []objects.Recipe{recArr[0], recArr[1]}
+	
+	model := models.NewCategory(mockCat, nil)
+	resArr, err := model.GetRecipes(catArr[0].Title)
+
+	assert.Nil(t, err, "Get has unexpected error")
+	compareRecipes(t, resArr, expArr, "Get has unexpected object array")
+}
 
 
 /// LONDON STYLE (Mock)

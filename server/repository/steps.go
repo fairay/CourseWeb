@@ -7,11 +7,14 @@ import (
 )
 
 type StepsRep interface {
+	Create(obj *objects.Step) error
+	CreateList(obj []objects.Step) error
+	
 	List(recipeId int) ([]objects.Step, error)
 	FindSteps(id_rcp int) ([]objects.Step, error)
 	FindStepByNum(id_rcp, step int) (objects.Step, error)
 	FindStepLast(id_rcp int) objects.Step
-	Create(obj *objects.Step) error
+
 	Delete(id_rcp, step int) error
 	UpdateStep(id_rcp int, step int, obj *objects.Step) error
 }
@@ -53,6 +56,16 @@ func (this *PGStepsRep) FindStepLast(id_rcp int) objects.Step {
 func (this *PGStepsRep) Create(obj *objects.Step) error {
 	return this.db.Create(obj).Error
 }
+
+func (this *PGStepsRep) CreateList(objArr []objects.Step) error {
+	for _, obj := range objArr {
+		if err := this.Create(&obj); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 
 func (this *PGStepsRep) Delete(id_rcp, step int) error {
 	temp := objects.Step{}

@@ -7,15 +7,18 @@ import (
 )
 
 type RecipesRep interface {
+	Create(rcp *objects.Recipe) error
+	CreateList(objArr []objects.Recipe) error
+
 	List() []objects.Recipe
 	FindByLogin(login string) []objects.Recipe
 	FindById(id int) (*objects.Recipe, error)
-	Create(rcp *objects.Recipe) error
+	GetLikedByLogin(login string) ([]objects.Recipe, error)
+	GetAmountGrades(id int) int
+	
 	Delete(id int) error
 	AddGrade(id int, login string) error
 	DeleteGrade(id int, login string) error
-	GetLikedByLogin(login string) ([]objects.Recipe, error)
-	GetAmountGrades(id int) int
 }
 
 type PGRecipesRep struct {
@@ -47,6 +50,14 @@ func (this *PGRecipesRep) FindById(id int) (*objects.Recipe, error) {
 func (this *PGRecipesRep) Create(obj *objects.Recipe) error {
 	obj.Id = 0
 	return this.db.Create(obj).Error
+}
+func (this *PGRecipesRep) CreateList(objArr []objects.Recipe) error {
+	for _, obj := range objArr {
+		if err := this.Create(&obj); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (this *PGRecipesRep) Delete(id int) error {

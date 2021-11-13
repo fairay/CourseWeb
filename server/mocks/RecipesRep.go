@@ -41,6 +41,20 @@ func (_m *RecipesRep) Create(rcp *objects.Recipe) error {
 	return r0
 }
 
+// CreateList provides a mock function with given fields: objArr
+func (_m *RecipesRep) CreateList(objArr []objects.Recipe) error {
+	ret := _m.Called(objArr)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func([]objects.Recipe) error); ok {
+		r0 = rf(objArr)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // Delete provides a mock function with given fields: id
 func (_m *RecipesRep) Delete(id int) error {
 	ret := _m.Called(id)

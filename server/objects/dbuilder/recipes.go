@@ -58,7 +58,6 @@ func (RecipeMother) Obj2() *objects.Recipe {
 
 	return b.Build()
 }
-
 func (this RecipeMother) All() []objects.Recipe {
 	objArr := []objects.Recipe{
 		*this.Obj0(), 

@@ -4,13 +4,30 @@ import (
 	//"api/recipes/errors"
 	"api/recipes/mocks"
 	"api/recipes/models"
+	"api/recipes/objects"
 	"api/recipes/objects/dbuilder"
 	"api/recipes/repository"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
+
+func compareRecipe(t *testing.T, objA, objB objects.Recipe, msgAndArgs ...interface{}) (ok bool) {
+	objA.CreatedAt = time.Time{}
+	objB.CreatedAt = time.Time{}
+	return assert.Equal(t, objA, objB, msgAndArgs)
+}
+func compareRecipes(t *testing.T, listA, listB []objects.Recipe, msgAndArgs ...interface{}) (ok bool) {
+	for i := 0; i < len(listA); i++ {
+		listA[i].CreatedAt = time.Time{}
+	}
+	for i := 0; i < len(listB); i++ {
+		listB[i].CreatedAt = time.Time{}
+	}
+	return assert.ElementsMatch(t, listA, listB, msgAndArgs)
+}
 
 /// CLASSIC STYLE (Stub)
 
@@ -77,6 +94,8 @@ func TestGetAuthor(t *testing.T) {
 	assert.Nil(t, err, "GetAuthor has unexpected error")
 	assert.Equal(t, resAuthor, objAcc, "GetAuthor has unexpected error")
 }
+
+
 
 
 

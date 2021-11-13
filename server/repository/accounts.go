@@ -9,9 +9,12 @@ import (
 
 type AccountsRep interface {
 	Create(obj *objects.Account) error
-	UpdateRole(login, role string) error
+	CreateList(obj []objects.Account) error
+
 	Find(login string) (*objects.Account, error)
 	FindLikedRecipe(id_rcp int) ([]objects.Account, error)
+	
+	UpdateRole(login, role string) error
 }
 
 type PGAccountsRep struct {
@@ -24,6 +27,15 @@ func NewAccountsRep(db *gorm.DB) *PGAccountsRep {
 
 func (this *PGAccountsRep) Create(obj *objects.Account) error {
 	return this.db.Create(obj).Error
+}
+
+func (this *PGAccountsRep) CreateList(objArr []objects.Account) error {
+	for _, obj := range objArr {
+		if err := this.Create(&obj); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (this *PGAccountsRep) UpdateRole(login, role string) error {

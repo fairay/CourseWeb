@@ -41,6 +41,20 @@ func (_m *CategoriesRep) Create(obj *objects.Category) error {
 	return r0
 }
 
+// CreateList provides a mock function with given fields: obj
+func (_m *CategoriesRep) CreateList(obj []objects.Category) error {
+	ret := _m.Called(obj)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func([]objects.Category) error); ok {
+		r0 = rf(obj)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // DelFromRecipe provides a mock function with given fields: id_rcp, ctg
 func (_m *CategoriesRep) DelFromRecipe(id_rcp int, ctg string) error {
 	ret := _m.Called(id_rcp, ctg)
