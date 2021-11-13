@@ -8,8 +8,10 @@ import (
 	_ "api/recipes/objects"
 	"api/recipes/utils"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -29,7 +31,6 @@ func initDBConnection(cnf utils.DBConfiguration) *gorm.DB {
 		utils.Logger.Print("DB Connection Established")
 	}
 
-	// TODO: learn db connection setup actions
 	db.SingularTable(true)
 	return db
 }
@@ -51,6 +52,8 @@ func initControllers(r *mux.Router, m *models.Models) {
 // @Description API for culinary recipes (BMSTU Web development cource project)
 // @securityDefinitions.basic BasicAuth
 func main() {
+	rand.Seed(time.Now().UnixNano())
+
 	utils.InitConfig(os.Args)
 	utils.InitLogger()
 	defer utils.CloseLogger()

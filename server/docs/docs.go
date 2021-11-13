@@ -1144,7 +1144,7 @@ var doc = `{
                 },
                 "password": {
                     "type": "string",
-                    "example": "0"
+                    "example": "admin"
                 },
                 "role": {
                     "type": "string",

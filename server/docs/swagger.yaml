@@ -5,7 +5,7 @@ definitions:
         example: admin
         type: string
       password:
-        example: "0"
+        example: admin
         type: string
       role:
         example: admin

@@ -16,7 +16,7 @@ type Account struct {
 type AccountDTO struct {
 	Login			string `json:"login" example:"admin"`
 	Role			string `json:"role" example:"admin"`
-	Password		string `json:"password" example:"0"`
+	Password		string `json:"password" example:"admin"`
 }
 
 func (Account) TableName() string {
