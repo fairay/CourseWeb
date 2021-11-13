@@ -50,7 +50,7 @@ func TestNotExistsIngredients(t *testing.T) {
 	if err != nil { panic(err) }
 
 	model := models.NewIngredient(mockRep, nil)
-	res := model.IsExists("sheeeesh")
+	res := model.IsExists(nWord)
 
 	assert.Equal(t, res, false, "Wrong exists bool")
 }

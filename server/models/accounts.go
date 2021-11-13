@@ -4,9 +4,7 @@ import (
 	"api/recipes/errors"
 	"api/recipes/objects"
 	"api/recipes/repository"
-	"math/rand"
-
-	"golang.org/x/crypto/bcrypt"
+	"api/recipes/utils"
 )
 
 const (
@@ -24,33 +22,13 @@ func NewAccount(rep repository.AccountsRep, models *Models) *AccountM {
 	return &AccountM{rep, models}
 }
 
-func (this *AccountM) RndSalt(size int) (salt string){
-	genSalt := make([]byte, size)
-	for i := 0; i < size; i++ {
-		genSalt[i] = byte(rand.Intn(127 - 32) + 32)
-	}
-	return string(genSalt)
-}
-func (this *AccountM) HashPassword(password string) (salt, hash string) {
-	salt = this.RndSalt(64)
-
-	hashByte, _ := bcrypt.GenerateFromPassword([]byte(password + salt), bcrypt.DefaultCost)
-	hash = string(hashByte)
-
-	return
-}
-func (this *AccountM) CmpPassword(password, salt, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password + salt))
-	return err == nil
-}
-
 func (this *AccountM) Create(obj *objects.Account) error {
 	if this.IsExists(obj.Login) {
 		return errors.AccountExists
 	}
 
 	obj.Role = UserRole
-	obj.Salt, obj.HashedPassword = this.HashPassword(obj.HashedPassword)
+	obj.Salt, obj.HashedPassword = utils.HashPassword(obj.HashedPassword)
 
 	err := this.rep.Create(obj)
 	if err != nil {
@@ -114,7 +92,7 @@ func (this *AccountM) LogIn(login string, password string) (acc *objects.Account
 	if acc, err = this.Find(login); err != nil {
 		return nil, err
 	}
-	if !this.CmpPassword(password, acc.Salt, acc.HashedPassword) {
+	if !utils.CmpPassword(password, acc.Salt, acc.HashedPassword) {
 		return nil, errors.WrongPassword
 	}
 

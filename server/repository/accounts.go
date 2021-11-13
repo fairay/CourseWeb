@@ -49,10 +49,10 @@ func (this *PGAccountsRep) Find(login string) (*objects.Account, error) {
 	case nil:
 		break
 	case gorm.ErrRecordNotFound:
-		err = errors.RecordNotFound
+		temp, err = nil, errors.RecordNotFound
 		break
 	default:
-		err = errors.UnknownError
+		temp, err = nil, errors.UnknownError
 	}
 
 	return temp, err
