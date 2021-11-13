@@ -27,6 +27,20 @@ func (_m *AccountsRep) Create(obj *objects.Account) error {
 	return r0
 }
 
+// CreateList provides a mock function with given fields: obj
+func (_m *AccountsRep) CreateList(obj []objects.Account) error {
+	ret := _m.Called(obj)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func([]objects.Account) error); ok {
+		r0 = rf(obj)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // Find provides a mock function with given fields: login
 func (_m *AccountsRep) Find(login string) (*objects.Account, error) {
 	ret := _m.Called(login)

@@ -9,8 +9,11 @@ import (
 
 type IngredientsRep interface {
 	Create(obj *objects.Ingredient) error
+	CreateList(obj []objects.Ingredient) error
+
 	Get(title string) (*objects.Ingredient, error)
 	FindByRecipe(idRecipe int) ([]objects.RecipeIngredient, error)
+
 	AddToRecipe(obj *objects.RecipeIngredient) error
 	ReplaceInRecipe(id_rcp int, arr []objects.RecipeIngredient) error
 	DelFromRecipe(idRecipe int, title string) error
@@ -28,6 +31,16 @@ func NewIngredientsRep(db *gorm.DB) *PGIngredientsRep {
 func (this *PGIngredientsRep) Create(obj *objects.Ingredient) error {
 	return this.db.Create(obj).Error
 }
+
+func (this *PGIngredientsRep) CreateList(objArr []objects.Ingredient) error {
+	for _, obj := range objArr {
+		if err := this.Create(&obj); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (this *PGIngredientsRep) Get(title string) (*objects.Ingredient, error) {
 	temp := new(objects.Ingredient)
 	err := this.db.Where("LOWER(title) = ?", strings.ToLower(title)).Find(temp).Error

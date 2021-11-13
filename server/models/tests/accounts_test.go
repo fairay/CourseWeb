@@ -26,12 +26,8 @@ func TestFindAccount(t *testing.T) {
 	objAcc := dbuilder.AccountMother{}.Obj0()
 
 	mockRep := repository.NewAccountsRep(db)
-	for _, obj := range objArr {
-		err := mockRep.Create(&obj)
-		if err != nil {
-			panic(err)
-		}
-	}
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
 
 	model := models.NewAccount(mockRep, nil)
 	res, err := model.Find(objAcc.Login)
@@ -53,12 +49,8 @@ func TestGetRoleAccount(t *testing.T) {
 	objAcc := dbuilder.AccountMother{}.Obj0()
 
 	mockRep := repository.NewAccountsRep(db)
-	for _, obj := range objArr {
-		err := mockRep.Create(&obj)
-		if err != nil {
-			panic(err)
-		}
-	}
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
 
 	model := models.NewAccount(mockRep, nil)
 	resRole, err := model.GetRole(objAcc.Login)
@@ -80,12 +72,8 @@ func TestLogIn(t *testing.T) {
 	objAcc := dbuilder.AccountMother{}.Obj0()
 
 	mockRep := repository.NewAccountsRep(db)
-	for _, obj := range objArr {
-		err := mockRep.Create(&obj)
-		if err != nil {
-			panic(err)
-		}
-	}
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
 
 	model := models.NewAccount(mockRep, nil)
 	res, err := model.LogIn(objAcc.Login, objAcc.HashedPassword)

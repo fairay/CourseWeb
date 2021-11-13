@@ -9,11 +9,14 @@ import (
 
 type CategoriesRep interface {
 	Create(obj *objects.Category) error
+	CreateList(obj []objects.Category) error
+	
 	List() []objects.Category
 	Find(ctg string) ([]objects.Category, error)
 	Get(ctg string) (*objects.Category, error)
 	FindRecipes(ctg string) ([]objects.Recipe, error)
 	FindByRecipe(id_rcp int) ([]objects.Category, error)
+
 	AddToRecipe(id_rcp int, ctg string) error
 	ReplaceInRecipe(id_rcp int, arr []objects.Category) error
 	DelFromRecipe(id_rcp int, ctg string) error
@@ -29,6 +32,15 @@ func NewCategotiesRep(db *gorm.DB) *PGCategoriesRep {
 
 func (this *PGCategoriesRep) Create(obj *objects.Category) error {
 	return this.db.Create(obj).Error
+}
+
+func (this *PGCategoriesRep) CreateList(objArr []objects.Category) error {
+	for _, obj := range objArr {
+		if err := this.Create(&obj); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (this *PGCategoriesRep) List() []objects.Category {

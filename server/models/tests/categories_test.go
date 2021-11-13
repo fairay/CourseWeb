@@ -27,12 +27,8 @@ func TestGetAll(t *testing.T) {
 	objArr := dbuilder.CategoryMother{}.All()
 
 	mockRep := repository.NewCategotiesRep(db)
-	for _, obj := range objArr {
-		err := mockRep.Create(&obj);
-		if  err != nil {
-			panic(err)
-		}
-	}
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
 
 	model := models.NewCategory(mockRep, nil)
 	resArr := model.GetAll()
@@ -53,12 +49,8 @@ func TestGet(t *testing.T) {
 	objCat := dbuilder.CategoryMother{}.Obj0()
 
 	mockRep := repository.NewCategotiesRep(db)
-	for _, obj := range objArr {
-		err := mockRep.Create(&obj);
-		if  err != nil {
-			panic(err)
-		}
-	}
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
 
 	model := models.NewCategory(mockRep, nil)
 	res, err := model.Get(objCat.Title)
@@ -84,12 +76,8 @@ func TestFind(t *testing.T) {
 	strFind := ""
 
 	mockRep := repository.NewCategotiesRep(db)
-	for _, obj := range objArr {
-		err := mockRep.Create(&obj);
-		if  err != nil {
-			panic(err)
-		}
-	}
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
 
 	model := models.NewCategory(mockRep, nil)
 	resArr, err := model.Find(strFind)
@@ -108,12 +96,8 @@ func TestFindOne(t *testing.T) {
 	expArr := []objects.Category{*objCat}
 
 	mockRep := repository.NewCategotiesRep(db)
-	for _, obj := range objArr {
-		err := mockRep.Create(&obj);
-		if  err != nil {
-			panic(err)
-		}
-	}
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
 
 	strFind := objCat.Title
 	model := models.NewCategory(mockRep, nil)
@@ -136,19 +120,13 @@ func TestGetByRecipe(t *testing.T) {
 	recArr := dbuilder.RecipeMother{}.All()
 
 	mockCat := repository.NewCategotiesRep(db)
+	err = mockCat.CreateList(catArr)
+	if err != nil { panic(err) }
+
 	mockRec := repository.NewRecipesRep(db)
-	for _, obj := range catArr {
-		err := mockCat.Create(&obj);
-		if  err != nil {
-			panic(err)
-		}
-	}
-	for _, obj := range recArr {
-		err := mockRec.Create(&obj);
-		if  err != nil {
-			panic(err)
-		}
-	}
+	err = mockRec.CreateList(recArr)
+	if err != nil { panic(err) }
+
 	mockCat.AddToRecipe(recArr[0].Id, catArr[0].Title)
 	mockCat.AddToRecipe(recArr[1].Id, catArr[0].Title)
 	mockCat.AddToRecipe(recArr[1].Id, catArr[1].Title)
@@ -176,19 +154,13 @@ func TestGetRecipes(t *testing.T) {
 	recArr := dbuilder.RecipeMother{}.All()
 
 	mockCat := repository.NewCategotiesRep(db)
+	err = mockCat.CreateList(catArr)
+	if err != nil { panic(err) }
+
 	mockRec := repository.NewRecipesRep(db)
-	for _, obj := range catArr {
-		err := mockCat.Create(&obj);
-		if  err != nil {
-			panic(err)
-		}
-	}
-	for _, obj := range recArr {
-		err := mockRec.Create(&obj);
-		if  err != nil {
-			panic(err)
-		}
-	}
+	err = mockRec.CreateList(recArr)
+	if err != nil { panic(err) }
+	
 	mockCat.AddToRecipe(recArr[0].Id, catArr[0].Title)
 	mockCat.AddToRecipe(recArr[1].Id, catArr[0].Title)
 	mockCat.AddToRecipe(recArr[1].Id, catArr[1].Title)
