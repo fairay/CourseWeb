@@ -44,10 +44,20 @@ func (AccountMother) ObjUdp() *objects.Account {
 	return b.Build()
 }
 
+func (AccountMother) Obj2() *objects.Account {
+	b := newAccountBuilder()
+	b.Login = "test3"
+	b.Role = "user"
+	b.Salt = ""
+	b.HashedPassword = ""
+	return b.Build()
+}
+
 func (this AccountMother) All() []objects.Account {
 	objArr := []objects.Account{
 		*this.Obj0(), 
 		*this.Obj1(),
+		*this.Obj2(),
 	}
 	return objArr
 }
