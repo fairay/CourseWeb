@@ -15,10 +15,54 @@ import (
 
 /// CLASSIC STYLE (Stub)
 
+
+/*
+Check category exists - category exists
+*/
+func TestExistsCategory(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	objArr := dbuilder.CategoryMother{}.All()
+	objCat := dbuilder.CategoryMother{}.Obj0()
+
+	mockRep := repository.NewCategotiesRep(db)
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
+
+	model := models.NewCategory(mockRep, nil)
+	res := model.IsExists(objCat.Title)
+
+	assert.Equal(t, res, true, "Wrong exists bool")
+}
+/*
+category not exists
+*/
+func TestNotExistsCategory(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	objArr := dbuilder.CategoryMother{}.All()
+
+	mockRep := repository.NewCategotiesRep(db)
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
+
+	model := models.NewCategory(mockRep, nil)
+	res := model.IsExists("sheeeesh")
+
+	assert.Equal(t, res, false, "Wrong exists bool")
+}
+
+
 /*
 Get all category - sucсess
 */
-func TestGetAll(t *testing.T) {
+func TestGetAllCategory(t *testing.T) {
 	db, err := stubConnecton()
 	if err != nil {
 		panic(err)
@@ -39,7 +83,7 @@ func TestGetAll(t *testing.T) {
 /*
 Get category - category exists
 */
-func TestGet(t *testing.T) {
+func TestGetCategory(t *testing.T) {
 	db, err := stubConnecton()
 	if err != nil {
 		panic(err)
@@ -62,7 +106,7 @@ func TestGet(t *testing.T) {
 /*
 Find categories - input: "" result: all categories
 */
-func TestFind(t *testing.T) {
+func TestFindCategory(t *testing.T) {
 	db, err := stubConnecton()
 	if err != nil {
 		panic(err)
@@ -85,7 +129,7 @@ func TestFind(t *testing.T) {
 	assert.Nil(t, err, "Get has unexpected error")
 	assert.ElementsMatch(t, resArr, objCatArr)	
 }
-func TestFindOne(t *testing.T) {
+func TestFindOneCategory(t *testing.T) {
 	db, err := stubConnecton()
 	if err != nil {
 		panic(err)
@@ -110,7 +154,7 @@ func TestFindOne(t *testing.T) {
 /*
 Get categories by recipe - category and recipe with such recipe exist
 */
-func TestGetByRecipe(t *testing.T) {
+func TestGetByRecipeCategory(t *testing.T) {
 	db, err := stubConnecton()
 	if err != nil {
 		panic(err)
@@ -144,7 +188,7 @@ func TestGetByRecipe(t *testing.T) {
 /*
 Get recipes by categories - category and recipe with such category exist
 */
-func TestGetRecipes(t *testing.T) {
+func TestGetRecipesCategory(t *testing.T) {
 	db, err := stubConnecton()
 	if err != nil {
 		panic(err)

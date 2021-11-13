@@ -25,8 +25,23 @@ func (RecipeIngredientMother) Obj0() *objects.RecipeIngredient {
 }
 func (RecipeIngredientMother) Obj1() *objects.RecipeIngredient {
 	b := newRecipeIngredientBuilder()
-	b.Recipe_id = 1
+	b.Recipe_id = 2
 	b.Ingredient_id = "соль"
 	b.Amount = "1 щепотка"
 	return b.Build()
+}
+func (RecipeIngredientMother) Obj2() *objects.RecipeIngredient {
+	b := newRecipeIngredientBuilder()
+	b.Recipe_id = 1
+	b.Ingredient_id = "соль"
+	b.Amount = "по вкусу"
+	return b.Build()
+}
+func (this RecipeIngredientMother) All() []objects.RecipeIngredient {
+	objArr := []objects.RecipeIngredient {
+		*this.Obj0(), 
+		*this.Obj1(),
+		*this.Obj2(),
+	}
+	return objArr
 }

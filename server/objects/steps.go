@@ -3,8 +3,8 @@ package objects
 import "encoding/json"
 
 type Step struct {
-	Recipe      int    `json:"recipe" gorm:"primary_key;foreignkey:Id"`
-	Num         int    `json:"num" gorm:"autoincrement:true;primary_key"`
+	Recipe      int    `json:"recipe" gorm:"UNIQUE_INDEX:stepindex;foreignkey:Id"`
+	Num         int    `json:"num" gorm:"UNIQUE_INDEX:stepindex;autoincrement:true"`
 	Description string `json:"description"`
 	Title       string `json:"title"`
 }

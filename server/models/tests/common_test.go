@@ -9,6 +9,12 @@ import (
 
 func stubConnecton() (*gorm.DB, error) {
 	db, err := gorm.Open("sqlite3", ":memory:?cache=shared")
-	db.AutoMigrate(objects.RecipeCategory{}, objects.Category{}, objects.Recipe{}, objects.Account{})
+	db.AutoMigrate(
+		objects.Recipe{},
+		objects.Account{},
+		objects.Step{},
+		objects.RecipeCategory{}, objects.Category{},
+		objects.Ingredient{}, objects.RecipeIngredient{},
+	)
 	return db, err
 }

@@ -6,10 +6,119 @@ import (
 	"api/recipes/models"
 	"api/recipes/objects"
 	"api/recipes/objects/dbuilder"
+	"api/recipes/repository"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+/// CLASSIC STYLE (Stub)
+/*
+Check ingredient exists - ingredient exists
+*/
+func TestExistsIngredients(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	objArr := dbuilder.IngredientMother{}.All()
+	objCat := dbuilder.IngredientMother{}.Obj0()
+
+	mockRep := repository.NewIngredientsRep(db)
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
+
+	model := models.NewIngredient(mockRep, nil)
+	res := model.IsExists(objCat.Title)
+
+	assert.Equal(t, res, true, "Wrong exists bool")
+}
+/*
+ingredient not exists
+*/
+func TestNotExistsIngredients(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	objArr := dbuilder.IngredientMother{}.All()
+
+	mockRep := repository.NewIngredientsRep(db)
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
+
+	model := models.NewIngredient(mockRep, nil)
+	res := model.IsExists("sheeeesh")
+
+	assert.Equal(t, res, false, "Wrong exists bool")
+}
+
+/*
+Get all ingredients - sucсess
+*/
+func TestGetIngredients(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	objArr := dbuilder.IngredientMother{}.All()
+	objCat := dbuilder.IngredientMother{}.Obj0()
+
+	mockRep := repository.NewIngredientsRep(db)
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
+
+	model := models.NewIngredient(mockRep, nil)
+	res, err := model.Get(objCat.Title)
+
+	assert.Nil(t, err, "Get has unexpected error")
+	assert.Equal(t, res, objCat, "Get has unexpected error")
+}
+
+/*
+Get ingredients by recipe - ingredients and recipe with such recipe exist
+*/
+func TestGetByRecipeIngredients(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	ingArr := dbuilder.IngredientMother{}.All()
+	recArr := dbuilder.RecipeMother{}.All()
+	ingRecArr := dbuilder.RecipeIngredientMother{}.All()
+
+	mockIng := repository.NewIngredientsRep(db)
+	err = mockIng.CreateList(ingArr)
+	if err != nil { panic(err) }
+
+	mockRec := repository.NewRecipesRep(db)
+	err = mockRec.CreateList(recArr)
+	if err != nil { panic(err) }
+
+	for _, obj := range ingRecArr {
+		mockIng.AddToRecipe(&obj)
+		if err != nil {
+			panic(err) 
+		}
+	}
+	expArr := []objects.RecipeIngredient{ingRecArr[0], ingRecArr[2]}
+	
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRec, allM)
+	allM.Ingredients = models.NewIngredient(mockIng, allM)
+	resArr, err := allM.Ingredients.GetByRecipe(recArr[0].Id)
+
+	assert.Nil(t, err, "Get has unexpected error")
+	assert.ElementsMatch(t, resArr, expArr)	
+}
+
+
+
+/// LONDON STYLE (Mock)
 
 /*
 Create ingredient - successful operation
@@ -27,7 +136,6 @@ func TestCreateIngredient(t *testing.T) {
 	assert.Nil(t, err, "Create ingredient have unexpected error")
 	mockRep.AssertExpectations(t)
 }
-
 
 /*
 Add ingredient to recipe - successful operation, new ingredient is created
