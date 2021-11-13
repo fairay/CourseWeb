@@ -7,7 +7,6 @@ import (
 	"api/recipes/objects"
 	"api/recipes/objects/dbuilder"
 	"api/recipes/repository"
-	"fmt"
 	"testing"
 	"time"
 
@@ -44,7 +43,9 @@ func TestGetAllRecipes(t *testing.T) {
 
 	mockRep := repository.NewRecipesRep(db)
 	err = mockRep.CreateList(objArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	model := models.NewRecipe(mockRep, nil)
 
@@ -56,8 +57,6 @@ func TestGetAllRecipes(t *testing.T) {
 /*
 Get author - account exists
 */
-
-//FIXME:
 func TestGetAuthor(t *testing.T) {
 	db, err := stubConnecton()
 	if err != nil {
@@ -71,37 +70,168 @@ func TestGetAuthor(t *testing.T) {
 
 	mockRep := repository.NewRecipesRep(db)
 	err = mockRep.CreateList(objRcpArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	mockAcc := repository.NewAccountsRep(db)
 	err = mockAcc.CreateList(objAccArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
-	modelRcp := models.NewRecipe(mockRep, nil)
-	_ = models.NewAccount(mockAcc, nil)
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRep, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
 
-	fmt.Println(objRcpArr)
-
-	resAuthor, err := modelRcp.GetAuthor(objRcp.Id)
-
-	fmt.Println(resAuthor, objAcc)
+	resAuthor, err := allM.Recipes.GetAuthor(objRcp.Id)
 
 	assert.Nil(t, err, "GetAuthor has unexpected error")
 	assert.Equal(t, resAuthor, objAcc, "GetAuthor has unexpected error")
 }
 
+/*
+Find recipes by login - sucсess
+*/
+func TestFindRecipesByLogin(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
 
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	objAccArr := dbuilder.AccountMother{}.All()
+	objAcc := dbuilder.AccountMother{}.Obj0()
+	aimArr := []objects.Recipe{objRcpArr[0], objRcpArr[1]}
 
+	mockRep := repository.NewRecipesRep(db)
+	err = mockRep.CreateList(objRcpArr)
+	if err != nil {
+		panic(err)
+	}
 
+	mockAcc := repository.NewAccountsRep(db)
+	err = mockAcc.CreateList(objAccArr)
+	if err != nil {
+		panic(err)
+	}
 
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRep, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
 
+	resArr, _ := allM.Recipes.FindByLogin(objAcc.Login)
 
+	compareRecipes(t, resArr, aimArr)
+}
 
+/*
+Find recipes by its id - sucсess
+*/
+func TestFindRecipesById(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
 
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	aimRcp := dbuilder.RecipeMother{}.Obj0()
 
+	mockRep := repository.NewRecipesRep(db)
+	err = mockRep.CreateList(objRcpArr)
+	if err != nil {
+		panic(err)
+	}
 
+	model := models.NewRecipe(mockRep, nil)
 
+	resRcp, _ := model.FindById(aimRcp.Id)
 
+	compareRecipe(t, *aimRcp, *resRcp)
+}
+
+/*
+Get amount of grades - 2 likes
+*/
+func TestGetAmountGrades(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	objAccArr := dbuilder.AccountMother{}.All()
+	objRcp := dbuilder.RecipeMother{}.Obj0()
+	objAcc1 := dbuilder.AccountMother{}.Obj1()
+	objAcc2 := dbuilder.AccountMother{}.Obj2()
+	aimNum := 2
+
+	mockRep := repository.NewRecipesRep(db)
+	err = mockRep.CreateList(objRcpArr)
+	if err != nil {
+		panic(err)
+	}
+
+	mockAcc := repository.NewAccountsRep(db)
+	err = mockAcc.CreateList(objAccArr)
+	if err != nil {
+		panic(err)
+	}
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRep, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+
+	_ = allM.Recipes.AddGrade(objRcp.Id, objAcc1.Login)
+	_ = allM.Recipes.AddGrade(objRcp.Id, objAcc2.Login)
+
+	resNum, err := allM.Recipes.GetAmountGrades(objRcp.Id)
+
+	assert.Nil(t, err, "GetAmountGrades has unexpected error")
+	assert.Equal(t, aimNum, resNum, "GetAmountGrades returns wrong answer")
+}
+
+/*
+Get liked by login - 1 like, account/recipe exist
+*/
+func TestGetLikedByLogin(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {
+		panic(err)
+	}
+
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	objAccArr := dbuilder.AccountMother{}.All()
+	objAcc := dbuilder.AccountMother{}.Obj1()
+
+	aimArr := []objects.Recipe{objRcpArr[0]}
+
+	mockRep := repository.NewRecipesRep(db)
+	err = mockRep.CreateList(objRcpArr)
+	if err != nil {
+		panic(err)
+	}
+
+	mockAcc := repository.NewAccountsRep(db)
+	err = mockAcc.CreateList(objAccArr)
+	if err != nil {
+		panic(err)
+	}
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRep, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+
+	for i := 0; i < len(aimArr); i++ {
+		_ = allM.Recipes.AddGrade(aimArr[i].Id, objAcc.Login)
+	}
+
+	resArr, err := allM.Recipes.GetLikedByLogin(objAcc.Login)
+
+	compareRecipes(t, resArr, aimArr)
+}
+
+/// LONDON STYLE (Mock)
 
 /*
 Create recipe - successful operation
@@ -115,13 +245,13 @@ func TestCreateRecipe(t *testing.T) {
 	allM.Accounts = models.NewAccount(mockAcc, allM)
 	obj := dbuilder.RecipeMother{}.Obj0()
 	author := dbuilder.AccountMother{}.Obj0()
-	
+
 	mockAcc.On("Find", obj.Author).Return(author, nil).Once()
 	mockRec.On("Create", obj).Return(nil).Once()
 
 	err := allM.Recipes.AddRecipe(obj)
 
-	assert.Nil(t, err, "Create recipe have unexpected error")
+	assert.Nil(t, err, "Create recipe has unexpected error")
 	mockRec.AssertExpectations(t)
 	mockAcc.AssertExpectations(t)
 }
@@ -139,7 +269,7 @@ func TestAddGrade(t *testing.T) {
 
 	obj := dbuilder.RecipeMother{}.Obj0()
 	acc := dbuilder.AccountMother{}.Obj0()
-	
+
 	mockRec.On("FindById", obj.Id).Return(obj, nil).Once()
 	mockAcc.On("Find", acc.Login).Return(acc, nil).Once()
 	mockRec.On("AddGrade", obj.Id, acc.Login).Return(nil).Once()
@@ -161,7 +291,7 @@ func TestDelGradeRecipe(t *testing.T) {
 	allM := new(models.Models)
 	allM.Recipes = models.NewRecipe(mockRec, allM)
 	allM.Accounts = models.NewAccount(mockAcc, allM)
-	
+
 	objRcp := dbuilder.RecipeMother{}.Obj0()
 	objAcc := dbuilder.AccountMother{}.Obj0()
 
@@ -188,7 +318,7 @@ func TestDelRecipe(t *testing.T) {
 	allM := new(models.Models)
 	allM.Recipes = models.NewRecipe(mockRec, allM)
 	allM.Accounts = models.NewAccount(mockAcc, allM)
-	
+
 	objRcp := dbuilder.RecipeMother{}.Obj2()
 	objAdmin := dbuilder.AccountMother{}.Obj0()
 	objAuthor := dbuilder.AccountMother{}.Obj1()
