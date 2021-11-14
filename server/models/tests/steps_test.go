@@ -19,9 +19,7 @@ Get all recipe's steps - recipe exists + 2 steps
 */
 func TestGetSteps(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objStpArr := dbuilder.StepMother{}.All()
 	objRcpArr := dbuilder.RecipeMother{}.All()

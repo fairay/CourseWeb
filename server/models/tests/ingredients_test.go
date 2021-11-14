@@ -18,9 +18,7 @@ Check ingredient exists - ingredient exists
 */
 func TestExistsIngredients(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objArr := dbuilder.IngredientMother{}.All()
 	objCat := dbuilder.IngredientMother{}.Obj0()
@@ -39,9 +37,7 @@ ingredient not exists
 */
 func TestNotExistsIngredients(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objArr := dbuilder.IngredientMother{}.All()
 
@@ -60,9 +56,7 @@ Get all ingredients - sucсess
 */
 func TestGetIngredients(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objArr := dbuilder.IngredientMother{}.All()
 	objCat := dbuilder.IngredientMother{}.Obj0()
@@ -83,9 +77,7 @@ Get ingredients by recipe - ingredients and recipe with such recipe exist
 */
 func TestGetByRecipeIngredients(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	ingArr := dbuilder.IngredientMother{}.All()
 	recArr := dbuilder.RecipeMother{}.All()

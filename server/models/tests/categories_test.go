@@ -21,9 +21,7 @@ Check category exists - category exists
 */
 func TestExistsCategory(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objArr := dbuilder.CategoryMother{}.All()
 	objCat := dbuilder.CategoryMother{}.Obj0()
@@ -42,9 +40,7 @@ category not exists
 */
 func TestNotExistsCategory(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objArr := dbuilder.CategoryMother{}.All()
 
@@ -64,9 +60,7 @@ Get all category - sucсess
 */
 func TestGetAllCategory(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objArr := dbuilder.CategoryMother{}.All()
 
@@ -85,9 +79,7 @@ Get category - category exists
 */
 func TestGetCategory(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objArr := dbuilder.CategoryMother{}.All()
 	objCat := dbuilder.CategoryMother{}.Obj0()
@@ -108,9 +100,7 @@ Find categories - input: "" result: all categories
 */
 func TestFindCategory(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objArr := dbuilder.CategoryMother{}.All()
 	objCatArr := []objects.Category{
@@ -131,9 +121,7 @@ func TestFindCategory(t *testing.T) {
 }
 func TestFindOneCategory(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objArr := dbuilder.CategoryMother{}.All()
 	objCat := dbuilder.CategoryMother{}.Obj0()
@@ -156,9 +144,7 @@ Get categories by recipe - category and recipe with such recipe exist
 */
 func TestGetByRecipeCategory(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	catArr := dbuilder.CategoryMother{}.All()
 	recArr := dbuilder.RecipeMother{}.All()
@@ -190,9 +176,7 @@ Get recipes by categories - category and recipe with such category exist
 */
 func TestGetRecipesCategory(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	catArr := dbuilder.CategoryMother{}.All()
 	recArr := dbuilder.RecipeMother{}.All()

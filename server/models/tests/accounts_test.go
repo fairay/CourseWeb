@@ -20,9 +20,7 @@ import (
 */
 func TestFindAccount(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objArr := dbuilder.AccountMother{}.All()
 	objAcc := &objArr[1]
@@ -42,9 +40,7 @@ func TestFindAccount(t *testing.T) {
 */
 func TestFindNoneAccount(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objArr := dbuilder.AccountMother{}.All()
 
@@ -66,9 +62,7 @@ func TestFindNoneAccount(t *testing.T) {
 */
 func TestGetRoleAccount(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objArr := dbuilder.AccountMother{}.All()
 	objAcc := dbuilder.AccountMother{}.Obj0()
@@ -203,7 +197,7 @@ func TestCreateExistsAccount(t *testing.T) {
 	mockRep.AssertExpectations(t)
 }
 /* Create account
-- already existing account
+- creation failed
 */
 func TestCreateFailAccount(t *testing.T) {
 	mockRep := new(mocks.AccountsRep)

@@ -448,7 +448,7 @@ func TestGetLikedByLogin_0(t *testing.T) {
 	compareRecipes(t, resArr, aimArr)
 }
 /* Get liked by login
-- 0 like, account/recipe exist
+- account doesn't exist
 */
 func TestGetLikedByLogin_None(t *testing.T) {
 	db, err := stubConnecton()
@@ -485,8 +485,8 @@ func TestGetLikedByLogin_None(t *testing.T) {
 
 /// LONDON STYLE (Mock)
 
-/*
-Create recipe - successful operation
+/* Create recipe
+- successful operation
 */
 func TestCreateRecipe(t *testing.T) {
 	mockRec := new(mocks.RecipesRep)
@@ -507,9 +507,30 @@ func TestCreateRecipe(t *testing.T) {
 	mockRec.AssertExpectations(t)
 	mockAcc.AssertExpectations(t)
 }
+/* Create recipe
+- author doesn't exists
+*/
+func TestCreateRecipe_None(t *testing.T) {
+	mockRec := new(mocks.RecipesRep)
+	mockAcc := new(mocks.AccountsRep)
 
-/*
-Add grade - successful operation
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRec, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+	obj := dbuilder.RecipeMother{}.Obj0()
+
+	mockAcc.On("Find", obj.Author).Return(nil, errors.RecordNotFound).Once()
+	// mockRec.On("Create", obj).Return(nil).Once()
+
+	err := allM.Recipes.AddRecipe(obj)
+
+	assert.Equal(t, errors.UnknownAccount, err, "Create recipe have unexpected error")
+	mockRec.AssertExpectations(t)
+	mockAcc.AssertExpectations(t)
+}
+
+/* Add grade 
+- successful operation
 */
 func TestAddGrade(t *testing.T) {
 	mockRec := new(mocks.RecipesRep)
@@ -532,9 +553,55 @@ func TestAddGrade(t *testing.T) {
 	mockRec.AssertExpectations(t)
 	mockAcc.AssertExpectations(t)
 }
+/* Add grade 
+- no recipe
+*/
+func TestAddGrade_NoRecipe(t *testing.T) {
+	mockRec := new(mocks.RecipesRep)
+	mockAcc := new(mocks.AccountsRep)
 
-/*
-Delete grade - successful operation (recipe/account exist)
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRec, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+
+	obj := dbuilder.RecipeMother{}.Obj0()
+	acc := dbuilder.AccountMother{}.Obj0()
+
+	mockRec.On("FindById", obj.Id).Return(nil, errors.RecordNotFound).Once()
+
+	err := allM.Recipes.AddGrade(obj.Id, acc.Login)
+
+	assert.Equal(t, errors.UnknownRecipe, err, "Add grade has unexpected error")
+	mockRec.AssertExpectations(t)
+	mockAcc.AssertExpectations(t)
+}
+/* Add grade 
+- no account
+*/
+func TestAddGrade_NoAccount(t *testing.T) {
+	mockRec := new(mocks.RecipesRep)
+	mockAcc := new(mocks.AccountsRep)
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRec, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+
+	obj := dbuilder.RecipeMother{}.Obj0()
+	acc := dbuilder.AccountMother{}.Obj0()
+
+	mockRec.On("FindById", obj.Id).Return(obj, nil).Once()
+	mockAcc.On("Find", acc.Login).Return(nil, errors.RecordNotFound).Once()
+
+	err := allM.Recipes.AddGrade(obj.Id, acc.Login)
+
+	assert.Equal(t, errors.UnknownAccount, err, "Add grade has unexpected error")
+	mockRec.AssertExpectations(t)
+	mockAcc.AssertExpectations(t)
+}
+
+
+/* Delete grade
+- successful operation (recipe/account exist)
 */
 func TestDelGradeRecipe(t *testing.T) {
 	mockRec := new(mocks.RecipesRep)
@@ -548,9 +615,7 @@ func TestDelGradeRecipe(t *testing.T) {
 	objAcc := dbuilder.AccountMother{}.Obj0()
 
 	mockRec.On("FindById", objRcp.Id).Return(objRcp, nil).Once()
-
 	mockAcc.On("Find", objAcc.Login).Return(objAcc, nil).Once()
-
 	mockRec.On("DeleteGrade", objRcp.Id, objAcc.Login).Return(nil).Once()
 
 	err := allM.Recipes.DeleteGrade(objRcp.Id, objAcc.Login)
@@ -559,9 +624,54 @@ func TestDelGradeRecipe(t *testing.T) {
 	mockRec.AssertExpectations(t)
 	mockAcc.AssertExpectations(t)
 }
+/* Delete grade
+- no recipe
+*/
+func TestDelGradeRecipe_NoRecipe(t *testing.T) {
+	mockRec := new(mocks.RecipesRep)
+	mockAcc := new(mocks.AccountsRep)
 
-/*
-Delete recipe - successful operation (admin does action)
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRec, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+
+	objRcp := dbuilder.RecipeMother{}.Obj0()
+	objAcc := dbuilder.AccountMother{}.Obj0()
+
+	mockRec.On("FindById", objRcp.Id).Return(nil, errors.RecordNotFound).Once()
+
+	err := allM.Recipes.DeleteGrade(objRcp.Id, objAcc.Login)
+
+	assert.Equal(t, errors.UnknownRecipe, err, "Deletion a grade from recipe has unexpected error")
+	mockRec.AssertExpectations(t)
+	mockAcc.AssertExpectations(t)
+}
+/* Delete grade
+- no account
+*/
+func TestDelGradeRecipe_NoAccount(t *testing.T) {
+	mockRec := new(mocks.RecipesRep)
+	mockAcc := new(mocks.AccountsRep)
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRec, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+
+	objRcp := dbuilder.RecipeMother{}.Obj0()
+	objAcc := dbuilder.AccountMother{}.Obj0()
+
+	mockRec.On("FindById", objRcp.Id).Return(objRcp, nil).Once()
+	mockAcc.On("Find", objAcc.Login).Return(nil, errors.RecordNotFound).Once()
+
+	err := allM.Recipes.DeleteGrade(objRcp.Id, objAcc.Login)
+
+	assert.Equal(t, errors.UnknownAccount, err, "Deletion a grade from recipe has unexpected error")
+	mockRec.AssertExpectations(t)
+	mockAcc.AssertExpectations(t)
+}
+
+/* Delete recipe 
+- successful operation (admin does action)
 */
 func TestDelRecipe(t *testing.T) {
 	mockRec := new(mocks.RecipesRep)
@@ -576,15 +686,62 @@ func TestDelRecipe(t *testing.T) {
 	objAuthor := dbuilder.AccountMother{}.Obj1()
 
 	mockAcc.On("Find", objAdmin.Login).Return(objAdmin, nil).Once()
-
 	mockRec.On("FindById", objRcp.Id).Return(objRcp, nil).Once()
 	mockAcc.On("Find", objRcp.Author).Return(objAuthor, nil).Once()
-
 	mockRec.On("Delete", objRcp.Id).Return(nil).Once()
 
 	err := allM.Recipes.DeleteRecipe(objRcp.Id, objAdmin.Login)
 
 	assert.Nil(t, err, "Deletion a recipe has unexpected error")
+	mockRec.AssertExpectations(t)
+	mockAcc.AssertExpectations(t)
+}
+/* Delete recipe 
+- no recipe
+*/
+func TestDelRecipe_NoRecipe(t *testing.T) {
+	mockRec := new(mocks.RecipesRep)
+	mockAcc := new(mocks.AccountsRep)
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRec, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+
+	objRcp := dbuilder.RecipeMother{}.Obj2()
+	objAdmin := dbuilder.AccountMother{}.Obj0()
+	// objAuthor := dbuilder.AccountMother{}.Obj1()
+
+	mockAcc.On("Find", objAdmin.Login).Return(objAdmin, nil).Once()
+	mockRec.On("FindById", objRcp.Id).Return(nil, errors.RecordNotFound).Once()
+
+	// mockAcc.On("Find", objRcp.Author).Return(objAuthor, nil).Once()
+	// mockRec.On("Delete", objRcp.Id).Return(nil).Once()
+
+	err := allM.Recipes.DeleteRecipe(objRcp.Id, objAdmin.Login)
+
+	assert.Equal(t, errors.UnknownRecipe, err, "Deletion a recipe has unexpected error")
+	mockRec.AssertExpectations(t)
+	mockAcc.AssertExpectations(t)
+}
+/* Delete recipe 
+- no account
+*/
+func TestDelRecipe_NoAccount(t *testing.T) {
+	mockRec := new(mocks.RecipesRep)
+	mockAcc := new(mocks.AccountsRep)
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRec, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+
+	objRcp := dbuilder.RecipeMother{}.Obj2()
+	objAdmin := dbuilder.AccountMother{}.Obj0()
+
+	mockAcc.On("Find", objAdmin.Login).Return(nil, errors.RecordNotFound).Once()
+
+	err := allM.Recipes.DeleteRecipe(objRcp.Id, objAdmin.Login)
+
+	assert.Equal(t, errors.RecordNotFound, err, "Deletion a recipe has unexpected error")
 	mockRec.AssertExpectations(t)
 	mockAcc.AssertExpectations(t)
 }
