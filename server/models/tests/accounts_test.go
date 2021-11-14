@@ -8,6 +8,7 @@ import (
 	"api/recipes/objects/dbuilder"
 	"api/recipes/repository"
 	"testing"
+	err "errors"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -169,8 +170,8 @@ func TestLogInNone(t *testing.T) {
 
 /// LONDON STYLE (Mock)
 
-/*
-Create account - successful operation
+/* Create account
+- successful operation
 */
 func TestCreateAccount(t *testing.T) {
 	mockRep := new(mocks.AccountsRep)
@@ -185,9 +186,41 @@ func TestCreateAccount(t *testing.T) {
 	assert.Nil(t, err, "Create account have unexpected error")
 	mockRep.AssertExpectations(t)
 }
+/* Create account
+- already existing account
+*/
+func TestCreateExistsAccount(t *testing.T) {
+	mockRep := new(mocks.AccountsRep)
+	model := models.NewAccount(mockRep, nil)
+	obj := dbuilder.AccountMother{}.Obj0()
 
-/*
-Update role by admin- successful operation
+	mockRep.On("Find", obj.Login).Return(obj, nil).Once()
+	// mockRep.On("Create", obj).Return().Once()
+
+	err := model.Create(obj)
+
+	assert.Equal(t, errors.AccountExists, err, "Create account have unexpected error")
+	mockRep.AssertExpectations(t)
+}
+/* Create account
+- already existing account
+*/
+func TestCreateFailAccount(t *testing.T) {
+	mockRep := new(mocks.AccountsRep)
+	model := models.NewAccount(mockRep, nil)
+	obj := dbuilder.AccountMother{}.Obj0()
+
+	mockRep.On("Find", obj.Login).Return(nil, errors.RecordNotFound).Once()
+	mockRep.On("Create", obj).Return(err.New("")).Once()
+
+	err := model.Create(obj)
+
+	assert.Equal(t, errors.DBAdditionError, err, "Create account have unexpected error")
+	mockRep.AssertExpectations(t)
+}
+
+/* Update role by admin
+- successful operation
 */
 func TestUpdateRole(t *testing.T) {
 	mockRep := new(mocks.AccountsRep)
@@ -203,5 +236,62 @@ func TestUpdateRole(t *testing.T) {
 	err := model.UpdateRole(objCur.Login, objGoal.Login, objUdp.Role)
 
 	assert.Nil(t, err, "Update account have unexpected error")
+	mockRep.AssertExpectations(t)
+}
+/* Update role by admin
+- admin account wasn't found
+*/
+func TestUpdateRole_ActorMissing(t *testing.T) {
+	mockRep := new(mocks.AccountsRep)
+	model := models.NewAccount(mockRep, nil)
+	objCur := dbuilder.AccountMother{}.Obj0()
+	objGoal := dbuilder.AccountMother{}.Obj1()
+	objUdp := dbuilder.AccountMother{}.Obj1Udp()
+
+	mockRep.On("Find", objCur.Login).Return(nil, errors.RecordNotFound).Once()
+	// mockRep.On("Find", objGoal.Login).Return(objGoal, nil).Once()
+	// mockRep.On("UpdateRole", objGoal.Login, objUdp.Role).Return(nil).Once()
+
+	err := model.UpdateRole(objCur.Login, objGoal.Login, objUdp.Role)
+
+	assert.Equal(t, errors.UnknownAccount, err, "Update account have unexpected error")
+	mockRep.AssertExpectations(t)
+}
+/* Update role by admin
+- actor is not admin
+*/
+func TestUpdateRole_NotAdmin(t *testing.T) {
+	mockRep := new(mocks.AccountsRep)
+	model := models.NewAccount(mockRep, nil)
+	objCur := dbuilder.AccountMother{}.Obj1()
+	objGoal := dbuilder.AccountMother{}.Obj0()
+	objUdp := dbuilder.AccountMother{}.Obj1Udp()
+
+	mockRep.On("Find", objCur.Login).Return(objCur, nil).Once()
+	// mockRep.On("Find", objGoal.Login).Return(objGoal, nil).Once()
+	// mockRep.On("UpdateRole", objGoal.Login, objUdp.Role).Return(nil).Once()
+
+	err := model.UpdateRole(objCur.Login, objGoal.Login, objUdp.Role)
+
+	assert.Equal(t, errors.AccessDenied, err, "Update account have unexpected error")
+	mockRep.AssertExpectations(t)
+}
+/* Update role by admin
+- updating account not found
+*/
+func TestUpdateRole_NotFound(t *testing.T) {
+	mockRep := new(mocks.AccountsRep)
+	model := models.NewAccount(mockRep, nil)
+	objCur := dbuilder.AccountMother{}.Obj0()
+	objGoal := dbuilder.AccountMother{}.Obj1()
+	objUdp := dbuilder.AccountMother{}.Obj1Udp()
+
+	mockRep.On("Find", objCur.Login).Return(objCur, nil).Once()
+	mockRep.On("Find", objGoal.Login).Return(nil, errors.RecordNotFound).Once()
+	// mockRep.On("UpdateRole", objGoal.Login, objUdp.Role).Return(nil).Once()
+
+	err := model.UpdateRole(objCur.Login, objGoal.Login, objUdp.Role)
+
+	assert.Equal(t, errors.UnknownAccount, err, "Update account have unexpected error")
 	mockRep.AssertExpectations(t)
 }
