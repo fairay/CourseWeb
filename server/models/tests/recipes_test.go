@@ -2,6 +2,7 @@ package models_test
 
 import (
 	//"api/recipes/errors"
+	"api/recipes/errors"
 	"api/recipes/mocks"
 	"api/recipes/models"
 	"api/recipes/objects"
@@ -30,22 +31,37 @@ func compareRecipes(t *testing.T, listA, listB []objects.Recipe, msgAndArgs ...i
 
 /// CLASSIC STYLE (Stub)
 
-/*
-Get all recipes - sucсess
+/* Get all recipes
+- sucсess
 */
 func TestGetAllRecipes(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objArr := dbuilder.RecipeMother{}.All()
 
 	mockRep := repository.NewRecipesRep(db)
 	err = mockRep.CreateList(objArr)
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
+
+	model := models.NewRecipe(mockRep, nil)
+
+	resArr := model.GetAll()
+
+	compareRecipes(t, resArr, objArr)
+}
+/* Get all recipes
+- empty recipes
+*/
+func TestGetAllRecipes_Empty(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {	panic(err) }
+
+	objArr := []objects.Recipe{}
+
+	mockRep := repository.NewRecipesRep(db)
+	err = mockRep.CreateList(objArr)
+	if err != nil { panic(err) }
 
 	model := models.NewRecipe(mockRep, nil)
 
@@ -54,14 +70,12 @@ func TestGetAllRecipes(t *testing.T) {
 	compareRecipes(t, resArr, objArr)
 }
 
-/*
-Get author - account exists
+/* Get author
+- account exists
 */
 func TestGetAuthor(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objRcpArr := dbuilder.RecipeMother{}.All()
 	objAccArr := dbuilder.AccountMother{}.All()
@@ -70,15 +84,11 @@ func TestGetAuthor(t *testing.T) {
 
 	mockRep := repository.NewRecipesRep(db)
 	err = mockRep.CreateList(objRcpArr)
-	if err != nil {
-		panic(err)
-	}
+	if err != nil { panic(err) }
 
 	mockAcc := repository.NewAccountsRep(db)
 	err = mockAcc.CreateList(objAccArr)
-	if err != nil {
-		panic(err)
-	}
+	if err != nil { panic(err) }
 
 	allM := new(models.Models)
 	allM.Recipes = models.NewRecipe(mockRep, allM)
@@ -89,15 +99,72 @@ func TestGetAuthor(t *testing.T) {
 	assert.Nil(t, err, "GetAuthor has unexpected error")
 	assert.Equal(t, resAuthor, objAcc, "GetAuthor has unexpected error")
 }
+/* Get author
+- recipe not exists
+*/
+func TestGetAuthor_NotAcc(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {	panic(err) }
 
-/*
-Find recipes by login - sucсess
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	objAccArr := dbuilder.AccountMother{}.All()
+	// objRcp := dbuilder.RecipeMother{}.Obj0()
+	var objAcc *objects.Account = nil;
+
+	mockRep := repository.NewRecipesRep(db)
+	err = mockRep.CreateList(objRcpArr)
+	if err != nil { panic(err) }
+
+	mockAcc := repository.NewAccountsRep(db)
+	err = mockAcc.CreateList(objAccArr)
+	if err != nil { panic(err) }
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRep, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+
+	resAuthor, err := allM.Recipes.GetAuthor(-1)
+
+	assert.Equal(t, errors.UnknownRecipe, err, "GetAuthor have unexpected error")
+	assert.Equal(t, resAuthor, objAcc, "GetAuthor has unexpected error")
+}
+/* Get author
+- account not exists
+*/
+func TestGetAuthor_NotRec(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {	panic(err) }
+
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	// objAccArr := dbuilder.AccountMother{}.All()
+	objRcp := dbuilder.RecipeMother{}.Obj0()
+	var objAcc *objects.Account = nil;
+
+	mockRep := repository.NewRecipesRep(db)
+	err = mockRep.CreateList(objRcpArr)
+	if err != nil { panic(err) }
+
+	mockAcc := repository.NewAccountsRep(db)
+	// err = mockAcc.CreateList(objAccArr)
+	// if err != nil { panic(err) }
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRep, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+
+	resAuthor, err := allM.Recipes.GetAuthor(objRcp.Id)
+
+	assert.Equal(t, errors.UnknownAccount, err, "GetAuthor have unexpected error")
+	assert.Equal(t, resAuthor, objAcc, "GetAuthor has unexpected error")
+}
+
+
+/* Find recipes by login
+- sucсess
 */
 func TestFindRecipesByLogin(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objRcpArr := dbuilder.RecipeMother{}.All()
 	objAccArr := dbuilder.AccountMother{}.All()
@@ -120,40 +187,115 @@ func TestFindRecipesByLogin(t *testing.T) {
 
 	compareRecipes(t, resArr, aimArr)
 }
+/* Find recipes by login
+- sucсess with empty table
+*/
+func TestFindRecipesByLogin_Empty(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {	panic(err) }
 
-/*
-Find recipes by its id - sucсess
+	// objRcpArr := dbuilder.RecipeMother{}.All()
+	objAccArr := dbuilder.AccountMother{}.All()
+	objAcc := dbuilder.AccountMother{}.Obj0()
+	aimArr := []objects.Recipe{}
+
+	mockRep := repository.NewRecipesRep(db)
+	// err = mockRep.CreateList(objRcpArr)
+	// if err != nil { panic(err) }
+
+	mockAcc := repository.NewAccountsRep(db)
+	err = mockAcc.CreateList(objAccArr)
+	if err != nil { panic(err) }
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRep, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+
+	resArr, _ := allM.Recipes.FindByLogin(objAcc.Login)
+
+	compareRecipes(t, resArr, aimArr)
+}
+/* Find recipes by login
+- account not exists
+*/
+func TestFindRecipesByLogin_NotExists(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil { panic(err) }
+
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	// objAccArr := dbuilder.AccountMother{}.All()
+	objAcc := dbuilder.AccountMother{}.Obj0()
+	aimArr := []objects.Recipe{}
+
+	mockRep := repository.NewRecipesRep(db)
+	err = mockRep.CreateList(objRcpArr)
+	if err != nil { panic(err) }
+
+	mockAcc := repository.NewAccountsRep(db)
+	// err = mockAcc.CreateList(objAccArr)
+	// if err != nil { panic(err) }
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRep, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+
+	resArr, err := allM.Recipes.FindByLogin(objAcc.Login)
+
+	assert.Equal(t, errors.UnknownAccount, err, "Find recipes by login have unexpected error")
+	compareRecipes(t, resArr, aimArr)
+}
+
+
+/* Find recipes by its id
+- sucсess
 */
 func TestFindRecipesById(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	objRcpArr := dbuilder.RecipeMother{}.All()
 	aimRcp := dbuilder.RecipeMother{}.Obj0()
 
 	mockRep := repository.NewRecipesRep(db)
 	err = mockRep.CreateList(objRcpArr)
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	model := models.NewRecipe(mockRep, nil)
 
-	resRcp, _ := model.FindById(aimRcp.Id)
+	resRcp, err := model.FindById(aimRcp.Id)
 
+	assert.Nil(t, err, "Find recipes by its id has unexpected error")
 	compareRecipe(t, *aimRcp, *resRcp)
 }
-
-/*
-Get amount of grades - 2 likes
+/* Find recipes by its id
+- not found
 */
-func TestGetAmountGrades(t *testing.T) {
+func TestFindRecipesById_Empty(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
+
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	// aimRcp := dbuilder.RecipeMother{}.Obj0()
+
+	mockRep := repository.NewRecipesRep(db)
+	err = mockRep.CreateList(objRcpArr)
+	if err != nil {	panic(err) }
+
+	model := models.NewRecipe(mockRep, nil)
+
+	res, err := model.FindById(-1)
+
+	var nil_ptr *objects.Recipe = nil;
+	assert.Equal(t, errors.UnknownRecipe, err, "Find recipes by its id has unexpected error")
+	assert.Equal(t, nil_ptr, res, "Find recipes by its id has unexpected result")
+}
+
+/* Get amount of grades
+- 2 likes
+*/
+func TestGetAmountGrades_2(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil { panic(err) }
 
 	objRcpArr := dbuilder.RecipeMother{}.All()
 	objAccArr := dbuilder.AccountMother{}.All()
@@ -164,15 +306,11 @@ func TestGetAmountGrades(t *testing.T) {
 
 	mockRep := repository.NewRecipesRep(db)
 	err = mockRep.CreateList(objRcpArr)
-	if err != nil {
-		panic(err)
-	}
+	if err != nil { panic(err) }
 
 	mockAcc := repository.NewAccountsRep(db)
 	err = mockAcc.CreateList(objAccArr)
-	if err != nil {
-		panic(err)
-	}
+	if err != nil { panic(err) }
 
 	allM := new(models.Models)
 	allM.Recipes = models.NewRecipe(mockRep, allM)
@@ -186,15 +324,69 @@ func TestGetAmountGrades(t *testing.T) {
 	assert.Nil(t, err, "GetAmountGrades has unexpected error")
 	assert.Equal(t, aimNum, resNum, "GetAmountGrades returns wrong answer")
 }
-
-/*
-Get liked by login - 1 like, account/recipe exist
+/* Get amount of grades
+- 0 likes
 */
-func TestGetLikedByLogin(t *testing.T) {
+func TestGetAmountGrades_0(t *testing.T) {
 	db, err := stubConnecton()
-	if err != nil {
-		panic(err)
-	}
+	if err != nil { panic(err) }
+
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	objAccArr := dbuilder.AccountMother{}.All()
+	objRcp := dbuilder.RecipeMother{}.Obj0()
+	aimNum := 0
+
+	mockRep := repository.NewRecipesRep(db)
+	err = mockRep.CreateList(objRcpArr)
+	if err != nil { panic(err) }
+
+	mockAcc := repository.NewAccountsRep(db)
+	err = mockAcc.CreateList(objAccArr)
+	if err != nil { panic(err) }
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRep, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+	resNum, err := allM.Recipes.GetAmountGrades(objRcp.Id)
+
+	assert.Nil(t, err, "GetAmountGrades has unexpected error")
+	assert.Equal(t, aimNum, resNum, "GetAmountGrades returns wrong answer")
+}
+/* Get amount of grades
+- recipe doesn't exist
+*/
+func TestGetAmountGrades_None(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil { panic(err) }
+
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	objAccArr := dbuilder.AccountMother{}.All()
+	aimNum := 0
+
+	mockRep := repository.NewRecipesRep(db)
+	err = mockRep.CreateList(objRcpArr)
+	if err != nil { panic(err) }
+
+	mockAcc := repository.NewAccountsRep(db)
+	err = mockAcc.CreateList(objAccArr)
+	if err != nil { panic(err) }
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRep, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+	resNum, err := allM.Recipes.GetAmountGrades(-1)
+
+	assert.Equal(t, errors.UnknownRecipe, err, "GetAmountGrades has unexpected error")
+	assert.Equal(t, aimNum, resNum, "GetAmountGrades returns wrong answer")
+}
+
+
+/* Get liked by login
+- 1 like, account/recipe exist
+*/
+func TestGetLikedByLogin_1(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {	panic(err) }
 
 	objRcpArr := dbuilder.RecipeMother{}.All()
 	objAccArr := dbuilder.AccountMother{}.All()
@@ -204,15 +396,11 @@ func TestGetLikedByLogin(t *testing.T) {
 
 	mockRep := repository.NewRecipesRep(db)
 	err = mockRep.CreateList(objRcpArr)
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	mockAcc := repository.NewAccountsRep(db)
 	err = mockAcc.CreateList(objAccArr)
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {	panic(err) }
 
 	allM := new(models.Models)
 	allM.Recipes = models.NewRecipe(mockRep, allM)
@@ -226,6 +414,74 @@ func TestGetLikedByLogin(t *testing.T) {
 
 	compareRecipes(t, resArr, aimArr)
 }
+/* Get liked by login
+- 0 like, account/recipe exist
+*/
+func TestGetLikedByLogin_0(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {	panic(err) }
+
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	objAccArr := dbuilder.AccountMother{}.All()
+	objAcc := dbuilder.AccountMother{}.Obj1()
+
+	aimArr := []objects.Recipe{}
+
+	mockRep := repository.NewRecipesRep(db)
+	err = mockRep.CreateList(objRcpArr)
+	if err != nil {	panic(err) }
+
+	mockAcc := repository.NewAccountsRep(db)
+	err = mockAcc.CreateList(objAccArr)
+	if err != nil {	panic(err) }
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRep, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+
+	for i := 0; i < len(aimArr); i++ {
+		_ = allM.Recipes.AddGrade(aimArr[i].Id, objAcc.Login)
+	}
+
+	resArr, err := allM.Recipes.GetLikedByLogin(objAcc.Login)
+
+	compareRecipes(t, resArr, aimArr)
+}
+/* Get liked by login
+- 0 like, account/recipe exist
+*/
+func TestGetLikedByLogin_None(t *testing.T) {
+	db, err := stubConnecton()
+	if err != nil {	panic(err) }
+
+	objRcpArr := dbuilder.RecipeMother{}.All()
+	objAccArr := dbuilder.AccountMother{}.All()
+	objAcc := dbuilder.AccountMother{}.Obj1()
+
+	aimArr := []objects.Recipe{}
+
+	mockRep := repository.NewRecipesRep(db)
+	err = mockRep.CreateList(objRcpArr)
+	if err != nil {	panic(err) }
+
+	mockAcc := repository.NewAccountsRep(db)
+	err = mockAcc.CreateList(objAccArr)
+	if err != nil {	panic(err) }
+
+	allM := new(models.Models)
+	allM.Recipes = models.NewRecipe(mockRep, allM)
+	allM.Accounts = models.NewAccount(mockAcc, allM)
+
+	for i := 0; i < len(aimArr); i++ {
+		_ = allM.Recipes.AddGrade(aimArr[i].Id, objAcc.Login)
+	}
+
+	resArr, err := allM.Recipes.GetLikedByLogin(nWord)
+
+	assert.Equal(t, errors.UnknownAccount, err, "GetLikedByLogin has unexpected error")
+	compareRecipes(t, resArr, aimArr)
+}
+
 
 /// LONDON STYLE (Mock)
 

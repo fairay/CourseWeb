@@ -33,22 +33,15 @@ func (this *RecipeM) GetAuthor(id int) (*objects.Account, error) {
 }
 
 func (this *RecipeM) FindByLogin(login string) ([]objects.Recipe, error) {
-	isExist := this.models.Accounts.IsExists(login)
-	if isExist == false {
-		return nil, nil
+	if !this.models.Accounts.IsExists(login) {
+		return nil, errors.UnknownAccount
 	}
 
-	temp := this.rep.FindByLogin(login)
-	return temp, nil
+	return this.rep.FindByLogin(login)
 }
 
 func (this *RecipeM) FindById(id int) (*objects.Recipe, error) {
-	rcp, err := this.rep.FindById(id)
-	if err != nil {
-		return nil, err
-	}
-
-	return rcp, err
+	return this.rep.FindById(id)
 }
 
 func (this *RecipeM) AddRecipe(obj *objects.Recipe) error {

@@ -107,7 +107,7 @@ func (_m *RecipesRep) FindById(id int) (*objects.Recipe, error) {
 }
 
 // FindByLogin provides a mock function with given fields: login
-func (_m *RecipesRep) FindByLogin(login string) []objects.Recipe {
+func (_m *RecipesRep) FindByLogin(login string) ([]objects.Recipe, error) {
 	ret := _m.Called(login)
 
 	var r0 []objects.Recipe
@@ -119,7 +119,14 @@ func (_m *RecipesRep) FindByLogin(login string) []objects.Recipe {
 		}
 	}
 
-	return r0
+	var r1 error
+	if rf, ok := ret.Get(1).(func(string) error); ok {
+		r1 = rf(login)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
 }
 
 // GetAmountGrades provides a mock function with given fields: id

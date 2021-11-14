@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"api/recipes/errors"
 	"api/recipes/objects"
 
 	"github.com/jinzhu/gorm"
@@ -11,7 +12,7 @@ type RecipesRep interface {
 	CreateList(objArr []objects.Recipe) error
 
 	List() []objects.Recipe
-	FindByLogin(login string) []objects.Recipe
+	FindByLogin(login string) ([]objects.Recipe, error)
 	FindById(id int) (*objects.Recipe, error)
 	GetLikedByLogin(login string) ([]objects.Recipe, error)
 	GetAmountGrades(id int) int
@@ -35,16 +36,30 @@ func (this *PGRecipesRep) List() []objects.Recipe {
 	return temp
 }
 
-func (this *PGRecipesRep) FindByLogin(login string) []objects.Recipe {
+func (this *PGRecipesRep) FindByLogin(login string)  ([]objects.Recipe, error) {
 	temp := []objects.Recipe{}
-	this.db.Where("author = ?", login).Find(&temp)
-	return temp
+	err := this.db.Where("author = ?", login).Find(&temp).Error
+	switch err {
+	case nil:
+		return temp, nil
+	case gorm.ErrRecordNotFound:
+		return temp, nil
+	default:
+		return nil, errors.UnknownError
+	}
 }
 
 func (this *PGRecipesRep) FindById(id int) (*objects.Recipe, error) {
 	temp := new(objects.Recipe)
 	err := this.db.Where("id = ?", id).Find(temp).Error
-	return temp, err
+	switch err {
+	case nil:
+		return temp, nil
+	case gorm.ErrRecordNotFound:
+		return nil, errors.UnknownRecipe
+	default:
+		return nil, errors.UnknownError
+	}
 }
 
 func (this *PGRecipesRep) Create(obj *objects.Recipe) error {
