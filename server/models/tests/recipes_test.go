@@ -66,7 +66,7 @@ func TestGetAuthor(t *testing.T) {
 	objRcpArr := dbuilder.RecipeMother{}.All()
 	objAccArr := dbuilder.AccountMother{}.All()
 	objRcp := dbuilder.RecipeMother{}.Obj0()
-	objAcc := dbuilder.AccountMother{}.Obj0()
+	objAcc := &objAccArr[0]
 
 	mockRep := repository.NewRecipesRep(db)
 	err = mockRep.CreateList(objRcpArr)
