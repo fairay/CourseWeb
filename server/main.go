@@ -1,4 +1,4 @@
-package recipes
+package main
 
 import (
 	"api/recipes/controllers"
