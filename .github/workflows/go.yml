@@ -23,9 +23,9 @@ jobs:
       run: pwd
     - name: Build 
       run: |
-        pwd
         cd server
-        pwd
         go build -v ./...
     - name: Test
-      run: go test -v server/...
+      run: |
+        cd server
+        go test -v server/...
