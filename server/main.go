@@ -2,21 +2,16 @@ package main
 
 import (
 	"api/recipes/controllers"
-	auth "api/recipes/controllers/token"
 	_ "api/recipes/docs"
-	"api/recipes/models"
 	_ "api/recipes/objects"
 	"api/recipes/utils"
 	"fmt"
 	"math/rand"
-	"net/http"
 	"os"
 	"time"
 
-	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 func initDBConnection(cnf utils.DBConfiguration) *gorm.DB {
@@ -34,7 +29,7 @@ func initDBConnection(cnf utils.DBConfiguration) *gorm.DB {
 	db.SingularTable(true)
 	return db
 }
-
+/*
 func initControllers(r *mux.Router, m *models.Models) {
 	r.Use(utils.LogHandler)
 	r.Use(auth.JwtAuthentication)
@@ -46,6 +41,27 @@ func initControllers(r *mux.Router, m *models.Models) {
 	controllers.InitLikes(r, m.Recipes, m.Accounts)
 	controllers.InitSteps(r, m.Steps)
 }
+
+func InitRouter(db *gorm.DB) *mux.Router {
+	router := mux.NewRouter()
+	models := models.InitModels(db)
+	initControllers(router, models)
+	return router
+}
+
+func runSwagger(r *mux.Router) {
+	r.PathPrefix("/swagger").Handler(httpSwagger.Handler(
+		httpSwagger.URL("swagger/doc.json"),
+		httpSwagger.DeepLinking(true),
+		httpSwagger.DocExpansion("none"),
+		httpSwagger.DomID("#swagger-ui"),
+	))
+}
+
+func RunRouter(r *mux.Router, port uint16) error {
+	return http.ListenAndServe(fmt.Sprintf(":%d", port), r)
+}
+*/
 
 // @Title Recipes API
 // @Version 0.1
@@ -61,29 +77,11 @@ func main() {
 	db := initDBConnection(utils.Config.DB)
 	defer db.Close()
 
-	router := mux.NewRouter()
-	models := models.InitModels(db)
-	initControllers(router, models)
-
-	router.PathPrefix("/swagger").Handler(httpSwagger.Handler(
-		httpSwagger.URL("swagger/doc.json"),
-		httpSwagger.DeepLinking(true),
-		httpSwagger.DocExpansion("none"),
-		httpSwagger.DomID("#swagger-ui"),
-	))
-	
-	// tlsConfig := tls.Config{}
-	// tlsConfig.NextProtos = []string{"http/1.1"}
-	// srv := &http.Server{
-	// 	Addr: fmt.Sprintf(":%d", utils.Config.Port),
-	// 	Handler: router,
-	// 	TLSConfig: &tlsConfig,
-	// }
-	// code := srv.ListenAndServeTLS("server.rsa.crt", "server.rsa.key")
-
+	r := controllers.InitRouter(db)
+	controllers.RunSwagger(r);
 	utils.Logger.Print("Server started")
 	fmt.Printf("Server is running on http://localhost:%d\n", utils.Config.Port)
-	code := http.ListenAndServe(fmt.Sprintf(":%d", utils.Config.Port), router)
+	code := controllers.RunRouter(r, utils.Config.Port);
 
 	utils.Logger.Printf("Server ended with code %s", code)
 }
