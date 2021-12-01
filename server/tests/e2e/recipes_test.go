@@ -24,10 +24,7 @@ type CategorySuite struct {
 	Title string
 }
 
-/* URL:
-/recipes/1/categories POST
-/recipes/1/categories GET
-*/
+
 func TestPostRecipe(t *testing.T) {
 	port := tests.StubServer()
 	url := fmt.Sprintf("http://localhost:%d/accounts", port)
