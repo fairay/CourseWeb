@@ -11,8 +11,14 @@ var (
 	logFile *os.File
 )
 
-func InitLogger() {
-	logFile, err := os.OpenFile(Config.LogFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+func InitLogger(filename ...string) {
+	path := Config.LogFile
+
+	if len(filename) != 0 {
+		path = filename[0]
+	}
+
+	logFile, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -31,7 +31,7 @@ var (
 )
 
 // TODO: returnable error
-func InitConfig(osArgs []string) {
+func InitConfig(args ...string) {
 	file, err := os.Open("config.json")
 	if err != nil {
 		panic(err)
@@ -44,9 +44,9 @@ func InitConfig(osArgs []string) {
 		panic(err)
 	}
 
-	switch len(osArgs) {
-	case 2:
-		new_port, err := strconv.Atoi(os.Args[1])
+	switch len(args) {
+	case 1:
+		new_port, err := strconv.Atoi(args[0])
 		if err != nil {
 			panic(err)
 		}

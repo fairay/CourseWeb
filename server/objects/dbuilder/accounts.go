@@ -6,18 +6,19 @@ import (
 )
 
 type AccountBuilder struct {
-	Login          string 
-	Role           string 
+	Login          string
+	Role           string
 	Salt           string
 	HashedPassword string
 }
-func newAccountBuilder() *AccountBuilder { 
-	return new(AccountBuilder) 
+
+func newAccountBuilder() *AccountBuilder {
+	return new(AccountBuilder)
 }
-func (this *AccountBuilder) Build() *objects.Account { 
+func (this *AccountBuilder) Build() *objects.Account {
 	this.Salt, this.HashedPassword = utils.HashPassword(this.Login, this.Salt)
-	return &objects.Account{Login: this.Login, Role: this.Role, 
-		Salt: this.Salt, HashedPassword: this.HashedPassword} 
+	return &objects.Account{Login: this.Login, Role: this.Role,
+		Salt: this.Salt, HashedPassword: this.HashedPassword}
 }
 
 /*
@@ -31,6 +32,7 @@ WARNING: don't create new accounts in one test, use old one (hash generated diff
 	objAcc := &objArr[0]
 */
 type AccountMother struct{}
+
 func (AccountMother) Obj0() *objects.Account {
 	b := newAccountBuilder()
 	b.Login = "test1"
@@ -61,7 +63,7 @@ func (AccountMother) Obj2() *objects.Account {
 
 func (this AccountMother) All() []objects.Account {
 	objArr := []objects.Account{
-		*this.Obj0(), 
+		*this.Obj0(),
 		*this.Obj1(),
 		*this.Obj2(),
 	}

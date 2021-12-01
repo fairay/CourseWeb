@@ -70,7 +70,12 @@ func RunRouter(r *mux.Router, port uint16) error {
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
-	utils.InitConfig(os.Args)
+	if len(os.Args) == 1 {
+		utils.InitConfig()
+	} else {
+		utils.InitConfig(os.Args[1])
+	}
+
 	utils.InitLogger()
 	defer utils.CloseLogger()
 

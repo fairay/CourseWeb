@@ -1,8 +1,9 @@
 package tests
 
 import (
-	"api/recipes/objects"
 	"api/recipes/controllers"
+	"api/recipes/objects"
+	"api/recipes/utils"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
@@ -21,11 +22,16 @@ func StubConnecton() (*gorm.DB, error) {
 }
 
 func StubServer() (port uint16) {
+	port = 9000
+	path := "9000.txt"
+
+	//utils.InitConfig(strconv.Itoa(int(port)))
+	utils.InitLogger(path)
+	
 	db, err := StubConnecton()
 	if err != nil {	panic(err) }
 
 	r := controllers.InitRouter(db)
-	port = 9000
 
 	go controllers.RunRouter(r, port);
 	return port
