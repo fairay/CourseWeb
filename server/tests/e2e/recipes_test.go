@@ -1,105 +1,95 @@
 package e2e_test
 
 import (
-	//"api/recipes/objects"
 	"api/recipes/objects"
 	"api/recipes/objects/dbuilder"
 	"api/recipes/tests"
-	"strings"
 
-	//"strconv"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/http/cookiejar"
-
-	//"strings"
+	"strings"
 	"testing"
-
-	"github.com/stretchr/testify/suite"
 )
 
-type CategorySuite struct {
-	suite.Suite
-	Title string
+func PostQuery(client *http.Client, url string, body string) error {
+	req, _ := http.NewRequest(http.MethodPost, url, strings.NewReader(body))
+
+	res, err := client.Do(req)
+	if err != nil { return err }
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		err = errors.New(fmt.Sprintf("Unexpected status %v", res.StatusCode))
+	}
+	return err
 }
 
+func GetQuery(client *http.Client, url string, obj interface{}) error {
+	res, err := client.Get(url)
+	if err != nil { return err }
+	defer res.Body.Close()
+	
+	if res.StatusCode != http.StatusOK {
+		err = errors.New(fmt.Sprintf("Unexpected status %v", res.StatusCode))
+		return err
+	}
+
+	return json.NewDecoder(res.Body).Decode(obj)
+}
 
 func TestPostRecipe(t *testing.T) {
 	port := tests.StubServer()
-	url := fmt.Sprintf("http://localhost:%d/accounts", port)
 
 	jar, _ := cookiejar.New(nil)
-
 	client := &http.Client{
 		Jar: jar,
 	}
-	req, _ := http.NewRequest(http.MethodPost, url, strings.NewReader(`{"login": "test1", "password": "admin"}`))
 
-	res, err := client.Do(req)
+	baseUrl := fmt.Sprintf("http://localhost:%d", port)
+
+	acc := dbuilder.AccountMother{}.Obj0().ToDTO()
+	acc.Password = acc.Login
+	accByte, _ := json.Marshal(acc)
+	accStr := string(accByte)
+
+	/// REQUESTS
+	// Create account
+	url := fmt.Sprintf("%s/accounts", baseUrl)
+	err := PostQuery(client, url, accStr)
 	if err != nil {
-		t.Error("Error POST account:", err)
+		t.Error("POST account failed:", err)
 		return
 	}
-	if res.StatusCode != http.StatusOK {
-		t.Error("Failed POST account:", res.Status)
-		return
-	}
-	res.Body.Close()
 
-	url = fmt.Sprintf("http://localhost:%d/accounts/login", port)
-
-	req, _ = http.NewRequest(http.MethodPost, url, strings.NewReader(`{"login": "test1", "password": "admin"}`))
-
-	res, err = client.Do(req)
+	// Log in
+	url = fmt.Sprintf("%s/accounts/login", baseUrl)
+	err = PostQuery(client, url, accStr)
 	if err != nil {
-		t.Error("Error POST account:", err)
+		t.Error("Login account failed:", err)
 		return
 	}
-	if res.StatusCode != http.StatusOK {
-		t.Error("Failed POST account:", res.Status)
-		return
-	}
-	res.Body.Close()
 
-	url = fmt.Sprintf("http://localhost:%d/recipes", port)
-
+	// Create recipe
+	url = fmt.Sprintf("%s/recipes", baseUrl)
 	objRcp := dbuilder.RecipeMother{}.Obj0()
-
 	jsonStr, _ := json.Marshal(objRcp)
-	req, _ = http.NewRequest(http.MethodPost, url, strings.NewReader(string(jsonStr)))
-
-	res, err = client.Do(req)
+	err = PostQuery(client, url, string(jsonStr))
 	if err != nil {
-		t.Error("Error POST recipe:", err)
-		return
-	}
-	if res.StatusCode != http.StatusOK {
-		t.Error("Failed POST recipe:", res.Status)
-		return
-	}
-	res.Body.Close()
-
-	url = fmt.Sprintf("http://localhost:%d/recipes/%d", port, objRcp.Id)
-
-	res, err = http.Get(url)
-	if err != nil {
-		t.Error("Error GET recipe:", err)
-		return
-	}
-	if res.StatusCode != http.StatusOK {
-		t.Error("Failed GET recipe:", res.Status)
+		t.Error("POST recipe failed:", err)
 		return
 	}
 
+	// Get recipe
+	url = fmt.Sprintf("%s/recipes/%d", baseUrl, objRcp.Id)
 	rcpDTO := new(objects.RecipeDTO)
-	err = json.NewDecoder(res.Body).Decode(rcpDTO)
+	err = GetQuery(client, url, rcpDTO)
 	if err != nil {
-		t.Error("Failed Decode:", err)
+		t.Error("GET recipe failed:", err)
 		return
 	}
-
-	res.Body.Close()
-
 	tests.CompareRecipe(t, *objRcp, *rcpDTO.ToModel())
+
 }
