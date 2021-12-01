@@ -16,7 +16,6 @@ import (
 	//"strings"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -38,7 +37,7 @@ func TestPostCategory(t *testing.T) {
 	client := &http.Client{
 		Jar: jar,
 	}
-	req, _ := http.NewRequest(http.MethodPost, url, strings.NewReader(`{"login": "admin", "password": "admin"}`))
+	req, _ := http.NewRequest(http.MethodPost, url, strings.NewReader(`{"login": "test1", "password": "admin"}`))
 
 	res, err := client.Do(req)
 	if err != nil {
@@ -53,7 +52,7 @@ func TestPostCategory(t *testing.T) {
 
 	url = fmt.Sprintf("http://localhost:%d/accounts/login", port)
 
-	req, _ = http.NewRequest(http.MethodPost, url, strings.NewReader(`{"login": "admin", "password": "admin"}`))
+	req, _ = http.NewRequest(http.MethodPost, url, strings.NewReader(`{"login": "test1", "password": "admin"}`))
 
 	res, err = client.Do(req)
 	if err != nil {
@@ -71,7 +70,6 @@ func TestPostCategory(t *testing.T) {
 	objRcp := dbuilder.RecipeMother{}.Obj0()
 
 	jsonStr, _ := json.Marshal(objRcp)
-
 	req, _ = http.NewRequest(http.MethodPost, url, strings.NewReader(string(jsonStr)))
 
 	res, err = client.Do(req)
@@ -97,8 +95,6 @@ func TestPostCategory(t *testing.T) {
 		return
 	}
 
-	fmt.Println("++++++++++")
-	fmt.Println(res.Body)
 	rcpDTO := new(objects.RecipeDTO)
 	err = json.NewDecoder(res.Body).Decode(rcpDTO)
 	if err != nil {
@@ -108,5 +104,5 @@ func TestPostCategory(t *testing.T) {
 
 	res.Body.Close()
 
-	assert.Equal(t, objRcp, rcpDTO.ToModel())
+	tests.CompareRecipe(t, *objRcp, *rcpDTO.ToModel())
 }

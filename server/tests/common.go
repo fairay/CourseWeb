@@ -4,9 +4,12 @@ import (
 	"api/recipes/controllers"
 	"api/recipes/objects"
 	"api/recipes/utils"
+	"testing"
+	"time"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/stretchr/testify/assert"
 )
 
 func StubConnecton() (*gorm.DB, error) {
@@ -35,4 +38,19 @@ func StubServer() (port uint16) {
 
 	go controllers.RunRouter(r, port);
 	return port
+}
+
+func CompareRecipe(t *testing.T, objA, objB objects.Recipe, msgAndArgs ...interface{}) (ok bool) {
+	objA.CreatedAt = time.Time{}
+	objB.CreatedAt = time.Time{}
+	return assert.Equal(t, objA, objB, msgAndArgs)
+}
+func CompareRecipes(t *testing.T, listA, listB []objects.Recipe, msgAndArgs ...interface{}) (ok bool) {
+	for i := 0; i < len(listA); i++ {
+		listA[i].CreatedAt = time.Time{}
+	}
+	for i := 0; i < len(listB); i++ {
+		listB[i].CreatedAt = time.Time{}
+	}
+	return assert.ElementsMatch(t, listA, listB, msgAndArgs)
 }

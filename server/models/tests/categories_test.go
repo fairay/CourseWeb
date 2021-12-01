@@ -8,6 +8,7 @@ import (
 	_ "api/recipes/objects"
 	"api/recipes/objects/dbuilder"
 	"api/recipes/repository"
+	"api/recipes/tests"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -233,7 +234,7 @@ func TestGetRecipesCategory(t *testing.T) {
 	resArr, err := model.GetRecipes(catArr[0].Title)
 
 	assert.Nil(t, err, "Get has unexpected error")
-	compareRecipes(t, resArr, expArr, "Get has unexpected object array")
+	tests.CompareRecipes(t, resArr, expArr, "Get has unexpected object array")
 }
 
 /// LONDON STYLE (Mock)

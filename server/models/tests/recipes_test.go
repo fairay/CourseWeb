@@ -1,33 +1,17 @@
 package models_test
 
 import (
-	//"api/recipes/errors"
 	"api/recipes/errors"
 	"api/recipes/mocks"
 	"api/recipes/models"
 	"api/recipes/objects"
 	"api/recipes/objects/dbuilder"
 	"api/recipes/repository"
+	"api/recipes/tests"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 )
-
-func compareRecipe(t *testing.T, objA, objB objects.Recipe, msgAndArgs ...interface{}) (ok bool) {
-	objA.CreatedAt = time.Time{}
-	objB.CreatedAt = time.Time{}
-	return assert.Equal(t, objA, objB, msgAndArgs)
-}
-func compareRecipes(t *testing.T, listA, listB []objects.Recipe, msgAndArgs ...interface{}) (ok bool) {
-	for i := 0; i < len(listA); i++ {
-		listA[i].CreatedAt = time.Time{}
-	}
-	for i := 0; i < len(listB); i++ {
-		listB[i].CreatedAt = time.Time{}
-	}
-	return assert.ElementsMatch(t, listA, listB, msgAndArgs)
-}
 
 /// CLASSIC STYLE (Stub)
 
@@ -48,7 +32,7 @@ func TestGetAllRecipes(t *testing.T) {
 
 	resArr := model.GetAll()
 
-	compareRecipes(t, resArr, objArr)
+	tests.CompareRecipes(t, resArr, objArr)
 }
 /* Get all recipes
 - empty recipes
@@ -67,7 +51,7 @@ func TestGetAllRecipes_Empty(t *testing.T) {
 
 	resArr := model.GetAll()
 
-	compareRecipes(t, resArr, objArr)
+	tests.CompareRecipes(t, resArr, objArr)
 }
 
 /* Get author
@@ -185,7 +169,7 @@ func TestFindRecipesByLogin(t *testing.T) {
 
 	resArr, _ := allM.Recipes.FindByLogin(objAcc.Login)
 
-	compareRecipes(t, resArr, aimArr)
+	tests.CompareRecipes(t, resArr, aimArr)
 }
 /* Find recipes by login
 - sucсess with empty table
@@ -213,7 +197,7 @@ func TestFindRecipesByLogin_Empty(t *testing.T) {
 
 	resArr, _ := allM.Recipes.FindByLogin(objAcc.Login)
 
-	compareRecipes(t, resArr, aimArr)
+	tests.CompareRecipes(t, resArr, aimArr)
 }
 /* Find recipes by login
 - account not exists
@@ -242,7 +226,7 @@ func TestFindRecipesByLogin_NotExists(t *testing.T) {
 	resArr, err := allM.Recipes.FindByLogin(objAcc.Login)
 
 	assert.Equal(t, errors.UnknownAccount, err, "Find recipes by login have unexpected error")
-	compareRecipes(t, resArr, aimArr)
+	tests.CompareRecipes(t, resArr, aimArr)
 }
 
 
@@ -265,7 +249,7 @@ func TestFindRecipesById(t *testing.T) {
 	resRcp, err := model.FindById(aimRcp.Id)
 
 	assert.Nil(t, err, "Find recipes by its id has unexpected error")
-	compareRecipe(t, *aimRcp, *resRcp)
+	tests.CompareRecipe(t, *aimRcp, *resRcp)
 }
 /* Find recipes by its id
 - not found
@@ -412,7 +396,7 @@ func TestGetLikedByLogin_1(t *testing.T) {
 
 	resArr, err := allM.Recipes.GetLikedByLogin(objAcc.Login)
 
-	compareRecipes(t, resArr, aimArr)
+	tests.CompareRecipes(t, resArr, aimArr)
 }
 /* Get liked by login
 - 0 like, account/recipe exist
@@ -445,7 +429,7 @@ func TestGetLikedByLogin_0(t *testing.T) {
 
 	resArr, err := allM.Recipes.GetLikedByLogin(objAcc.Login)
 
-	compareRecipes(t, resArr, aimArr)
+	tests.CompareRecipes(t, resArr, aimArr)
 }
 /* Get liked by login
 - account doesn't exist
@@ -479,7 +463,7 @@ func TestGetLikedByLogin_None(t *testing.T) {
 	resArr, err := allM.Recipes.GetLikedByLogin(nWord)
 
 	assert.Equal(t, errors.UnknownAccount, err, "GetLikedByLogin has unexpected error")
-	compareRecipes(t, resArr, aimArr)
+	tests.CompareRecipes(t, resArr, aimArr)
 }
 
 

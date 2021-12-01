@@ -22,6 +22,7 @@ func InitRecipes(r *mux.Router, model *models.RecipeM) {
 	r.HandleFunc("/accounts/{login}/recipes", ctrl.getRecipesByLogin).Methods("GET")
 
 	r.HandleFunc("/recipes", ctrl.getAllRecipes).Methods("GET")
+	r.HandleFunc("/recipes/{id}", ctrl.get).Methods("GET")
 	r.HandleFunc("/recipes", ctrl.addRecipe).Methods("POST")
 	r.HandleFunc("/recipes/{id}", ctrl.deleteRecipe).Methods("DELETE")
 }
@@ -47,6 +48,26 @@ func (this *recipe) getRecipesByLogin(w http.ResponseWriter, r *http.Request) {
 	login := urlParams["login"]
 	data, _ := this.model.FindByLogin(login)
 	responses.JsonSuccess(w, objects.Recipe{}.ArrToDTO(data))
+}
+
+// @Tags Recipes
+// @Router /recipes/{id} [get]
+// @Summary Retrieves recipe by its id
+// @Param id path int true "Recipe's id"
+// @Produce json
+// @Success 200 {object} objects.RecipeDTO
+func (this *recipe) get(w http.ResponseWriter, r *http.Request) {
+	urlParams := mux.Vars(r)
+	strId := urlParams["id"]
+
+	id, err := strconv.Atoi(strId)
+	if err != nil {
+		responses.BadRequest(w, "Invalid request")
+		return
+	}
+
+	data, _ := this.model.FindById(id)
+	responses.JsonSuccess(w, data.ToDTO())
 }
 
 // @Tags Recipes
@@ -124,4 +145,3 @@ func (this *recipe) deleteRecipe(w http.ResponseWriter, r *http.Request) {
 		responses.BadRequest(w, "Delete operation was successful")
 	}
 }
-

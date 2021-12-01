@@ -342,6 +342,23 @@ paths:
       summary: Deletes the recipe
       tags:
       - Recipes
+    get:
+      parameters:
+      - description: Recipe's id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/objects.RecipeDTO'
+      summary: Retrieves recipe by its id
+      tags:
+      - Recipes
   /recipes/{id}/categories:
     delete:
       parameters:
