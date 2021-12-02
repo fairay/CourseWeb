@@ -20,7 +20,7 @@ import (
 Check category exists - category exists
 */
 func TestExistsCategory(t *testing.T) {
-	db, err := stubConnecton()
+	db, err := tests.StubConnecton()
 	if err != nil {
 		panic(err)
 	}
@@ -44,7 +44,7 @@ func TestExistsCategory(t *testing.T) {
 category not exists
 */
 func TestNotExistsCategory(t *testing.T) {
-	db, err := stubConnecton()
+	db, err := tests.StubConnecton()
 	if err != nil {
 		panic(err)
 	}
@@ -67,7 +67,7 @@ func TestNotExistsCategory(t *testing.T) {
 Get all category - sucсess
 */
 func TestGetAllCategory(t *testing.T) {
-	db, err := stubConnecton()
+	db, err := tests.StubConnecton()
 	if err != nil {
 		panic(err)
 	}
@@ -90,7 +90,7 @@ func TestGetAllCategory(t *testing.T) {
 Get category - category exists
 */
 func TestGetCategory(t *testing.T) {
-	db, err := stubConnecton()
+	db, err := tests.StubConnecton()
 	if err != nil {
 		panic(err)
 	}
@@ -115,7 +115,7 @@ func TestGetCategory(t *testing.T) {
 Find categories - input: "" result: all categories
 */
 func TestFindCategory(t *testing.T) {
-	db, err := stubConnecton()
+	db, err := tests.StubConnecton()
 	if err != nil {
 		panic(err)
 	}
@@ -140,7 +140,7 @@ func TestFindCategory(t *testing.T) {
 	assert.ElementsMatch(t, resArr, objCatArr)
 }
 func TestFindOneCategory(t *testing.T) {
-	db, err := stubConnecton()
+	db, err := tests.StubConnecton()
 	if err != nil {
 		panic(err)
 	}
@@ -167,7 +167,7 @@ func TestFindOneCategory(t *testing.T) {
 Get categories by recipe - category and recipe with such recipe exist
 */
 func TestGetByRecipeCategory(t *testing.T) {
-	db, err := stubConnecton()
+	db, err := tests.StubConnecton()
 	if err != nil {
 		panic(err)
 	}
@@ -205,7 +205,7 @@ func TestGetByRecipeCategory(t *testing.T) {
 Get recipes by categories - category and recipe with such category exist
 */
 func TestGetRecipesCategory(t *testing.T) {
-	db, err := stubConnecton()
+	db, err := tests.StubConnecton()
 	if err != nil {
 		panic(err)
 	}

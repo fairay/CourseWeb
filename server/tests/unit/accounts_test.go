@@ -7,8 +7,9 @@ import (
 	"api/recipes/objects"
 	"api/recipes/objects/dbuilder"
 	"api/recipes/repository"
-	"testing"
+	"api/recipes/tests"
 	err "errors"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -19,15 +20,19 @@ import (
 - account exists
 */
 func TestFindAccount(t *testing.T) {
-	db, err := stubConnecton()
-	if err != nil {	panic(err) }
+	db, err := tests.StubConnecton()
+	if err != nil {
+		panic(err)
+	}
 
 	objArr := dbuilder.AccountMother{}.All()
 	objAcc := &objArr[1]
 
 	mockRep := repository.NewAccountsRep(db)
 	err = mockRep.CreateList(objArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	model := models.NewAccount(mockRep, nil)
 	res, err := model.Find(objAcc.Login)
@@ -35,41 +40,49 @@ func TestFindAccount(t *testing.T) {
 	assert.Nil(t, err, "Find has unexpected error")
 	assert.Equal(t, objAcc, res, "Find has unexpected result")
 }
+
 /* Find account
 - account doesn't exists
 */
 func TestFindNoneAccount(t *testing.T) {
-	db, err := stubConnecton()
-	if err != nil {	panic(err) }
+	db, err := tests.StubConnecton()
+	if err != nil {
+		panic(err)
+	}
 
 	objArr := dbuilder.AccountMother{}.All()
 
 	mockRep := repository.NewAccountsRep(db)
 	err = mockRep.CreateList(objArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	model := models.NewAccount(mockRep, nil)
 	res, err := model.Find(nWord)
 
-	var nil_ptr *objects.Account = nil;
+	var nil_ptr *objects.Account = nil
 	assert.Equal(t, errors.RecordNotFound, err, "Find has unexpected error")
 	assert.Equal(t, nil_ptr, res, "Find has unexpected result")
 }
-
 
 /* Get role
 - account exists
 */
 func TestGetRoleAccount(t *testing.T) {
-	db, err := stubConnecton()
-	if err != nil {	panic(err) }
+	db, err := tests.StubConnecton()
+	if err != nil {
+		panic(err)
+	}
 
 	objArr := dbuilder.AccountMother{}.All()
 	objAcc := dbuilder.AccountMother{}.Obj0()
 
 	mockRep := repository.NewAccountsRep(db)
 	err = mockRep.CreateList(objArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	model := models.NewAccount(mockRep, nil)
 	resRole, err := model.GetRole(objAcc.Login)
@@ -77,18 +90,23 @@ func TestGetRoleAccount(t *testing.T) {
 	assert.Nil(t, err, "GetRole has unexpected error")
 	assert.Equal(t, resRole, objAcc.Role, "GetRole has unexpected error")
 }
+
 /* Get role
 - account doesn't exists
 */
 func TestGetRoleNoneAccount(t *testing.T) {
-	db, err := stubConnecton()
-	if err != nil { panic(err) }
+	db, err := tests.StubConnecton()
+	if err != nil {
+		panic(err)
+	}
 
 	objArr := dbuilder.AccountMother{}.All()
 
 	mockRep := repository.NewAccountsRep(db)
 	err = mockRep.CreateList(objArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	model := models.NewAccount(mockRep, nil)
 	resRole, err := model.GetRole(nWord)
@@ -97,20 +115,23 @@ func TestGetRoleNoneAccount(t *testing.T) {
 	assert.Equal(t, "", resRole, "GetRole has unexpected result")
 }
 
-
 /* Log in
 - account exists, correct password
 */
 func TestLogIn(t *testing.T) {
-	db, err := stubConnecton()
-	if err != nil { panic(err) }
+	db, err := tests.StubConnecton()
+	if err != nil {
+		panic(err)
+	}
 
 	objArr := dbuilder.AccountMother{}.All()
 	objAcc := &objArr[0] // not dbuilder.AccountMother{}.Obj0(), hash generated differently every time
 
 	mockRep := repository.NewAccountsRep(db)
 	err = mockRep.CreateList(objArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	model := models.NewAccount(mockRep, nil)
 	res, err := model.LogIn(objAcc.Login, objAcc.Login)
@@ -118,49 +139,57 @@ func TestLogIn(t *testing.T) {
 	assert.Nil(t, err, "Login has unexpected error")
 	assert.Equal(t, res, objAcc, "Login has unexpected result")
 }
+
 /* Log in
 - account exists, wrong password
 */
 func TestLogInWrongPW(t *testing.T) {
-	db, err := stubConnecton()
-	if err != nil { panic(err) }
+	db, err := tests.StubConnecton()
+	if err != nil {
+		panic(err)
+	}
 
 	objArr := dbuilder.AccountMother{}.All()
 	objAcc := &objArr[0]
 
 	mockRep := repository.NewAccountsRep(db)
 	err = mockRep.CreateList(objArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	model := models.NewAccount(mockRep, nil)
 	res, err := model.LogIn(objAcc.Login, nWord)
 
-	var nil_ptr *objects.Account = nil;
+	var nil_ptr *objects.Account = nil
 	assert.Equal(t, errors.WrongPassword, err, "Login has unexpected error")
 	assert.Equal(t, nil_ptr, res, "Login has unexpected result")
 }
+
 /* Log in
 - account exists, wrong password
 */
 func TestLogInNone(t *testing.T) {
-	db, err := stubConnecton()
-	if err != nil { panic(err) }
+	db, err := tests.StubConnecton()
+	if err != nil {
+		panic(err)
+	}
 
 	objArr := dbuilder.AccountMother{}.All()
 
 	mockRep := repository.NewAccountsRep(db)
 	err = mockRep.CreateList(objArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	model := models.NewAccount(mockRep, nil)
 	res, err := model.LogIn(nWord, nWord)
 
-	var nil_ptr *objects.Account = nil;
+	var nil_ptr *objects.Account = nil
 	assert.Equal(t, errors.RecordNotFound, err, "Login has unexpected error")
 	assert.Equal(t, nil_ptr, res, "Login has unexpected result")
 }
-
-
 
 /// LONDON STYLE (Mock)
 
@@ -180,6 +209,7 @@ func TestCreateAccount(t *testing.T) {
 	assert.Nil(t, err, "Create account have unexpected error")
 	mockRep.AssertExpectations(t)
 }
+
 /* Create account
 - already existing account
 */
@@ -196,6 +226,7 @@ func TestCreateExistsAccount(t *testing.T) {
 	assert.Equal(t, errors.AccountExists, err, "Create account have unexpected error")
 	mockRep.AssertExpectations(t)
 }
+
 /* Create account
 - creation failed
 */
@@ -232,6 +263,7 @@ func TestUpdateRole(t *testing.T) {
 	assert.Nil(t, err, "Update account have unexpected error")
 	mockRep.AssertExpectations(t)
 }
+
 /* Update role by admin
 - admin account wasn't found
 */
@@ -251,6 +283,7 @@ func TestUpdateRole_ActorMissing(t *testing.T) {
 	assert.Equal(t, errors.UnknownAccount, err, "Update account have unexpected error")
 	mockRep.AssertExpectations(t)
 }
+
 /* Update role by admin
 - actor is not admin
 */
@@ -270,6 +303,7 @@ func TestUpdateRole_NotAdmin(t *testing.T) {
 	assert.Equal(t, errors.AccessDenied, err, "Update account have unexpected error")
 	mockRep.AssertExpectations(t)
 }
+
 /* Update role by admin
 - updating account not found
 */

@@ -7,6 +7,7 @@ import (
 	"api/recipes/objects"
 	"api/recipes/objects/dbuilder"
 	"api/recipes/repository"
+	"api/recipes/tests"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -15,11 +16,13 @@ import (
 /// CLASSIC STYLE (Stub)
 
 /*
-Get all recipe's steps - recipe exists + 2 steps 
+Get all recipe's steps - recipe exists + 2 steps
 */
 func TestGetSteps(t *testing.T) {
-	db, err := stubConnecton()
-	if err != nil {	panic(err) }
+	db, err := tests.StubConnecton()
+	if err != nil {
+		panic(err)
+	}
 
 	objStpArr := dbuilder.StepMother{}.All()
 	objRcpArr := dbuilder.RecipeMother{}.All()
@@ -28,11 +31,15 @@ func TestGetSteps(t *testing.T) {
 
 	mockStp := repository.NewStepsRep(db)
 	err = mockStp.CreateList(objStpArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	mockRcp := repository.NewRecipesRep(db)
 	err = mockRcp.CreateList(objRcpArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	allM := new(models.Models)
 	allM.Recipes = models.NewRecipe(mockRcp, allM)
@@ -44,13 +51,14 @@ func TestGetSteps(t *testing.T) {
 	assert.ElementsMatch(t, aimArr, resArr, "GetSteps has unexpected error")
 }
 
-
 /*
 Get step by its number and recipe's id - recipe exists + 2 steps (in test #2)
 */
 func TestGetStepByNum(t *testing.T) {
-	db, err := stubConnecton()
-	if err != nil {panic(err)}
+	db, err := tests.StubConnecton()
+	if err != nil {
+		panic(err)
+	}
 
 	objStpArr := dbuilder.StepMother{}.All()
 	objRcpArr := dbuilder.RecipeMother{}.All()
@@ -59,11 +67,15 @@ func TestGetStepByNum(t *testing.T) {
 
 	mockStp := repository.NewStepsRep(db)
 	err = mockStp.CreateList(objStpArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	mockRcp := repository.NewRecipesRep(db)
 	err = mockRcp.CreateList(objRcpArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	allM := new(models.Models)
 	allM.Recipes = models.NewRecipe(mockRcp, allM)
@@ -79,8 +91,10 @@ func TestGetStepByNum(t *testing.T) {
 Get last step - sucсess
 */
 func TestGetStepLast(t *testing.T) {
-	db, err := stubConnecton()
-	if err != nil { panic(err) }
+	db, err := tests.StubConnecton()
+	if err != nil {
+		panic(err)
+	}
 
 	objArr := dbuilder.StepMother{}.All()
 	objRcp := dbuilder.RecipeMother{}.Obj0()
@@ -88,11 +102,15 @@ func TestGetStepLast(t *testing.T) {
 
 	mockStp := repository.NewStepsRep(db)
 	err = mockStp.CreateList(objArr)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	mockRcp := repository.NewRecipesRep(db)
 	err = mockRcp.Create(objRcp)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	allM := new(models.Models)
 	allM.Recipes = models.NewRecipe(mockRcp, allM)
@@ -103,7 +121,6 @@ func TestGetStepLast(t *testing.T) {
 	assert.Nil(t, err, "GetStepLast has unexpected error")
 	assert.Equal(t, aimStp, resArr, "GetStepLast has unexpected error")
 }
-
 
 /// LONDON STYLE (Mock)
 
@@ -123,8 +140,8 @@ func TestCreateStepAdmin(t *testing.T) {
 	objAcc := dbuilder.AccountMother{}.Obj0()
 	objRec := dbuilder.RecipeMother{}.Obj0()
 	obj := dbuilder.StepMother{}.Obj0()
-	
-	mockAcc.On("Find", objAcc.Login).Return(objAcc, nil).Once() 
+
+	mockAcc.On("Find", objAcc.Login).Return(objAcc, nil).Once()
 	mockRec.On("FindById", objRec.Id).Return(objRec, nil).Once()
 	mockStp.On("Create", obj).Return(nil).Once()
 
@@ -150,8 +167,8 @@ func TestCreateStepAuthor(t *testing.T) {
 	objAcc := dbuilder.AccountMother{}.Obj1()
 	objRec := dbuilder.RecipeMother{}.Obj2()
 	obj := dbuilder.StepMother{}.Obj2()
-	
-	mockAcc.On("Find", objAcc.Login).Return(objAcc, nil).Twice() 
+
+	mockAcc.On("Find", objAcc.Login).Return(objAcc, nil).Twice()
 	mockRec.On("FindById", objRec.Id).Return(objRec, nil).Twice()
 	mockStp.On("Create", obj).Return(nil).Once()
 
@@ -173,7 +190,7 @@ func TestDelStep(t *testing.T) {
 	allM.Recipes = models.NewRecipe(mockRec, allM)
 	allM.Accounts = models.NewAccount(mockAcc, allM)
 	allM.Steps = models.NewStep(mockStp, allM)
-	
+
 	objRcp := dbuilder.RecipeMother{}.Obj2()
 	objAdmin := dbuilder.AccountMother{}.Obj0()
 	objAuthor := dbuilder.AccountMother{}.Obj1()
@@ -209,7 +226,7 @@ func TestUpdateStep(t *testing.T) {
 	allM.Recipes = models.NewRecipe(mockRec, allM)
 	allM.Accounts = models.NewAccount(mockAcc, allM)
 	allM.Steps = models.NewStep(mockStp, allM)
-	
+
 	objRcp := dbuilder.RecipeMother{}.Obj2()
 	objAdmin := dbuilder.AccountMother{}.Obj0()
 	objAuthor := dbuilder.AccountMother{}.Obj1()
@@ -219,7 +236,7 @@ func TestUpdateStep(t *testing.T) {
 
 	mockAcc.On("Find", objRcp.Author).Return(objAuthor, nil).Once()
 	mockRec.On("FindById", objRcp.Id).Return(objRcp, nil).Once()
-	
+
 	mockRec.On("FindById", objRcp.Id).Return(objRcp, nil).Once()
 	mockStp.On("FindStepByNum", objRcp.Id, objStep.Num).Return(*objStep, nil).Once()
 
