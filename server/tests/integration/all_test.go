@@ -8,7 +8,6 @@ import (
 	"api/recipes/objects/dbuilder"
 	"api/recipes/repository"
 	"api/recipes/tests"
-	"api/recipes/errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
