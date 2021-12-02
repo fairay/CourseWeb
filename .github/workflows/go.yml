@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  server:
+  backend:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -21,7 +21,15 @@ jobs:
       run: |
         cd server
         go build -v ./...
-    - name: Test
+    - name: UnitTest
       run: |
         cd server
-        go test -v ./...
+        go test -v ./tests/unit/
+    - name: IntegrationTest
+      run: |
+        cd server
+        go test -v ./tests/integration/
+    - name: E2ETest
+      run: |
+        cd server
+        go test -v ./tests/e2e/
