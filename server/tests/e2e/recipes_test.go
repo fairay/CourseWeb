@@ -14,10 +14,23 @@ import (
 	"testing"
 )
 
-func PostQuery(client *http.Client, url string, body string) error {
+type ClientE2E struct {
+	client *http.Client;
+}
+
+func NewClient() *ClientE2E {
+	client := new(ClientE2E)
+	jar, _ := cookiejar.New(nil) 
+	client.client = &http.Client {
+		Jar: jar,
+	}
+	return client
+}
+
+func (this *ClientE2E) PostQuery(url string, body string) error {
 	req, _ := http.NewRequest(http.MethodPost, url, strings.NewReader(body))
 
-	res, err := client.Do(req)
+	res, err := this.client.Do(req)
 	if err != nil { return err }
 	defer res.Body.Close()
 
@@ -27,8 +40,8 @@ func PostQuery(client *http.Client, url string, body string) error {
 	return err
 }
 
-func GetQuery(client *http.Client, url string, obj interface{}) error {
-	res, err := client.Get(url)
+func (this *ClientE2E) GetQuery(url string, obj interface{}) error {
+	res, err := this.client.Get(url)
 	if err != nil { return err }
 	defer res.Body.Close()
 	
@@ -42,11 +55,7 @@ func GetQuery(client *http.Client, url string, obj interface{}) error {
 
 func TestPostRecipe(t *testing.T) {
 	port := tests.StubServer()
-
-	jar, _ := cookiejar.New(nil)
-	client := &http.Client{
-		Jar: jar,
-	}
+	client := NewClient()
 
 	baseUrl := fmt.Sprintf("http://localhost:%d", port)
 
@@ -58,7 +67,7 @@ func TestPostRecipe(t *testing.T) {
 	/// REQUESTS
 	// Create account
 	url := fmt.Sprintf("%s/accounts", baseUrl)
-	err := PostQuery(client, url, accStr)
+	err := client.PostQuery(url, accStr)
 	if err != nil {
 		t.Error("POST account failed:", err)
 		return
@@ -66,7 +75,7 @@ func TestPostRecipe(t *testing.T) {
 
 	// Log in
 	url = fmt.Sprintf("%s/accounts/login", baseUrl)
-	err = PostQuery(client, url, accStr)
+	err = client.PostQuery(url, accStr)
 	if err != nil {
 		t.Error("Login account failed:", err)
 		return
@@ -76,7 +85,7 @@ func TestPostRecipe(t *testing.T) {
 	url = fmt.Sprintf("%s/recipes", baseUrl)
 	objRcp := dbuilder.RecipeMother{}.Obj0()
 	jsonStr, _ := json.Marshal(objRcp)
-	err = PostQuery(client, url, string(jsonStr))
+	err = client.PostQuery(url, string(jsonStr))
 	if err != nil {
 		t.Error("POST recipe failed:", err)
 		return
@@ -85,7 +94,7 @@ func TestPostRecipe(t *testing.T) {
 	// Get recipe
 	url = fmt.Sprintf("%s/recipes/%d", baseUrl, objRcp.Id)
 	rcpDTO := new(objects.RecipeDTO)
-	err = GetQuery(client, url, rcpDTO)
+	err = client.GetQuery(url, rcpDTO)
 	if err != nil {
 		t.Error("GET recipe failed:", err)
 		return
