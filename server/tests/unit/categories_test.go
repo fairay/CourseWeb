@@ -163,8 +163,8 @@ func TestFindOneCategory(t *testing.T) {
 	assert.ElementsMatch(t, resArr, expArr)
 }
 
-/*
-Get categories by recipe - category and recipe with such recipe exist
+/* Get categories by recipe
+- category and recipe with such recipe exist
 */
 func TestGetByRecipeCategory(t *testing.T) {
 	db, err := tests.StubConnecton()
