@@ -1,0 +1,4 @@
+2021/12/10 12:31:34 POST REQUEST	 URL:/accounts 	Address: [::1]:51581
+2021/12/10 12:31:34 POST REQUEST	 URL:/accounts/login 	Address: [::1]:51582
+2021/12/10 12:31:34 POST REQUEST	 URL:/recipes 	Address: [::1]:51582
+2021/12/10 12:31:34 GET REQUEST	 URL:/recipes/1 	Address: [::1]:51583

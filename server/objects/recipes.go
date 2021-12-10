@@ -25,15 +25,6 @@ func (Recipe) TableName() string {
 }
 
 func (this *Recipe) ToDTO() *RecipeDTO {
-	// dto := &RecipeDTO{
-	// 	Id: this.Id,
-	// 	Author: this.Author,
-	// 	Title: this.Title,
-	// 	CreatedAt: this.CreatedAt.String(),
-	// 	Description: this.Description,
-	// 	Duration: this.Duration,
-	// 	PortionNum: this.PortionNum,
-	// }
 	dto := new(RecipeDTO)
 	jsonStr, _ := json.Marshal(this)
 	json.Unmarshal(jsonStr, dto) 

@@ -3,62 +3,15 @@ package e2e_test
 import (
 	"api/recipes/objects"
 	"api/recipes/objects/dbuilder"
-	"api/recipes/tests"
+	. "api/recipes/tests"
+	"time"
 
 	"encoding/json"
-	"errors"
 	"fmt"
-	"net/http"
-	"net/http/cookiejar"
-	"strings"
 	"testing"
 )
 
-type ClientE2E struct {
-	client *http.Client;
-}
-
-func NewClient() *ClientE2E {
-	client := new(ClientE2E)
-	jar, _ := cookiejar.New(nil) 
-	client.client = &http.Client {
-		Jar: jar,
-	}
-	return client
-}
-
-func (this *ClientE2E) PostQuery(url string, body string) error {
-	req, _ := http.NewRequest(http.MethodPost, url, strings.NewReader(body))
-
-	res, err := this.client.Do(req)
-	if err != nil { return err }
-	defer res.Body.Close()
-
-	if res.StatusCode != http.StatusOK {
-		err = errors.New(fmt.Sprintf("Unexpected status %v", res.StatusCode))
-	}
-	return err
-}
-
-func (this *ClientE2E) GetQuery(url string, obj interface{}) error {
-	res, err := this.client.Get(url)
-	if err != nil { return err }
-	defer res.Body.Close()
-	
-	if res.StatusCode != http.StatusOK {
-		err = errors.New(fmt.Sprintf("Unexpected status %v", res.StatusCode))
-		return err
-	}
-
-	return json.NewDecoder(res.Body).Decode(obj)
-}
-
-func TestPostRecipe(t *testing.T) {
-	port := tests.StubServer()
-	client := NewClient()
-
-	baseUrl := fmt.Sprintf("http://localhost:%d", port)
-
+func postRecipe(t *testing.T, client *ClientE2E, baseUrl string) {
 	acc := dbuilder.AccountMother{}.Obj0().ToDTO()
 	acc.Password = acc.Login
 	accByte, _ := json.Marshal(acc)
@@ -99,6 +52,30 @@ func TestPostRecipe(t *testing.T) {
 		t.Error("GET recipe failed:", err)
 		return
 	}
-	tests.CompareRecipe(t, *objRcp, *rcpDTO.ToModel())
+	CompareRecipe(t, *objRcp, *rcpDTO.ToModel())
+}
 
+func TestPostRecipe(t *testing.T) {
+	port := StubServer()
+	baseUrl := fmt.Sprintf("http://localhost:%d", port)
+
+	client := NewClient()
+	postRecipe(t, client, baseUrl)	
+}
+
+func BenchmarkPostRecipe(b *testing.B) {
+	port := StubServer()
+	baseUrl := fmt.Sprintf("http://localhost:%d", port)
+	t := new(testing.T)
+	
+	for i := 0; i < b.N; i++ {
+		client := NewClient()
+		postRecipe(t, client, baseUrl)
+	}
+}
+
+func RunStubServer(t *testing.T) {
+	StubServer()
+	time.Sleep(1e9 * 30)
+	fmt.Println("1")
 }
