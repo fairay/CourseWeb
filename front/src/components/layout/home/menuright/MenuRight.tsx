@@ -15,6 +15,7 @@ const MenuRight: React.FC<MenuRightProps> = (props) => {
       flexDir="column"
       alignItems="start"
       justifyContent="space-around"
+      textStyle="body"
     >
       <Heading color="primary-dark">What's in your fridge :</Heading>
       <Divider borderColor="primary-dark" orientation="horizontal" mb={2} />

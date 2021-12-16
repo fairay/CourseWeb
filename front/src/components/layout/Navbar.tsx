@@ -16,34 +16,32 @@ interface NavbarProps {}
 
 const Navbar: React.FC<NavbarProps> = (props) => {
   return (
-    <Box bg="primary" px="10" py="3">
+    <Box bg="bg-alt" px="10" py="3">
       <Container
-        maxW="70%"
+        maxW="60%"
         d="flex"
         alignItems="center"
         justifyContent="space-around"
       >
-        <Logo />
-        <Spacer flex="2" />
-        <List display="flex">
+        <List display="block" width='100%' align='center'>
           <ListItem mx="3">
-            <Link color="secondary">
-              <Text fontSize="xl" fontWeight="semibold">
-                Home
+            <Link>
+              <Text  textStyle="subtitle" color="accent-1">
+              Надзаголовок
+              </Text>
+            </Link>
+          </ListItem>
+          <ListItem width='100%'>
+            <Link>
+              <Text textStyle="header" color="title">
+                Заголовок
               </Text>
             </Link>
           </ListItem>
           <ListItem mx="3">
-            <Link color="secondary">
-              <Text fontSize="xl" fontWeight="semibold" color="secondary">
-                About
-              </Text>
-            </Link>
-          </ListItem>
-          <ListItem mx="3">
-            <Link color="secondary">
-              <Text fontSize="xl" fontWeight="semibold" color="secondary">
-                Contact Us
+            <Link>
+              <Text textStyle="text" color="text">
+              Подзаголовок
               </Text>
             </Link>
           </ListItem>
