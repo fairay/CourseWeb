@@ -4,19 +4,20 @@ import IngredientsList from "./ingredientslist/IngredientsList";
 import SearchResult from "./searchresult/SearchResult";
 import React from "react";
 import Recipe from "./recipe/Recipe";
+import RecipeBox from "./recipe/RecipeBox"
+
 interface MenuRightProps {}
 
 const MenuRight: React.FC<MenuRightProps> = (props) => {
   return (
     <Box
-      mt="5"
-      ml="10"
       d="flex"
       flexDir="column"
       alignItems="start"
       justifyContent="space-around"
       textStyle="body"
     >
+      <RecipeBox />
       <Heading color="primary-dark">What's in your fridge :</Heading>
       <Divider borderColor="primary-dark" orientation="horizontal" mb={2} />
       <Text color="primary-dark" fontWeight="bold">
