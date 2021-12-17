@@ -39,14 +39,15 @@ const Navbar: React.FC<NavbarProps> = (props) => {
             width="fit-content"
         >
             {/* # TODO Link to component */}
-            {items.map((item) => (
+            {items.map(item =>
             <Link 
+                key={item.name}
                 marginRight="10px"
                 width="100%" href={item.ref} textStyle="body"
             >
                 {item.name}
             </Link>
-            ))}
+            )}
         </Box>
         
         <Box width="190px" height="40px">
