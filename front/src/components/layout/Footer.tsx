@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
-import Logo from "../Logo";
+import Logo from "../icon/Logo";
 
 interface FooterProps {}
 
