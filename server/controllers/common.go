@@ -10,6 +10,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	httpSwagger "github.com/swaggo/http-swagger"
@@ -44,5 +45,11 @@ func RunSwagger(r *mux.Router) {
 }
 
 func RunRouter(r *mux.Router, port uint16) error {
-	return http.ListenAndServe(fmt.Sprintf(":%d", port), r)
+	c := cors.New(cors.Options{
+        AllowedOrigins: []string{"http://localhost:3000"},
+        AllowCredentials: true,
+    })
+	
+	handler := c.Handler(r)
+	return http.ListenAndServe(fmt.Sprintf(":%d", port), handler)
 }

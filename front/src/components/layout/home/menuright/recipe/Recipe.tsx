@@ -13,9 +13,9 @@ import RoundBox from "components/base/RoundBox";
 import photoRecipe from "img/photoRecipe.png"
 import ClockIcon from "components/icon/Clock";
 import FullLike from "components/icon/FullLike";
+import {Recipe as RecipeI} from "types/Resipe"
 
-
-interface RecipeProps {}
+interface RecipeProps extends RecipeI {}
 
 const Recipe: React.FC<RecipeProps> = (props) => {
     return (
@@ -41,13 +41,13 @@ const Recipe: React.FC<RecipeProps> = (props) => {
                     <VStack>
                         <Box w="100%" h="77">
                             <Text textStyle="subtitle" color="title" align="center">
-                            Торт Графские развалины
+                                {props.title}
                             </Text>
                         </Box>
 
-                        <Box>
+                        <Box alignSelf="flex-start">
                             <Text  textStyle="alt-body" color="text">
-                            Необычайно вкусный торт, не пожалеете Приготовить безе. В миску вылить белки и добавить 240 грамм сахара. Установить миску на водяную баню и, энергично помешивая массу венчиком, дать сахару бла-бла
+                                {props.description}
                             </Text>
                         </Box>
                     </VStack>
@@ -56,7 +56,7 @@ const Recipe: React.FC<RecipeProps> = (props) => {
                         <RoundBox width="120px" height="30px"
                             borderColor="accent-1" alignItems="center"> 
                                 <Box marginY="auto" marginX="8px"> <ClockIcon /> </Box>
-                                <Text marginLeft="2px" textStyle="body">Время</Text>
+                                <Text marginLeft="2px" textStyle="body"> {props.duration} </Text>
                         </RoundBox>
 
                         <RoundBox width="120px" height="30px"
