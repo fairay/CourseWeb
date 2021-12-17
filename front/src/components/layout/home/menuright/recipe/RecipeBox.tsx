@@ -43,7 +43,7 @@ class RecipeBox extends React.Component {
                 rowGap="40px"
             >
                 {this.state.postContent.map(item =>
-                    <Recipe {...item}/>
+                    <Recipe {...item} key={item.id}/>
                 )}
             </Box>
         )
