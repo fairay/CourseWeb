@@ -17,6 +17,11 @@ import Navbar from "./Navbar/Navbar"
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = (props) => {
+    const navItems = [
+        { name: "Рецепты", ref: "#" },
+        { name: "Пользователи", ref: "#" },
+    ]
+    
     return (
     <Box 
         bg="bg-alt"
@@ -29,7 +34,7 @@ const Header: React.FC<HeaderProps> = (props) => {
             marginBottom="15px"
             maxW="1000px"
         >
-            <Navbar />
+            <Navbar items={navItems}/>
             <Titles />
         </Container>
     </Box>
