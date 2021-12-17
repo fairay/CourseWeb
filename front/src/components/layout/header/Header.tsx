@@ -35,7 +35,7 @@ const Header: React.FC<HeaderProps> = (props) => {
             maxW="1000px"
         >
             <Navbar items={navItems}/>
-            <Titles />
+            <Titles title="Заголовок"/>
         </Container>
     </Box>
     );

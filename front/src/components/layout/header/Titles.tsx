@@ -11,7 +11,11 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 
-interface TitlesProps {}
+interface TitlesProps {
+  undertitle?: string
+  title: string
+  subtitle?: string
+}
 
 const Titles: React.FC<TitlesProps> = (props) => {
   return (
@@ -24,17 +28,17 @@ const Titles: React.FC<TitlesProps> = (props) => {
         <List display="block" width='100%' align='center'>
           <ListItem mx="3">
             <Text  textStyle="subtitle" color="accent-1">
-            Надзаголовок
+              {props.undertitle}
             </Text>
           </ListItem>
           <ListItem width='100%'>
             <Text textStyle="header" color="title">
-              Заголовок
+              {props.title}
             </Text>
           </ListItem>
           <ListItem mx="3">
             <Text textStyle="text" color="text">
-            Подзаголовок
+              {props.undertitle}
             </Text>
           </ListItem>
         </List>
