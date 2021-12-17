@@ -9,7 +9,7 @@ import {
   } from "@chakra-ui/react";
 import React, { useState } from "react";
 import RoundBox from "components/base/RoundBox";
-import photoRecipe from "../../../../../img/photoRecipe.png";
+import photoRecipe from "img/photoRecipe.png"
 
 interface RecipeProps {}
 

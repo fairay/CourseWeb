@@ -48,11 +48,10 @@ const Navbar: React.FC<NavbarProps> = (props) => {
             )}
         </Box>
         
-        <RoundBox width="190px" height="40px"
-        > <Link href="/auth" alignItems="center" display="flex" width="100%">
+        <Link href="/auth"> <RoundBox width="190px" height="40px" alignItems="center">
             <Box marginY="auto" marginX="8px"> <LoginIcon /> </Box>
             <Text marginLeft="2px" textStyle="body">Войти</Text>
-        </Link></RoundBox>
+        </RoundBox></Link>
 
     </Box>
     )
