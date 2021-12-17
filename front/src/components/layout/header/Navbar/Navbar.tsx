@@ -49,16 +49,16 @@ const Navbar: React.FC<NavbarProps> = (props) => {
             ))}
         </Box>
         
-        <LinkBox 
+        <Link 
             width="190px" height="40px"
             border={"1px solid #000000"}
             borderRadius="10px"
             display="flex" alignItems="center"
-            href="#"
+            href="/auth"
         >
                 <Box marginY="auto" marginX="8px"> <LoginIcon /> </Box>
                 <Text marginLeft="2px" textStyle="body">Войти</Text>
-        </LinkBox>
+        </Link>
 
     </Box>
     )
