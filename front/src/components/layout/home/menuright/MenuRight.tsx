@@ -3,7 +3,7 @@ import IngredientsForm from "./ingredientsform/IngredientsForm";
 import IngredientsList from "./ingredientslist/IngredientsList";
 import SearchResult from "./searchresult/SearchResult";
 import React from "react";
-
+import Recipe from "./recipe/Recipe";
 interface MenuRightProps {}
 
 const MenuRight: React.FC<MenuRightProps> = (props) => {
@@ -33,6 +33,7 @@ const MenuRight: React.FC<MenuRightProps> = (props) => {
       <Heading color="primary-dark">Results :</Heading>
       <Divider borderColor="primary-dark" orientation="horizontal" mb={2} />
       <SearchResult />
+      <Recipe />
     </Box>
   );
 };
