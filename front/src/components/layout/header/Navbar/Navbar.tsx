@@ -10,9 +10,9 @@ import {
   Container,
   Spacer,
   Icon,
+  LinkBox,
 } from "@chakra-ui/react";
-import L1 from 'icon/login.svg';
-import { ReactComponent as Logo } from 'icon/login.svg';
+import LoginIcon from 'components/icon/Login'
 
 interface NavbarProps {}
 
@@ -49,13 +49,16 @@ const Navbar: React.FC<NavbarProps> = (props) => {
             ))}
         </Box>
         
-        <Box width="190px" height="40px">
-            <Link display="flex" alignItems="center">
-                {/* # TODO How to deal with images */}
-                <Logo fill='red' stroke='green'/>
-                <Text textStyle="body">Войти</Text>
-            </Link>
-        </Box>
+        <LinkBox 
+            width="190px" height="40px"
+            border={"1px solid #000000"}
+            borderRadius="10px"
+            display="flex" alignItems="center"
+            href="#"
+        >
+                <Box marginY="auto" marginX="8px"> <LoginIcon /> </Box>
+                <Text marginLeft="2px" textStyle="body">Войти</Text>
+        </LinkBox>
 
     </Box>
     )

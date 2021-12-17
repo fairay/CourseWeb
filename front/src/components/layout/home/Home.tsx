@@ -1,6 +1,5 @@
 import { Box, Container, Divider } from "@chakra-ui/react";
 import React from "react";
-// import MenuLeft from "./menuleft/MenuLeft";
 import MenuRight from "./menuright/MenuRight";
 
 interface HomeProps {}
@@ -8,10 +7,7 @@ interface HomeProps {}
 const Home: React.FC<HomeProps> = ({}) => {
   return (
     <Box backgroundColor="bg">
-      <Container maxW="60%" d="flex" py={4}>
-        {/* <Box minW="30%" flex="1">
-          <MenuLeft />
-        </Box> */}
+      <Container maxW="1000px" d="flex" py={4}>
         <Divider
           h="95%"
           alignSelf="center"
