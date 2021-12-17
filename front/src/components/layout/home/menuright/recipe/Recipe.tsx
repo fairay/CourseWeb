@@ -8,8 +8,11 @@ import {
     VStack,
   } from "@chakra-ui/react";
 import React, { useState } from "react";
+
 import RoundBox from "components/base/RoundBox";
 import photoRecipe from "../../../../../img/photoRecipe.png";
+import ClockIcon from "components/icon/Clock";
+import FullLike from "components/icon/FullLike";
 
 interface RecipeProps {}
 
@@ -48,9 +51,19 @@ const Recipe: React.FC<RecipeProps> = (props) => {
                         </Box>
                     </VStack>
 
-                    <Text>
-                        Важная инфа в два овала
-                    </Text>
+                    <HStack>
+                        <RoundBox width="120px" height="30px"
+                            borderColor="accent-1" alignItems="center"> 
+                                <Box marginY="auto" marginX="8px"> <ClockIcon /> </Box>
+                                <Text marginLeft="2px" textStyle="body">Время</Text>
+                        </RoundBox>
+
+                        <RoundBox width="120px" height="30px"
+                            borderColor="accent-1" alignItems="center"> 
+                                <Box marginY="auto" marginX="8px"> <FullLike /> </Box>
+                                <Text marginLeft="2px" textStyle="body">1 024</Text>
+                        </RoundBox>
+                    </HStack>
                 </Box>
             </RoundBox>
         </Link>
