@@ -1,5 +1,5 @@
 import * as React from "react";
-import Navbar from "./components/layout/Navbar";
+import Header from "./components/layout/header/Header";
 import Footer from "./components/layout/Footer";
 import Home from "./components/layout/home/Home";
 import Fonts from "./components/Fonts";
@@ -9,7 +9,7 @@ import { ChakraProvider, Box, Text, Menu, Container } from "@chakra-ui/react";
 export const App = () => (
   <ChakraProvider theme={theme}>
     <Fonts />
-    <Navbar />
+    <Header  />
     <Home />
     <Footer />
   </ChakraProvider>
