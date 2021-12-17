@@ -21,8 +21,6 @@ const theme = extendTheme({
   fonts: {
     heading: "Unica One",
     body: "Raleway",
-
-    // "headline": "Lora",
   },
 
   textStyles : {
