@@ -8,7 +8,7 @@ import {
     VStack,
   } from "@chakra-ui/react";
 import React, { useState } from "react";
-import Spinner from "../../../../spinner/Spinner";
+import RoundBox from "components/base/RoundBox";
 import photoRecipe from "../../../../../img/photoRecipe.png";
 
 interface RecipeProps {}
@@ -18,25 +18,21 @@ const Recipe: React.FC<RecipeProps> = (props) => {
         <Link style={{ textDecoration: 'none' }}
             href="#"
         >
-            <HStack
-                w="480px"
-                borderWidth="1px"
-                borderStyle="solid"
-                borderRadius="10px"
-                borderColor="title"
-                alignItems="stretch"
+            <RoundBox
+            w="480px"
+            borderColor="title"
+            alignItems="stretch"
             >
-                <Image src={photoRecipe} style={{width: 200,
-                                                height: 300,
-                                                borderTopLeftRadius: 10,
-                                                borderBottomLeftRadius: 10,
-                }} 
+                <Image src={photoRecipe} 
+                    borderRadius={"10px 0 0 10px"} 
+                    width="200" height="300"
                 />
 
                 <Box 
                     display="flex" 
                     justifyContent="space-between" 
                     flexDirection="column"
+                    m="10px"
                 >
                     <VStack>
                         <Box w="100%" h="77">
@@ -56,7 +52,7 @@ const Recipe: React.FC<RecipeProps> = (props) => {
                         Важная инфа в два овала
                     </Text>
                 </Box>
-            </HStack>
+            </RoundBox>
         </Link>
     )
 }
