@@ -10,9 +10,10 @@ import {
 import React, { useState } from "react";
 
 import RoundBox from "components/base/RoundBox";
-import photoRecipe from "../../../../../img/photoRecipe.png";
+import photoRecipe from "img/photoRecipe.png"
 import ClockIcon from "components/icon/Clock";
 import FullLike from "components/icon/FullLike";
+
 
 interface RecipeProps {}
 
