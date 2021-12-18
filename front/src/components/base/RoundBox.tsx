@@ -3,7 +3,7 @@ import {
     Box, BoxProps
 } from "@chakra-ui/react";
 
-interface RoundBoxProps extends BoxProps {}
+export interface RoundBoxProps extends BoxProps {}
 
 const RoundBox: React.FC<RoundBoxProps> = (props) => {
     const { border="1px solid #000000", borderRadius="10px", display="flex", ...rest } = props

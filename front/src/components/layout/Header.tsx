@@ -5,8 +5,10 @@ import {BrowserRouter, Routes, Route, useParams, RouteProps, Params} from "react
 import RecipeParams from "./home/recipe/Recipe"
 import Header from "./header/Header"
 import Input from "components/base/Input"
+import Author from "components/base/Author";
 
 const searchInput = Input
+const authorField = Author
 
 const HeaderRouter: React.FC<{}> = ({}) => {
     return <BrowserRouter>
@@ -14,7 +16,8 @@ const HeaderRouter: React.FC<{}> = ({}) => {
             <Route path="/" element={<Header title="Все рецепты" addField={searchInput} />}/>
             <Route path="/auth/signin" element={<Header title="Вход" undertitle="Добро пожаловать. Снова." />}/>
             <Route path="/auth/signup" element={<Header title="Регистрация" undertitle="Чтобы получить доступ к тысячам новых возможностей в Вашем кулинарном самовыражении!" />}/>
-            <Route path="/recipes/:id" element={<Header title=""/>}/>
+            <Route path="/recipes/:id" element={<Header title="" addField={authorField}/>}/>
+
             <Route path="*" element={<Header title="Страница не найдена"/>}/>
         </Routes>
     </BrowserRouter>

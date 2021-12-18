@@ -1,9 +1,9 @@
-import { extendTheme, Image } from "@chakra-ui/react";
+import { BoxProps, extendTheme, Image } from "@chakra-ui/react";
 import theme from "extendTheme";
-import React from "react";
+import React, { SVGProps } from "react";
 import logo from "../logo.svg";
 
-interface LogoProps {
+interface LogoProps extends SVGProps{
   width?: string,
   height?: string,
   fill?: string,
