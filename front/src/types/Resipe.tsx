@@ -1,10 +1,10 @@
 
 export interface Recipe {
     id:          number,
-	author?:      string,
+	author:      string,
 	title:       string
-	createdAt?:   string,
-	description?: string,
-	duration?:    number,
-	portionNum?:  number,
+	created_at:   string,
+	description: string,
+	duration:    number,
+	portion_num:  number,
 }

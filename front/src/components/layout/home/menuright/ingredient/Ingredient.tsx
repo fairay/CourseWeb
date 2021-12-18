@@ -12,25 +12,26 @@ import React, { useState } from "react";
 
 import RoundBox from "components/base/RoundBox";
 import CancelIcon from "components/icon/Cancel";
+import {Ingredient as IngredientT} from "types/Ingredient";
 
-interface IngredientProps {}
+interface IngredientProps extends IngredientT{}
 
 const Ingredient: React.FC<IngredientProps> = (props) => {
     const [hide, show] = React.useState(true);
 
     return (
-        <RoundBox display="inline-block" position="relative" borderColor="accent-1" 
+        <RoundBox display="inline-block" margin="5px" position="relative" borderColor="accent-1" 
             onMouseEnter={() => show(false)}
             onMouseLeave={() => show(true)}> 
             <HStack>
                 <VStack alignItems="left" marginLeft="10px" marginRight="20px" minWidth="100px">
                     <Text textStyle="body" color="text" height="30px" m="0px">
-                        Ингредиент
+                        {props.title}
                     </Text>
 
                     <Text textStyle="caption" color="accent-3" height="20px"
                         style={{margin: "0"}} >
-                        100 грамм
+                        {props.amount}
                     </Text>
                 </VStack>
 
