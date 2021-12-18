@@ -4,7 +4,8 @@ import IngredientsList from "../menuright/ingredientslist/IngredientsList";
 import SearchResult from "../menuright/searchresult/SearchResult";
 import React from "react";
 import Recipe from "./recipe/Recipe";
-import RecipeBox from "./recipe/RecipeBox"
+import RecipeBox from "./recipe/RecipeBox";
+import RecipeDtl from "./recipe/RecipeDetailed"
 
 interface AllRecipesProps {}
 
@@ -33,7 +34,7 @@ const AllRecipes: React.FC<AllRecipesProps> = (props) => {
       <Heading color="primary-dark">Results :</Heading>
       <Divider borderColor="primary-dark" orientation="horizontal" mb={2} />
       <SearchResult />
-      <Recipe />
+      <RecipeDtl />
     </Box>
   );
 };
