@@ -1,14 +1,8 @@
 import {
     Box,
-    Heading,
-    HStack,
-    Image,
-    Link,
-    Text,
-    VStack,
   } from "@chakra-ui/react";
 import React, { useState } from "react";
-import GetRecipe from "postApi/GetRecipe"
+import GetRecipes from "postApi/recipes/GetAll"
 import Recipe from "./Recipe";
 
 type State = {
@@ -27,7 +21,7 @@ class RecipeBox extends React.Component {
     }
 
     componentDidMount() {
-        GetRecipe.GetRecipe().then(data => {
+        GetRecipes().then(data => {
             if (data.status == 200)
                 this.setState({postContent: data.content})
         });
