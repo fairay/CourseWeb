@@ -12,7 +12,7 @@ interface MenuRightProps {}
 const MenuRight: React.FC<MenuRightProps> = (props) => {
   return (
     <Box
-      d="flex"
+      d="flex" width="100%"
       flexDir="column"
       alignItems="start"
       justifyContent="space-around"
