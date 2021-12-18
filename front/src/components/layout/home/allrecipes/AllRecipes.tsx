@@ -1,15 +1,14 @@
 import { Text, Heading, Divider, Box } from "@chakra-ui/react";
-import IngredientsForm from "./ingredientsform/IngredientsForm";
-import IngredientsList from "./ingredientslist/IngredientsList";
-import SearchResult from "./searchresult/SearchResult";
+import IngredientsForm from "../menuright/ingredientsform/IngredientsForm";
+import IngredientsList from "../menuright/ingredientslist/IngredientsList";
+import SearchResult from "../menuright/searchresult/SearchResult";
 import React from "react";
 import Recipe from "./recipe/Recipe";
 import RecipeBox from "./recipe/RecipeBox"
-import Input from "components/base/Input"
 
-interface MenuRightProps {}
+interface AllRecipesProps {}
 
-const MenuRight: React.FC<MenuRightProps> = (props) => {
+const AllRecipes: React.FC<AllRecipesProps> = (props) => {
   return (
     <Box
       d="flex" width="100%"
@@ -18,7 +17,6 @@ const MenuRight: React.FC<MenuRightProps> = (props) => {
       justifyContent="space-around"
       textStyle="body"
     >
-      <Input width="100%"/>
       <RecipeBox />
       <Heading color="primary-dark">What's in your fridge :</Heading>
       <Divider borderColor="primary-dark" orientation="horizontal" mb={2} />
@@ -41,4 +39,4 @@ const MenuRight: React.FC<MenuRightProps> = (props) => {
   );
 };
 
-export default MenuRight;
+export default AllRecipes;

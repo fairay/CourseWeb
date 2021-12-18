@@ -13,6 +13,7 @@ import {
 
 import Titles from "./Titles"
 import Navbar from "./Navbar/Navbar"
+import Input from "components/base/Input"
 
 interface HeaderProps {}
 
@@ -32,10 +33,12 @@ const Header: React.FC<HeaderProps> = (props) => {
             py = "0"
             marginTop="20px"
             marginBottom="15px"
+            padding={0}
             maxW="1000px"
         >
             <Navbar items={navItems}/>
             <Titles title="Заголовок"/>
+            <Input width="100%" bg='bg' marginTop="5px"/>
         </Container>
     </Box>
     );

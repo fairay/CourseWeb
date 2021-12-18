@@ -13,7 +13,7 @@ interface InputProps extends BoxProps {
 const Input: React.FC<InputProps> = (props) => {
     const {
         placeholder = "Введите данные",
-        focusBorderColor = theme.colors["accent-1"],
+        focusBorderColor = theme.colors["accent-3"],
          ...rest 
      } = props
 
