@@ -11,13 +11,13 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 
-interface TitlesProps {
+export interface TitlesProps {
   subtitle?: string
   title: string
   undertitle?: string
 }
 
-const Titles: React.FC<TitlesProps> = (props) => {
+export const Titles: React.FC<TitlesProps> = (props) => {
   return (
       <Container
         width="100%"
@@ -45,5 +45,3 @@ const Titles: React.FC<TitlesProps> = (props) => {
       </Container>
   );
 };
-
-export default Titles;

@@ -37,12 +37,12 @@ class Recipe extends React.Component<PP, State> {
   
     render() {
         return(
-        <div>
+        <Box>
             <h2>Recipe {this.id}</h2>
             {this.state.recipe &&
             <h2>{this.state.recipe.title}</h2>
             }
-        </div>
+        </Box>
       )
     }  
 }
