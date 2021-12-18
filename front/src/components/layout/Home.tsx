@@ -8,7 +8,7 @@ interface HomeProps {}
 
 const Home: React.FC<HomeProps> = ({}) => {
   return (
-    <Box backgroundColor="bg" minH="100%" h="auto">
+    <Box backgroundColor="bg" minH="100vh" h="auto">
       <Container maxW="1000px" display="flex" 
         paddingX="0px" paddingY="30px" minH="95%" 
         alignSelf="center" textStyle="body"
