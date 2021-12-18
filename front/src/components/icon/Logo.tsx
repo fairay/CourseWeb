@@ -6,7 +6,8 @@ import logo from "../logo.svg";
 interface LogoProps {
   width?: string,
   height?: string,
-  fill?: string
+  fill?: string,
+  visibility?: string
 }
 
 
