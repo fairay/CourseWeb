@@ -1,7 +1,8 @@
 import { Box, Container, Divider } from "@chakra-ui/react";
 import React from "react";
 import AllRecipes from "./home/allrecipes/AllRecipes";
-import {BrowserRouter, Routes, Route} from "react-router-dom"
+import {BrowserRouter, Routes, Route, useParams, RouteProps, Params} from "react-router-dom"
+import RecipeParams from "./home/recipe/Recipe"
 
 interface HomeProps {}
 
@@ -23,6 +24,7 @@ function Routing () {
     <Routes>
       <Route path="/" element={<AllRecipes />}/>
       <Route path="/auth" element={<Auth />}/>
+      <Route path="/recipes/:id" element={<RecipeParams />}/>
       <Route path="*" element={<NotFound />}/>
     </Routes>
   </BrowserRouter>

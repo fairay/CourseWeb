@@ -18,7 +18,7 @@ import {Recipe as RecipeI} from "types/Resipe"
 interface RecipeProps extends RecipeI {}
 
 const Recipe: React.FC<RecipeProps> = (props) => {
-    var path = "/recipe/" + props.id;
+    var path = "/recipes/" + props.id;
     return (
         <Link style={{ textDecoration: 'none' }}
             href={path}

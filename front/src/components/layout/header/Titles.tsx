@@ -11,13 +11,13 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 
-interface TitlesProps {
-  undertitle?: string
-  title: string
+export interface TitlesProps {
   subtitle?: string
+  title: string
+  undertitle?: string
 }
 
-const Titles: React.FC<TitlesProps> = (props) => {
+export const Titles: React.FC<TitlesProps> = (props) => {
   return (
       <Container
         width="100%"
@@ -27,23 +27,21 @@ const Titles: React.FC<TitlesProps> = (props) => {
       >
         <List display="block" width='100%' align='center'>
           <ListItem mx="3">
-            <Text  textStyle="subtitle" color="accent-1">
-              {props.undertitle}
+            <Text  textStyle="subtitle" color="accent-1" id="subtitle">
+              {props.subtitle ? props.subtitle : "ㅤ"}
             </Text>
           </ListItem>
           <ListItem width='100%'>
-            <Text textStyle="header" color="title">
+            <Text textStyle="header" color="title" id="title">
               {props.title}
             </Text>
           </ListItem>
           <ListItem mx="3">
-            <Text textStyle="text" color="text">
-              {props.undertitle}
+            <Text textStyle="text" color="text" id="undertitle">
+              {props.undertitle ? props.undertitle : "ㅤ"}
             </Text>
           </ListItem>
         </List>
       </Container>
   );
 };
-
-export default Titles;
