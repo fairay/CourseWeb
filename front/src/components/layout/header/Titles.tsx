@@ -12,9 +12,9 @@ import {
 } from "@chakra-ui/react";
 
 interface TitlesProps {
-  undertitle?: string
-  title: string
   subtitle?: string
+  title: string
+  undertitle?: string
 }
 
 const Titles: React.FC<TitlesProps> = (props) => {
@@ -27,8 +27,8 @@ const Titles: React.FC<TitlesProps> = (props) => {
       >
         <List display="block" width='100%' align='center'>
           <ListItem mx="3">
-            <Text  textStyle="subtitle" color="accent-1">
-              {props.undertitle}
+            <Text  textStyle="subtitle" color={props.undertitle ? "accent-1" : "bg-alt"}>
+              {props.subtitle ? props.subtitle : "-"}
             </Text>
           </ListItem>
           <ListItem width='100%'>
@@ -37,8 +37,8 @@ const Titles: React.FC<TitlesProps> = (props) => {
             </Text>
           </ListItem>
           <ListItem mx="3">
-            <Text textStyle="text" color="text">
-              {props.undertitle}
+            <Text textStyle="text" color={props.undertitle ? "text" : "bg-alt"} >
+              {props.undertitle ? props.undertitle : "-"}
             </Text>
           </ListItem>
         </List>
