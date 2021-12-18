@@ -15,7 +15,6 @@ const AllRecipes: React.FC<AllRecipesProps> = (props) => {
       flexDir="column"
       alignItems="start"
       justifyContent="space-around"
-      textStyle="body"
     >
       <RecipeBox />
       <Heading color="primary-dark">What's in your fridge :</Heading>

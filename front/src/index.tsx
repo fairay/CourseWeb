@@ -1,5 +1,6 @@
 import { ColorModeScript } from "@chakra-ui/react"
 import * as React from "react"
+import './App.css';
 import ReactDOM from "react-dom"
 import {BrowserRouter, Routes, Route} from "react-router-dom"
 import { App as A } from "./App"
@@ -9,7 +10,7 @@ import * as serviceWorker from "./serviceWorker"
 ReactDOM.render(
   <React.StrictMode>
     <ColorModeScript />
-    <App />
+    <A />
   </React.StrictMode>
   , document.getElementById("root"),
 )
