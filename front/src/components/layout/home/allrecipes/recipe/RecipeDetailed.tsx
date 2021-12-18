@@ -26,7 +26,7 @@ const RecipeDtl: React.FC<RecipeDtlProps> = (props) => {
     const [hide, show] = React.useState(true);
 
     return (
-        <Box display="flex">
+        <Box display="flex" w="100%">
             <HStack position="relative" paddingRight="15px">
                 <Image src={photoRecipe} 
                     borderRadius="10px" 
@@ -48,25 +48,27 @@ const RecipeDtl: React.FC<RecipeDtlProps> = (props) => {
                 </VStack>
             </HStack>
 
-            <HStack>
-                <RoundBox width="120px" height="30px"
-                    borderColor="accent-1" alignItems="center"> 
-                        <Box marginY="auto" marginX="8px"> <ClockIcon /> </Box>
-                        <Text marginLeft="2px" textStyle="body"> TODO </Text>
-                </RoundBox>
+            <Box>
+                <HStack display="flex" justify-content="space-between">
+                    <RoundBox width="120px" height="30px"
+                        borderColor="accent-1" alignItems="center"> 
+                            <Box marginY="auto" marginX="8px"> <ClockIcon /> </Box>
+                            <Text marginLeft="2px" textStyle="body"> TODO </Text>
+                    </RoundBox>
 
-                <RoundBox width="120px" height="30px"
-                    borderColor="accent-1" alignItems="center"> 
-                        <Box marginY="auto" marginX="8px"> <FullLike /> </Box>
-                        <Text marginLeft="2px" textStyle="body">1 024</Text>
-                </RoundBox>
+                    <RoundBox width="120px" height="30px"
+                        borderColor="accent-1" alignItems="center"> 
+                            <Box marginY="auto" marginX="8px"> <FullLike /> </Box>
+                            <Text marginLeft="2px" textStyle="body">1 024</Text>
+                    </RoundBox>
 
-                <RoundBox width="120px" height="30px"
-                    borderColor="accent-1" alignItems="center"> 
-                        <Box marginY="auto" marginX="8px"> <PlateIcon /> </Box>
-                        <Text marginLeft="2px" textStyle="body">TODO</Text>
-                </RoundBox>
-            </HStack>
+                    <RoundBox width="120px" height="30px"
+                        borderColor="accent-1" alignItems="center"> 
+                            <Box marginY="auto" marginX="8px"> <PlateIcon /> </Box>
+                            <Text marginLeft="2px" textStyle="body">TODO</Text>
+                    </RoundBox>
+                </HStack>
+            </Box>
             
         </Box>
     )
