@@ -19,7 +19,7 @@ const Input: React.FC<InputProps> = (props) => {
 
      const style = {
         color: '#000000',
-        'box-shadow': '0 0 5px 1px ' + focusBorderColor,
+        boxShadow: '0 0 5px 1px ' + focusBorderColor,
       };
 
     return (
