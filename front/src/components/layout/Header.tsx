@@ -9,10 +9,10 @@ import Header from "./header/Header"
 const HeaderRouter: React.FC<{}> = ({}) => {
     return <BrowserRouter>
         <Routes>
-        <Route path="/" element={<Header title="Все рецепты" />}/>
-        <Route path="/auth" element={<Header title="Вход" />}/>
-        <Route path="/recipes/:id" element={<Header title="Рецепт"/>}/>
-        <Route path="*" element={<Header title="Страница не найдена"/>}/>
+            <Route path="/" element={<Header title="Все рецепты" />}/>
+            <Route path="/auth" element={<Header title="Вход" />}/>
+            <Route path="/recipes/:id" element={<Header title=""/>}/>
+            <Route path="*" element={<Header title="Страница не найдена"/>}/>
         </Routes>
     </BrowserRouter>
 }

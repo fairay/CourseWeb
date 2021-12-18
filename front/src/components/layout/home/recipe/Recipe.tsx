@@ -28,10 +28,13 @@ class Recipe extends React.Component<PP, State> {
 
     componentDidMount() {
         GetRecipe(this.id).then(data => {
-            console.log(this.state)
-            if (data.status == 200)
+            if (data.status == 200) {
                 this.setState({recipe: data.content})
-            console.log(this.state)
+
+                var title = document.getElementById("title")
+                if (title && this.state.recipe)
+                    title.innerText = this.state.recipe.title
+            }
         });
     }
   

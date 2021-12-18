@@ -21,7 +21,7 @@ interface HeaderProps extends TitlesProps {
 
 const Header: React.FC<HeaderProps> = (props) => {
     const navItems = [
-        { name: "Рецепты", ref: "#" },
+        { name: "Рецепты", ref: "/" },
         { name: "Пользователи", ref: "#" },
     ]
     

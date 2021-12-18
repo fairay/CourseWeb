@@ -1,8 +1,8 @@
 
 export interface Recipe {
-    id?:          number,
+    id:          number,
 	author?:      string,
-	title?:       string
+	title:       string
 	createdAt?:   string,
 	description?: string,
 	duration?:    number,
