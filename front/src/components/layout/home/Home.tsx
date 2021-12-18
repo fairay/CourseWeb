@@ -7,16 +7,14 @@ interface HomeProps {}
 const Home: React.FC<HomeProps> = ({}) => {
   return (
     <Box backgroundColor="bg">
-      <Container maxW="1000px" d="flex" py={4} padding="0px">
+      <Container maxW="1000px" display="flex" paddingX="0px" paddingY="30px">
         <Divider
           h="95%"
           alignSelf="center"
           borderColor="primary-dark"
           orientation="vertical"
         />
-        <Box marginX="0px" marginTop="30px" flex={[2, 3, 4]}>
-          <MenuRight />
-        </Box>
+        <MenuRight />
       </Container>
     </Box>
   );

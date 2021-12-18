@@ -5,6 +5,7 @@ import SearchResult from "./searchresult/SearchResult";
 import React from "react";
 import Recipe from "./recipe/Recipe";
 import RecipeBox from "./recipe/RecipeBox"
+import Input from "components/base/Input"
 
 interface MenuRightProps {}
 
@@ -17,6 +18,7 @@ const MenuRight: React.FC<MenuRightProps> = (props) => {
       justifyContent="space-around"
       textStyle="body"
     >
+      <Input width="100%"/>
       <RecipeBox />
       <Heading color="primary-dark">What's in your fridge :</Heading>
       <Divider borderColor="primary-dark" orientation="horizontal" mb={2} />
