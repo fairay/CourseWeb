@@ -13,10 +13,10 @@ import {
 
 import {Titles, TitlesProps} from "./Titles"
 import Navbar from "./Navbar/Navbar"
-import Input from "components/base/Input"
 
 interface HeaderProps extends TitlesProps {
     role?: string
+    addField?: React.FC
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
@@ -40,7 +40,8 @@ const Header: React.FC<HeaderProps> = (props) => {
         >
             <Navbar items={navItems}/>
             <Titles {...props}/>
-            <Input width="100%" bg='bg' marginTop="5px"/>
+            {props.addField && <props.addField />}
+            
         </Container>
     </Box>
     );
