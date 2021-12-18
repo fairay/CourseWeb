@@ -3,7 +3,7 @@ import { backUrl } from "../Common";
 import { Account } from "types/Account";
 
 export const Login = async function(data: Account) {
-    const response = await axios.post(backUrl + `/accounts/login`, data).catch((error) => {
+    const response = await axios.post(backUrl + `/accounts/login`, data, {withCredentials: true}).catch((error) => {
         return {
             status: error.response?.status,
         };

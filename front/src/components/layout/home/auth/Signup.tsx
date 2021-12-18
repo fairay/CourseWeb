@@ -6,6 +6,7 @@ import RoundButton from "components/base/Button";
 import RoundBox from "components/base/RoundBox";
 import { Account } from "types/Account";
 import { Create as CreateQuery } from "postApi/accounts/Create";
+import { Login as LoginQuery } from "postApi/accounts/Login";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
 
@@ -49,21 +50,21 @@ class SignUp extends React.Component<SignUpProps> {
             title.innerText = "Пароли не совпадают!"
     }
 
-    submit(e: React.MouseEvent) {
+    async submit(e: React.MouseEvent) {
         if (this.acc.password != this.repPassword)
             return this.highlightNotMatch()
 
         e.target.disabled = true
-        CreateQuery(this.acc).then(data => {
-            if (data.status == 200) {
-                this.props.navigate("/")
-            } else {
-                e.target.disabled = false
-                var title = document.getElementById("undertitle")
-                if (title)
-                    title.innerText = "Ошибка создания аккаунта!"
-            }
-        });
+        var data = await CreateQuery(this.acc)
+        if (data.status == 200) {
+            await LoginQuery(this.acc)
+            this.props.navigate("/")
+        } else {
+            e.target.disabled = false
+            var title = document.getElementById("undertitle")
+            if (title)
+                title.innerText = "Ошибка создания аккаунта!"
+        };
     }
 
     render() {
