@@ -37,12 +37,9 @@ const RecipeDtl: React.FC<RecipeDtlProps> = (props) => {
                     <Box position="absolute" right="0px" top="0px"> <DeleteIcon width="50px" height="40px" /> </Box>
                     
                     <Button display="contents" onClick={() => show(!hide)}>
-                        <Box position="absolute" right="0px" bottom="0px" visibility={hide ? "visible" : "hidden"}>
-                            <EmptyLike width="50px" height="40px"/> 
-                        </Box>
-
-                        <Box position="absolute" right="0px" bottom="0px" visibility={hide ? "hidden" : "visible"}>
-                            <FullLike width="50px" height="40px"/> 
+                        <Box position="absolute" right="0px" bottom="0px">
+                            {hide && <EmptyLike width="50px" height="40px" />}
+                            {!hide && <FullLike width="50px" height="40px" />}
                         </Box>
                     </Button>
                 </VStack>
