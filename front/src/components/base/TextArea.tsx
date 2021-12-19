@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    InputProps as IProps, Input as I
+    TextareaProps as IProps, Textarea as I
 } from "@chakra-ui/react";
 import RoundBox from "./RoundBox"
 import theme from "extendTheme"
@@ -13,14 +13,14 @@ interface InputProps extends IProps {
     placeholderColor?: string
 }
 
-const Input: React.FC<InputProps> = (props) => {
+const Textarea: React.FC<InputProps> = (props) => {
     const {
         name = "", type = "",
         placeholder = "Введите данные",
         textColor = theme.colors["text"],
         placeholderColor = theme.colors["text"],
         focusBorderColor = theme.colors["accent-3"],
-        onInput = () => {},
+        onChange = () => {},
          ...rest 
      } = props
 
@@ -30,14 +30,14 @@ const Input: React.FC<InputProps> = (props) => {
       };
 
     return (
-    <RoundBox {...rest}>
+    <RoundBox>
         <I 
             name={name} type={type}
             textColor={textColor}
             borderWidth={0} borderRadius={10} 
             width="100%"
             placeholder={placeholder}
-            onInput={onInput}
+            onChange={onChange}
             _focus={style}
             _placeholder={{
                 color: placeholderColor,
@@ -49,4 +49,4 @@ const Input: React.FC<InputProps> = (props) => {
     )
 }
 
-export default Input
+export default Textarea

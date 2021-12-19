@@ -300,10 +300,6 @@ class Recipe extends React.Component<PP, State> {
                             />
                         )}
                     </Box>
-
-                    <Input>
-                    </Input>
-
                 </Box>
             </VStack>
         
