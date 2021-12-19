@@ -3,7 +3,7 @@ import theme from "extendTheme";
 import React, { SVGProps } from "react";
 import logo from "../logo.svg";
 
-interface LogoProps extends SVGProps{
+interface LogoProps extends SVGProps<SVGElement> {
   width?: string,
   height?: string,
   fill?: string,

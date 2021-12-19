@@ -6,15 +6,24 @@ import RoundBox from "components/base/RoundBox";
 import { Account } from "types/Account";
 import { Login as LoginQuery } from "postApi/accounts/Login";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { CookieSetOptions } from "universal-cookie";
 
 
 function LoginWrapper(props) {
     let navigate = useNavigate();
-    return <Login navigate={navigate} {...props}/>
+    let [cookie, setCookie] = useCookies(['token', 'role', 'login']);
+    return <Login navigate={navigate} cookie={cookie} setCookie={setCookie} {...props}/>
 }
 
 type LoginProps = {
     navigate: NavigateFunction
+    cookie: {
+        token?: string;
+        role?: string;
+        login?: string;
+    }
+    setCookie: (name: "token" | "role" | "login", value: any, options?: CookieSetOptions | undefined) => void
 }
 
 class Login extends React.Component<LoginProps> {
@@ -32,7 +41,7 @@ class Login extends React.Component<LoginProps> {
 
     submit(e: React.MouseEvent) {
         e.target.disabled = true
-        LoginQuery(this.acc).then(data => {
+        LoginQuery(this.acc, this.props.setCookie).then(data => {
             if (data.status == 200) {
                 this.props.navigate("/")
             } else {
