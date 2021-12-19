@@ -58,6 +58,14 @@ class Recipe extends React.Component<PP, State> {
         AddLike(this.id);
     }
 
+    getLikes() {
+        GetLikes(this.id).then(data => {
+            if (data.status == 200) {
+                this.setState({likes: data.content})
+            }
+        });
+    }
+
     componentDidMount() {
         GetRecipe(this.id).then(data => {
             if (data.status == 200) {
@@ -85,11 +93,7 @@ class Recipe extends React.Component<PP, State> {
             }
         });
 
-        GetLikes(this.id).then(data => {
-            if (data.status == 200) {
-                this.setState({likes: data.content})
-            }
-        });
+        this.getLikes();
     }
   
     render() {
@@ -119,6 +123,7 @@ class Recipe extends React.Component<PP, State> {
                                 {this.state.liked && this.deleteLike()};
                                 {!this.state.liked && this.addLike()};
                                 this.setState({liked:!this.state.liked});
+                                this.getLikes();
                             }
                             }>
                                 <Box position="absolute" right="0px" bottom="0px">
