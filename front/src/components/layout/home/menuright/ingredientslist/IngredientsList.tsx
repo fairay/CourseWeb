@@ -74,9 +74,6 @@ const IngredientsList: React.FC<IngredientsListProps> = (props) => {
         </Tbody>
       </Table>
 
-      <Ingredient />
-      
-
       <Button colorScheme="green" d="block" my={6} w="100%">
         <Text>Search</Text>
       </Button>

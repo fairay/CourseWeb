@@ -14,6 +14,9 @@ import {WithParams, PP} from "../../Warpers"
 import GetRecipe from "postApi/recipes/Get"
 import GetIngredient from "postApi/ingredients/Get";
 import GetSteps from "postApi/steps/Get";
+import GetLikes from "postApi/likes/Get";
+import DeleteLike from "postApi/likes/Delete";
+
 import {Recipe as RecipeT} from "types/Resipe"
 import {Ingredient as IngredientT} from "types/Ingredient";
 import {Step as StepT} from "types/Step";
@@ -33,7 +36,8 @@ type State = {
     recipe?: RecipeT,
     liked: boolean,
     ingredients: Array<IngredientT>,
-    steps: Array<StepT>
+    steps: Array<StepT>,
+    likes: number
 }
 
 class Recipe extends React.Component<PP, State> {
@@ -42,7 +46,11 @@ class Recipe extends React.Component<PP, State> {
     constructor(props) {
       super(props);
       this.id = Number(this.props.match.id)
-      this.state = {recipe:undefined, liked:false, ingredients:[], steps:[]}
+      this.state = {recipe:undefined, liked:false, ingredients:[], steps:[], likes:0}
+    }
+
+    deleteLike() {
+        DeleteLike(this.id).then(data => {});
     }
 
     componentDidMount() {
@@ -71,6 +79,12 @@ class Recipe extends React.Component<PP, State> {
                 this.setState({steps: data.content})
             }
         });
+
+        GetLikes(this.id).then(data => {
+            if (data.status == 200) {
+                this.setState({likes: data.content})
+            }
+        });
     }
   
     render() {
@@ -96,7 +110,10 @@ class Recipe extends React.Component<PP, State> {
                         <VStack>
                             <Box position="absolute" right="0px" top="0px"> <DeleteIcon width="50px" height="40px" /> </Box>
                             
-                            <Button display="contents" onClick={() => this.setState({liked:!this.state.liked})}>
+                            <Button display="contents" onClick={() => {
+                                this.setState({liked:!this.state.liked});
+                                this.deleteLike();}
+                            }>
                                 <Box position="absolute" right="0px" bottom="0px">
                                     {!this.state.liked && <EmptyLike width="50px" height="40px" />}
                                     {this.state.liked && <FullLike width="50px" height="40px" />}
@@ -116,7 +133,7 @@ class Recipe extends React.Component<PP, State> {
                             <RoundBox width="120px" height="30px" 
                                 borderColor="accent-1" alignItems="center"> 
                                     <Box marginY="auto" marginX="8px"> <FullLike /> </Box>
-                                    <Text marginLeft="2px" textStyle="body">1 024</Text>
+                                    <Text marginLeft="2px" textStyle="body"> {this.state.likes} </Text>
                             </RoundBox>
 
                             <RoundBox width="120px" height="30px"
@@ -158,7 +175,7 @@ class Recipe extends React.Component<PP, State> {
 
                     <Box>
                         {this.state.steps.map(item =>
-                            <Step {...item} key={item.title}/>
+                            <Step {...item} key={item.num}/>
                         )}
                     </Box>
                 </Box>

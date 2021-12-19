@@ -21,7 +21,7 @@ const Step: React.FC<StepProps> = (props) => {
 
                 <RoundBox display="inline-block" margin="5px" position="relative" borderColor="add-1"
                         width="100%" minHeight="70px" padding="3px" paddingLeft="10px"> 
-                    <Text textStyle="text" color="body" height="20px"
+                    <Text textStyle="text" color="body" height="100%"
                         style={{margin: "0"}}>
                         {props.description}
                     </Text>
