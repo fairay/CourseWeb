@@ -18,8 +18,8 @@ export default function IngredientModal(propos) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   var data: IngredientT = { title: '', amount: '' }
 
-  async function post() {
-    await propos.postCallback(data)
+  async function put() {
+    await propos.putCallback(data)
     onClose()
   }
 
@@ -44,7 +44,7 @@ export default function IngredientModal(propos) {
                 onInput={(e) => {data.amount = e.currentTarget.value}}
               />
             </Box>
-            <Button display="contents" onClick={post}>
+            <Button display="contents" onClick={put}>
               <AddIcon width='50' height='40' />
             </Button>
           </ModalBody>

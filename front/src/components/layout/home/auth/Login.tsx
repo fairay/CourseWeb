@@ -39,13 +39,13 @@ class Login extends React.Component<LoginProps> {
         this.acc.password = val
     }
 
-    submit(e: React.MouseEvent) {
-        e.target.disabled = true
+    submit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        e.currentTarget.disabled = true
         LoginQuery(this.acc, this.props.setCookie).then(data => {
             if (data.status == 200) {
                 this.props.navigate("/")
             } else {
-                e.target.disabled = false
+                e.currentTarget.disabled = false
                 var title = document.getElementById("undertitle")
                 if (title)
                     title.innerText = "Ошибка авторизации!"

@@ -37,7 +37,7 @@ import RoundBox from "components/base/RoundBox";
 import Ingredient from "../menuright/ingredient/Ingredient";
 import Step from "../menuright/step/Step";
 import IngredientModal from "./IngredientModal";
-import PostIngredient from "postApi/ingredients/Post";
+import PutIngredient from "postApi/ingredients/Post";
 
 type State = {
     recipe?: RecipeT,
@@ -109,8 +109,8 @@ class Recipe extends React.Component<PP, State> {
         }
     }
 
-    async postIngredient(data: IngredientT) {
-        var res = await PostIngredient(this.id, data)
+    async putIngredient(data: IngredientT) {
+        var res = await PutIngredient(this.id, data)
         if (res.status == 201) {
             var ingArr = this.state.ingredients
             ingArr.push(data)
@@ -237,7 +237,7 @@ class Recipe extends React.Component<PP, State> {
                                     Ингредиенты
                                 </Text>
 
-                                <IngredientModal postCallback={(data: IngredientT) => this.postIngredient(data)}/>
+                                <IngredientModal putCallback={(data: IngredientT) => this.putIngredient(data)}/>
                             </HStack>
 
                             <RoundBox width="100%" height="192px" padding="3px"

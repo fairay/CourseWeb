@@ -59,17 +59,17 @@ class SignUp extends React.Component<SignUpProps> {
             title.innerText = "Пароли не совпадают!"
     }
 
-    async submit(e: React.MouseEvent) {
+    async submit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         if (this.acc.password != this.repPassword)
             return this.highlightNotMatch()
 
-        e.target.disabled = true
+        e.currentTarget.disabled = true
         var data = await CreateQuery(this.acc)
         if (data.status == 200) {
             await LoginQuery(this.acc, this.props.setCookie)
             this.props.navigate("/")
         } else {
-            e.target.disabled = false
+            e.currentTarget.disabled = false
             var title = document.getElementById("undertitle")
             if (title)
                 title.innerText = "Ошибка создания аккаунта!"
@@ -87,15 +87,15 @@ class SignUp extends React.Component<SignUpProps> {
             <Box d="flex" flexDirection="column" rowGap="35px">
                 <FormControl isRequired>
                     <Input name="login" w="100%" placeholder="Введите логин" 
-                    onInput={event => this.setLogin(event.target.value)}/>
+                    onInput={event => this.setLogin(event.currentTarget.value)}/>
                 </FormControl>
                 <FormControl isRequired>
                     <Input name="password" type="password" w="100%" placeholder="Введите пароль"
-                    onInput={event => this.setPassword(event.target.value)}/>
+                    onInput={event => this.setPassword(event.currentTarget.value)}/>
                 </FormControl>
                 <FormControl isRequired>
                     <Input name="rep-password" type="password" w="100%" placeholder="Повторите пароль"
-                    onInput={event => this.setRepPassword(event.target.value)}/>
+                    onInput={event => this.setRepPassword(event.currentTarget.value)}/>
                 </FormControl>
             </Box>
 
