@@ -1,3 +1,4 @@
+import Step from "components/layout/home/menuright/step/Step"
 
 export interface Step {
 	description:    string

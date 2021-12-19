@@ -13,12 +13,26 @@ import RoundBox from "components/base/RoundBox";
 import photoRecipe from "img/photoRecipe.png"
 import ClockIcon from "components/icon/Clock";
 import FullLike from "components/icon/FullLike";
-import {Recipe as RecipeI} from "types/Resipe"
+import {Recipe as RecipeI} from "types/Resipe";
+
+import GetLikes from "postApi/likes/Get";
 
 interface RecipeProps extends RecipeI {}
 
+
 const Recipe: React.FC<RecipeProps> = (props) => {
     var path = "/recipes/" + props.id;
+    const [likes, change] = React.useState(0);
+
+    async function getLikes() {
+        var data = await GetLikes(props.id)
+        if (data.status == 200) {
+            change(data.content)
+        }
+    }
+
+    getLikes();
+    
     return (
         <Link style={{ textDecoration: 'none' }}
             href={path}
@@ -63,7 +77,7 @@ const Recipe: React.FC<RecipeProps> = (props) => {
                         <RoundBox width="120px" height="30px"
                             borderColor="accent-1" alignItems="center"> 
                                 <Box marginY="auto" marginX="8px"> <FullLike /> </Box>
-                                <Text marginLeft="2px" textStyle="body">1 024</Text>
+                                <Text marginLeft="2px" textStyle="body"> {likes} </Text>
                         </RoundBox>
                     </HStack>
                 </Box>
