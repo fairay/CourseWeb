@@ -46,6 +46,8 @@ const Ingredient: React.FC<IngredientProps> = (props) => {
             </HStack>
 
         </RoundBox>
+
+        
     )
 }
 

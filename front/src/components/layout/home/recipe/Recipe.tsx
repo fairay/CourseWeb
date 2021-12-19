@@ -91,6 +91,11 @@ class Recipe extends React.Component<PP, State> {
         }
     }
 
+    createStep() {
+        let defStep : Partial<StepT> = {recipe: this.id}
+        this.state.steps.push(defStep)
+    }
+
     componentDidMount() {
         GetRecipe(this.id).then(data => {
             if (data.status == 200) {
@@ -120,7 +125,7 @@ class Recipe extends React.Component<PP, State> {
         });
 
         this.getLikes();
-        this.getIsLiked();
+        if (this.props.cookie.login) this.getIsLiked();
     }
   
     render() {
@@ -144,7 +149,9 @@ class Recipe extends React.Component<PP, State> {
                         />
 
                         <VStack>
-                            <Box position="absolute" right="0px" top="0px"> <DeleteIcon width="50px" height="40px" /> </Box>
+                            <Box position="absolute" right="0px" top="0px"> 
+                                {this.state.isAuthor && <DeleteIcon width="50px" height="40px" /> }
+                            </Box>
                             
                             <Button display="contents" onClick={() => {                                
                                 {this.state.liked 
@@ -154,9 +161,10 @@ class Recipe extends React.Component<PP, State> {
                             }
                             }>
                                 <Box position="absolute" right="0px" bottom="0px">
-                                    {this.state.liked 
+                                    {this.props.cookie.login 
+                                    && (this.state.liked 
                                         && <FullLike width="50px" height="40px" /> 
-                                        || <EmptyLike width="50px" height="40px" />
+                                        || <EmptyLike width="50px" height="40px" />)
                                     }
                                 </Box>
                             </Button>
