@@ -158,7 +158,7 @@ class Recipe extends React.Component<PP, State> {
 
                     <Box>
                         {this.state.steps.map(item =>
-                            <Step {...item} key={item.title}/>
+                            <Step {...item} key={item.num}/>
                         )}
                     </Box>
                 </Box>
