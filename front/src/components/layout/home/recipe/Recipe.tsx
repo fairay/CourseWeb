@@ -40,7 +40,9 @@ type State = {
     liked: boolean,
     ingredients: Array<IngredientT>,
     steps: Array<StepT>,
-    likes: number
+    likes: number,
+
+    isAuthor: boolean,
 }
 
 class Recipe extends React.Component<PP, State> {
@@ -49,41 +51,51 @@ class Recipe extends React.Component<PP, State> {
     constructor(props) {
       super(props);
       this.id = Number(this.props.match.id)
-      this.state = {recipe:undefined, liked:false, ingredients:[], steps:[], likes:0}
+      this.state = {
+          recipe:undefined, 
+          liked:false, 
+          ingredients:[], 
+          steps:[],
+          likes:0,
+          isAuthor: false
+        }
     }
 
     async deleteLike() {
-        await DeleteLike(this.id);
-        this.setState({liked:false});
-        this.getLikes();
+        var data = await DeleteLike(this.id);
+        if (data.status == 200) {
+            this.setState({liked:false});
+            this.getLikes();
+        }
     }
 
     async addLike() {
-        await AddLike(this.id);
-        this.setState({liked:true});
-        this.getLikes();
+        var data = await AddLike(this.id);
+        if (data.status == 200) {
+            this.setState({liked:true});
+            this.getLikes();
+        }
     }
 
-    getLikes() {
-        GetLikes(this.id).then(data => {
-            if (data.status == 200) {
-                this.setState({likes: data.content})
-            }
-        });
+    async getLikes() {
+        var data = await GetLikes(this.id)
+        if (data.status == 200) {
+            this.setState({likes: data.content})
+        }
     }
 
-    getIsLiked() {
-        GetIsLiked(this.id).then(data => {
-            if (data.status == 200) {
-                this.setState({liked: data.content})
-            }
-        });
+    async getIsLiked() {
+        var data = await GetIsLiked(this.id)
+        if (data.status == 200) {
+            this.setState({liked: data.content})
+        }
     }
 
     componentDidMount() {
         GetRecipe(this.id).then(data => {
             if (data.status == 200) {
                 this.setState({recipe: data.content})
+                this.setState({isAuthor: this.state.recipe?.author == this.props.cookie.login})
 
                 var elem = document.getElementById("title")
                 if (elem && this.state.recipe)

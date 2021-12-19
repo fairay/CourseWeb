@@ -17,7 +17,7 @@ type Token struct {
 }
 
 func NewToken(login string) (*Token, time.Time) {
-	expTime := time.Now().Add(30 * time.Minute)
+	expTime := time.Now().Add(300 * time.Minute)
 	return &Token{
 			Login: login,
 			StandardClaims: jwt.StandardClaims{
