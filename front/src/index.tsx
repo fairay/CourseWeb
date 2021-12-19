@@ -6,6 +6,9 @@ import {BrowserRouter, Routes, Route} from "react-router-dom"
 import { App as A } from "./App"
 import reportWebVitals from "./reportWebVitals"
 import * as serviceWorker from "./serviceWorker"
+import axios from "axios";
+
+axios.defaults.withCredentials = true
 
 ReactDOM.render(
   <React.StrictMode>
