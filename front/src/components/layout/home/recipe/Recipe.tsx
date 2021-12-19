@@ -37,6 +37,7 @@ import RoundBox from "components/base/RoundBox";
 import Ingredient from "../menuright/ingredient/Ingredient";
 import Step from "../menuright/step/Step";
 import IngredientModal from "./IngredientModal";
+import PostIngredient from "postApi/ingredients/Post";
 
 type State = {
     recipe?: RecipeT,
@@ -108,6 +109,15 @@ class Recipe extends React.Component<PP, State> {
         }
     }
 
+    async postIngredient(data: IngredientT) {
+        var res = await PostIngredient(this.id, data)
+        if (res.status == 201) {
+            var ingArr = this.state.ingredients
+            ingArr.push(data)
+            this.setState({ingredients: ingArr})
+        }
+    }
+
     async deleteIngredient(title: string) {
         var data = await DeleteIngredient(this.id, title)
         if (data.status == 200) {
@@ -151,6 +161,7 @@ class Recipe extends React.Component<PP, State> {
   
     render() {
         var stringDuration = ""
+
         if (!this.state.recipe)
             stringDuration = "---"
         else if (this.state.recipe.duration < 90)
@@ -226,10 +237,7 @@ class Recipe extends React.Component<PP, State> {
                                     Ингредиенты
                                 </Text>
 
-                                <Button display="contents" onClick={() => {}}>
-                                    <Box paddingLeft="15px"> <AddIcon /> </Box>
-                                </Button>
-                                <IngredientModal/>
+                                <IngredientModal postCallback={(data: IngredientT) => this.postIngredient(data)}/>
                             </HStack>
 
                             <RoundBox width="100%" height="192px" padding="3px"

@@ -64,11 +64,11 @@ class Login extends React.Component<LoginProps> {
             <Box d="flex" flexDirection="column" rowGap="35px">
                 <FormControl isRequired>
                     <Input name="login" w="100%" placeholder="Введите логин" 
-                    onInput={event => this.setLogin(event.target.value)}/>
+                    onInput={event => this.setLogin(event.currentTarget.value)}/>
                 </FormControl>
                 <FormControl isRequired>
                     <Input name="password" type="password" w="100%" placeholder="Введите пароль"
-                    onInput={event => this.setPassword(event.target.value)}/>
+                    onInput={event => this.setPassword(event.currentTarget.value)}/>
                 </FormControl>
             </Box>
 
