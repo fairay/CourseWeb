@@ -20,6 +20,8 @@ import DeleteLike from "postApi/likes/Delete";
 import AddLike from "postApi/likes/Add";
 import GetIsLiked from "postApi/likes/GetIs";
 import DeleteIngredient from "postApi/ingredients/Delete";
+import PutIngredient from "postApi/ingredients/Post";
+import DeleteRecipe from "postApi/recipes/Delete";
 
 import {Recipe as RecipeT} from "types/Resipe"
 import {Ingredient as IngredientT} from "types/Ingredient";
@@ -37,7 +39,6 @@ import RoundBox from "components/base/RoundBox";
 import Ingredient from "../menuright/ingredient/Ingredient";
 import Step from "../menuright/step/Step";
 import IngredientModal from "./IngredientModal";
-import PutIngredient from "postApi/ingredients/Post";
 
 type State = {
     recipe?: RecipeT,
@@ -62,6 +63,13 @@ class Recipe extends React.Component<PP, State> {
           steps:[],
           likes:0,
           isAuthor: false
+        }
+    }
+
+    async deleteRecipe() {
+        var data = await DeleteRecipe(this.id);
+        if (data.status == 200) {
+            this.props.navigate("/")
         }
     }
 
@@ -181,9 +189,11 @@ class Recipe extends React.Component<PP, State> {
                         />
 
                         <VStack>
-                            <Box position="absolute" right="0px" top="0px"> 
-                                {this.state.isAuthor && <DeleteIcon width="50px" height="40px" /> }
-                            </Box>
+                            <Button display="contents" onClick={() => this.deleteRecipe()}>
+                                <Box position="absolute" right="0px" top="0px"> 
+                                    {this.state.isAuthor && <DeleteIcon width="50px" height="40px" /> }
+                                </Box>
+                            </Button>
                             
                             <Button display="contents" onClick={() => {                                
                                 {this.state.liked 
