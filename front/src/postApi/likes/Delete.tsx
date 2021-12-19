@@ -3,7 +3,7 @@ import { backUrl } from "../Common";
 
 
 const DeleteLike = async function(id: number) {
-    const response = await axios.delete(backUrl + `/recipes/${id}/like`);
+    const response = await axios.delete(backUrl + `/recipes/${id}/like`, {withCredentials: true});
     return {
         status: response.status,
     };

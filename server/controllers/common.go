@@ -48,6 +48,7 @@ func RunRouter(r *mux.Router, port uint16) error {
 	c := cors.New(cors.Options{
         AllowedOrigins: []string{"http://localhost:3000"},
         AllowCredentials: true,
+		AllowedMethods: []string{"GET", "POST", "DELETE", "PATCH", "PUT"},
     })
 	
 	handler := c.Handler(r)
