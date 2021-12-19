@@ -166,6 +166,20 @@ func (_m *RecipesRep) GetLikedByLogin(login string) ([]objects.Recipe, error) {
 	return r0, r1
 }
 
+// IsLiked provides a mock function with given fields: id_rcp, login
+func (_m *RecipesRep) IsLiked(id_rcp int, login string) bool {
+	ret := _m.Called(id_rcp, login)
+
+	var r0 bool
+	if rf, ok := ret.Get(0).(func(int, string) bool); ok {
+		r0 = rf(id_rcp, login)
+	} else {
+		r0 = ret.Get(0).(bool)
+	}
+
+	return r0
+}
+
 // List provides a mock function with given fields:
 func (_m *RecipesRep) List() []objects.Recipe {
 	ret := _m.Called()
