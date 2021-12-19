@@ -16,6 +16,10 @@ import {Ingredient as IngredientT} from "types/Ingredient";
 
 interface IngredientProps extends IngredientT{}
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 const Ingredient: React.FC<IngredientProps> = (props) => {
     const [hide, show] = React.useState(true);
 
@@ -26,7 +30,7 @@ const Ingredient: React.FC<IngredientProps> = (props) => {
             <HStack>
                 <VStack alignItems="left" marginLeft="10px" marginRight="20px" minWidth="100px">
                     <Text textStyle="body" color="text" height="30px" m="0px">
-                        {props.title}
+                        {capitalizeFirstLetter(props.title)}
                     </Text>
 
                     <Text textStyle="caption" color="accent-3" height="20px"

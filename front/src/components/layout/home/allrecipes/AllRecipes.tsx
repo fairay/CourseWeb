@@ -34,7 +34,6 @@ const AllRecipes: React.FC<AllRecipesProps> = (props) => {
       <Heading color="primary-dark">Results :</Heading>
       <Divider borderColor="primary-dark" orientation="horizontal" mb={2} />
       <SearchResult />
-      <RecipeDtl />
     </Box>
   );
 };
