@@ -2,17 +2,18 @@ import {
     Box,
   } from "@chakra-ui/react";
 import React, { useState } from "react";
-import GetRecipes from "postApi/recipes/GetAll"
+import { AllRecipeResp } from "postApi/Common"
 import Recipe from "./Recipe";
+
+interface RecipeBoxProps {
+    getCall: () => Promise<AllRecipeResp>
+}
 
 type State = {
     postContent?: any
 }
 
-class RecipeBox extends React.Component {
-    public state: State = {
-        postContent: null
-    }
+class RecipeBox extends React.Component<RecipeBoxProps, State> {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,11 +21,14 @@ class RecipeBox extends React.Component {
         }
     }
 
+    async getAll() {
+        var data = await this.props.getCall()
+        if (data.status == 200)
+            this.setState({postContent: data.content})
+    }
+
     componentDidMount() {
-        GetRecipes().then(data => {
-            if (data.status == 200)
-                this.setState({postContent: data.content})
-        });
+        this.getAll()
     }
 
     render() {

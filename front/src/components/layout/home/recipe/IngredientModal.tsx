@@ -48,6 +48,7 @@ export default function IngredientModal(propos) {
               <AddIcon width='50' height='40' />
             </Button>
           </ModalBody>
+          <ModalFooter/>
         </ModalContent>
       </Modal>
     </>
