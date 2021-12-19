@@ -73,7 +73,7 @@ class Recipe extends React.Component<PP, State> {
     async deleteRecipe() {
         var data = await DeleteRecipe(this.id);
         if (data.status == 200) {
-            this.props.navigate("/")
+            window.location.href = '/';
         }
     }
 

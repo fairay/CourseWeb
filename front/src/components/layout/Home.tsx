@@ -32,8 +32,10 @@ function Routing () {
       <Route path="/" element={<AllRecipes />}/>
       <Route path="/me/likes" element={<LikedRecipes />}/> 
       <Route path="/me/recipes" element={<AuthorRecipes />}/>
+
       <Route path="/auth/signin" element={<Login />}/>
       <Route path="/auth/signup" element={<SignUp />}/>
+
       <Route path="/recipes/:id" element={<RecipeParams />}/>
       <Route path="*" element={<NotFound />}/>
     </Routes>
