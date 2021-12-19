@@ -17,6 +17,7 @@ import GetSteps from "postApi/steps/Get";
 import GetLikes from "postApi/likes/Get";
 import DeleteLike from "postApi/likes/Delete";
 import AddLike from "postApi/likes/Add";
+import GetIsLiked from "postApi/likes/GetIs";
 
 import {Recipe as RecipeT} from "types/Resipe"
 import {Ingredient as IngredientT} from "types/Ingredient";
@@ -50,18 +51,30 @@ class Recipe extends React.Component<PP, State> {
       this.state = {recipe:undefined, liked:false, ingredients:[], steps:[], likes:0}
     }
 
-    deleteLike() {
-        DeleteLike(this.id);
+    async deleteLike() {
+        await DeleteLike(this.id);
+        this.setState({liked:false});
+        this.getLikes();
     }
 
-    addLike() {
-        AddLike(this.id);
+    async addLike() {
+        await AddLike(this.id);
+        this.setState({liked:true});
+        this.getLikes();
     }
 
     getLikes() {
         GetLikes(this.id).then(data => {
             if (data.status == 200) {
                 this.setState({likes: data.content})
+            }
+        });
+    }
+
+    getIsLiked() {
+        GetIsLiked(this.id).then(data => {
+            if (data.status == 200) {
+                this.setState({liked: data.content})
             }
         });
     }
@@ -94,6 +107,7 @@ class Recipe extends React.Component<PP, State> {
         });
 
         this.getLikes();
+        this.getIsLiked();
     }
   
     render() {
@@ -120,15 +134,17 @@ class Recipe extends React.Component<PP, State> {
                             <Box position="absolute" right="0px" top="0px"> <DeleteIcon width="50px" height="40px" /> </Box>
                             
                             <Button display="contents" onClick={() => {                                
-                                {this.state.liked && this.deleteLike()};
-                                {!this.state.liked && this.addLike()};
-                                this.setState({liked:!this.state.liked});
-                                this.getLikes();
+                                {this.state.liked 
+                                    && this.deleteLike()
+                                    || this.addLike()
+                                };
                             }
                             }>
                                 <Box position="absolute" right="0px" bottom="0px">
-                                    {!this.state.liked && <EmptyLike width="50px" height="40px" />}
-                                    {this.state.liked && <FullLike width="50px" height="40px" />}
+                                    {this.state.liked 
+                                        && <FullLike width="50px" height="40px" /> 
+                                        || <EmptyLike width="50px" height="40px" />
+                                    }
                                 </Box>
                             </Button>
                         </VStack>

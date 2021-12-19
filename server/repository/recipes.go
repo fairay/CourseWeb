@@ -119,7 +119,5 @@ func (this *PGRecipesRep) IsLiked(id_rcp int, login string) bool {
 
 	err := this.db.Model(&recipe).Association("Grades").Find(&account).Error
 
-	println(err)
-
-	return true
+	return err == nil
 }
