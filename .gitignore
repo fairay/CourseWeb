@@ -18,3 +18,4 @@ config.json
 *.log
 logs/
 cache/
+node_modules/

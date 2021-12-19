@@ -35,6 +35,7 @@ import AddIcon from "components/icon/Add";
 import RoundBox from "components/base/RoundBox";
 import Ingredient from "../menuright/ingredient/Ingredient";
 import Step from "../menuright/step/Step";
+import IngredientModal from "./IngredientModal";
 
 type State = {
     recipe?: RecipeT,
@@ -217,6 +218,7 @@ class Recipe extends React.Component<PP, State> {
                                 <Button display="contents" onClick={() => {}}>
                                     <Box paddingLeft="15px"> <AddIcon /> </Box>
                                 </Button>
+                                <IngredientModal/>
                             </HStack>
 
                             <RoundBox width="100%" height="192px" padding="3px"
