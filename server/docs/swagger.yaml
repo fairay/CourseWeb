@@ -467,27 +467,6 @@ paths:
       tags:
       - Categories
   /recipes/{id}/ingredients:
-    delete:
-      parameters:
-      - description: Recipe's id
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Ingredient
-        in: body
-        name: recipe
-        required: true
-        schema:
-          $ref: '#/definitions/objects.IngredientDTO'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ""
-      summary: Removes ingredient
-      tags:
-      - Ingredients
     get:
       parameters:
       - description: Recipe's id
@@ -559,6 +538,27 @@ paths:
         "200":
           description: ""
       summary: Adds ingredient
+      tags:
+      - Ingredients
+  /recipes/{id}/ingredients/{title}:
+    delete:
+      parameters:
+      - description: Recipe's id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Recipe's title
+        in: path
+        name: title
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: Removes ingredient
       tags:
       - Ingredients
   /recipes/{id}/isliked:

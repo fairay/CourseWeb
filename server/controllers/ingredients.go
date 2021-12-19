@@ -22,7 +22,7 @@ func InitIngredients(r *mux.Router, model *models.IngredientM) {
 	r.HandleFunc("/recipes/{id}/ingredients", ctrl.getByRecipe).Methods("GET")
 	r.HandleFunc("/recipes/{id}/ingredients", ctrl.putToRecipe).Methods("PUT")
 	r.HandleFunc("/recipes/{id}/ingredients", ctrl.postToRecipe).Methods("POST")
-	r.HandleFunc("/recipes/{id}/ingredients", ctrl.delFromRecipe).Methods("DELETE")
+	r.HandleFunc("/recipes/{id}/ingredients/{title}", ctrl.delFromRecipe).Methods("DELETE")
 }
 
 // TODO:
@@ -135,15 +135,16 @@ func (this *ingredientCtrl) putToRecipe(w http.ResponseWriter, r *http.Request) 
 
 // TODO:
 // @Tags Ingredients
-// @Router /recipes/{id}/ingredients [delete]
+// @Router /recipes/{id}/ingredients/{title} [delete]
 // @Summary Removes ingredient
 // @Param id path int true "Recipe's id"
-// @Param recipe body objects.IngredientDTO true "Ingredient"
+// @Param title path string true "Recipe's title"
 // @Produce json
 // @Success 200
 func (this *ingredientCtrl) delFromRecipe(w http.ResponseWriter, r *http.Request) {
 	urlParams := mux.Vars(r)
 	strId := urlParams["id"]
+	strTitle := urlParams["title"]
 
 	id_rcp, err := strconv.Atoi(strId)
 	if err != nil {
@@ -152,11 +153,12 @@ func (this *ingredientCtrl) delFromRecipe(w http.ResponseWriter, r *http.Request
 	}
 
 	ingDTO := new(objects.IngredientDTO)
-	err = json.NewDecoder(r.Body).Decode(ingDTO)
-	if err != nil {
-		responses.BadRequest(w, "Invalid request")
-		return
-	}
+	ingDTO.Title = strTitle
+	// err = json.NewDecoder(r.Body).Decode(ingDTO)
+	// if err != nil {
+	// 	responses.BadRequest(w, "Invalid request")
+	// 	return
+	// }
 
 	err = this.model.DelFromRecipe(id_rcp, ingDTO.ToModel(id_rcp))
 	switch err {
