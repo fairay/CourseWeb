@@ -57,7 +57,10 @@ func (this *StepM) AddStep(id_rcp int, obj *objects.Step, login string) error {
 	_, err = this.models.Recipes.FindById(id_rcp)
 	if err != nil { return errors.UnknownRecipe }
 
+	last := this.rep.FindStepLast(id_rcp)
+
 	obj.Recipe = id_rcp
+	obj.Num = last.Num + 1
 
 	return this.rep.Create(obj)
 }

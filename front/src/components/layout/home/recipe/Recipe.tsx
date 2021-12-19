@@ -14,6 +14,7 @@ import {WithParams, PP} from "../../Warpers"
 import GetRecipe from "postApi/recipes/Get"
 import GetIngredient from "postApi/ingredients/Get";
 import GetSteps from "postApi/steps/Get";
+import PushStep from "postApi/steps/Push";
 import GetLikes from "postApi/likes/Get";
 import DeleteLike from "postApi/likes/Delete";
 import AddLike from "postApi/likes/Add";
@@ -91,9 +92,18 @@ class Recipe extends React.Component<PP, State> {
         }
     }
 
-    createStep() {
-        let defStep : Partial<StepT> = {recipe: this.id}
-        this.state.steps.push(defStep)
+    async createStep() {
+        let step: StepT = {
+            description:    "Введите данные",
+            title: "Введите данные",
+            num: 0,
+            recipe: this.id
+        }
+
+        var data = await PushStep(this.id, step)
+        if (data.status == 200) {
+            this.state.steps.push(data.content)
+        }
     }
 
     componentDidMount() {
@@ -229,8 +239,9 @@ class Recipe extends React.Component<PP, State> {
                             Шаги приготовления
                         </Text>
 
-                        <Button display="contents" onClick={() => {}}>
-                            <Box paddingLeft="15px" paddingTop="15px"> <AddIcon /> </Box>
+                        <Button display="contents" onClick={() => this.createStep()}>
+                            {this.state.isAuthor &&
+                                <Box paddingLeft="15px" paddingTop="15px"> <AddIcon /> </Box>}
                         </Button>
                     </HStack>
 
