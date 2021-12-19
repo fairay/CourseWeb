@@ -21,14 +21,8 @@ interface HeaderProps extends TitlesProps {
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
-    const navItems = [
-        { name: "Рецепты", ref: "/" },
-        { name: "Пользователи", ref: "#" },
-    ]
-
-    const [cookies, setCookie] = useCookies(['access_token', 'refresh_token'])
-    setCookie('access_token', 'jija')
-    console.log(cookies.access_token)
+    const [cookies, setCookie] = useCookies(['login', 'refresh_token'])
+    console.log(cookies.login)
     
     return (
     <Box 
@@ -43,7 +37,7 @@ const Header: React.FC<HeaderProps> = (props) => {
             padding={0}
             maxW="1000px"
         >
-            <Navbar items={navItems}/>
+            <Navbar />
             <Titles {...props}/>
             {props.addField && <props.addField />}
             

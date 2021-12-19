@@ -8,15 +8,24 @@ import { Account } from "types/Account";
 import { Create as CreateQuery } from "postApi/accounts/Create";
 import { Login as LoginQuery } from "postApi/accounts/Login";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import { CookieSetOptions } from "universal-cookie";
+import { useCookies } from "react-cookie";
 
 
 function SignUpWrapper(props) {
     let navigate = useNavigate();
-    return <SignUp navigate={navigate} {...props}/>
+    let [cookie, setCookie] = useCookies(['token', 'role', 'login']);
+    return <SignUp navigate={navigate}  cookie={cookie} setCookie={setCookie}  {...props}/>
 }
 
 type SignUpProps = {
     navigate: NavigateFunction
+    cookie: {
+        token?: string;
+        role?: string;
+        login?: string;
+    }
+    setCookie: (name: "token" | "role" | "login", value: any, options?: CookieSetOptions | undefined) => void
 }
 
 class SignUp extends React.Component<SignUpProps> {
@@ -57,7 +66,7 @@ class SignUp extends React.Component<SignUpProps> {
         e.target.disabled = true
         var data = await CreateQuery(this.acc)
         if (data.status == 200) {
-            await LoginQuery(this.acc)
+            await LoginQuery(this.acc, this.props.setCookie)
             this.props.navigate("/")
         } else {
             e.target.disabled = false
