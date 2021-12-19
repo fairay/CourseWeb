@@ -23,7 +23,7 @@ func InitLikes(r *mux.Router, recM *models.RecipeM, accM *models.AccountM) {
 	r.HandleFunc("/recipes/{id}/like", ctrl.add).Methods("PUT")
 	r.HandleFunc("/recipes/{id}/like", ctrl.del).Methods("DELETE")
 	r.HandleFunc("/recipes/{id}/like", ctrl.getByRecipe).Methods("GET")
-	r.HandleFunc("/recipes/{id}/like", ctrl.isLiked).Methods("GET")
+	r.HandleFunc("/recipes/{id}/isliked", ctrl.isLiked).Methods("GET")
 	r.HandleFunc("/accounts/{login}/like", ctrl.getByUser).Methods("GET")
 	r.HandleFunc("/recipes/{id}/like/amount", ctrl.getAmount).Methods("GET")
 }
@@ -184,10 +184,10 @@ func (this *likesCtrl) getAmount(w http.ResponseWriter, r *http.Request) {
 }
 
 // @Tags Likes
-// @Router /recipes/{id}/like [get]
+// @Router /recipes/{id}/isliked [get]
 // @Summary Retrieves true if user liked the recipe
 // @Param id path int true "Recipe id"
-// @Produce bool
+// @Produce json
 // @Success 200 {bool} bool 
 // @Failure 400 Invalid value
 func (this *likesCtrl) isLiked(w http.ResponseWriter, r *http.Request) {

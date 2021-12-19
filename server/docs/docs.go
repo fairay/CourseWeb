@@ -800,6 +800,40 @@ var doc = `{
                 }
             }
         },
+        "/recipes/{id}/isliked": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Retrieves true if user liked the recipe",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recipe id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "bool"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "Invalid"
+                        }
+                    }
+                }
+            }
+        },
         "/recipes/{id}/like": {
             "get": {
                 "produces": [

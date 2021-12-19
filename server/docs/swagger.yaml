@@ -561,6 +561,28 @@ paths:
       summary: Adds ingredient
       tags:
       - Ingredients
+  /recipes/{id}/isliked:
+    get:
+      parameters:
+      - description: Recipe id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: bool
+        "400":
+          description: Bad Request
+          schema:
+            type: Invalid
+      summary: Retrieves true if user liked the recipe
+      tags:
+      - Likes
   /recipes/{id}/like:
     delete:
       parameters:
