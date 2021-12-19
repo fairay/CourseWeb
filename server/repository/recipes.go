@@ -20,6 +20,8 @@ type RecipesRep interface {
 	Delete(id int) error
 	AddGrade(id int, login string) error
 	DeleteGrade(id int, login string) error
+
+	IsLiked(id_rcp int, login string) bool
 }
 
 type PGRecipesRep struct {
@@ -109,4 +111,15 @@ func (this *PGRecipesRep) GetLikedByLogin(login string) ([]objects.Recipe, error
 func (this *PGRecipesRep) GetAmountGrades(id int) int {
 	recipe := objects.Recipe{Id: id}
 	return this.db.Model(&recipe).Association("Grades").Count()
+}
+
+func (this *PGRecipesRep) IsLiked(id_rcp int, login string) bool {
+	recipe := objects.Recipe{Id: id_rcp}
+	account := objects.Account{Login: login}
+
+	err := this.db.Model(&recipe).Association("Grades").Find(&account).Error
+
+	println(err)
+
+	return true
 }

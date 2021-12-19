@@ -117,3 +117,20 @@ func (this *RecipeM) DeleteRecipe(id int, login string) (err error) {
 
 	return err
 }
+
+func (this *RecipeM) IsLiked(id_rcp int, login string) (res bool, err error) {
+	res = false
+	
+	if this.models.Accounts.IsExists(login) == false {
+		return res, errors.UnknownAccount
+	}
+
+	_, err = this.models.Recipes.FindById(id_rcp)
+	if err != nil {
+		return res, errors.UnknownRecipe
+	}
+
+	res = this.rep.IsLiked(id_rcp, login)
+
+	return res, nil
+}

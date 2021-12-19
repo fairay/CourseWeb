@@ -23,6 +23,7 @@ func InitLikes(r *mux.Router, recM *models.RecipeM, accM *models.AccountM) {
 	r.HandleFunc("/recipes/{id}/like", ctrl.add).Methods("PUT")
 	r.HandleFunc("/recipes/{id}/like", ctrl.del).Methods("DELETE")
 	r.HandleFunc("/recipes/{id}/like", ctrl.getByRecipe).Methods("GET")
+	r.HandleFunc("/recipes/{id}/like", ctrl.isLiked).Methods("GET")
 	r.HandleFunc("/accounts/{login}/like", ctrl.getByUser).Methods("GET")
 	r.HandleFunc("/recipes/{id}/like/amount", ctrl.getAmount).Methods("GET")
 }
@@ -179,5 +180,41 @@ func (this *likesCtrl) getAmount(w http.ResponseWriter, r *http.Request) {
 		responses.RecordNotFound(w, "recipe")
 	default:
 		responses.BadRequest(w, "Error in getting amount of likes")
+	}
+}
+
+// @Tags Likes
+// @Router /recipes/{id}/like [get]
+// @Summary Retrieves true if user liked the recipe
+// @Param id path int true "Recipe id"
+// @Produce bool
+// @Success 200 {bool} bool 
+// @Failure 400 Invalid value
+func (this *likesCtrl) isLiked(w http.ResponseWriter, r *http.Request) {
+	login, err := auth.LoginFromCookie(r)
+	if err != nil {
+		responses.AuthenticationFailed(w)
+		return
+	}
+
+	urlParams := mux.Vars(r)
+	strId := urlParams["id"]
+
+	id_rcp, err := strconv.Atoi(strId)
+	if err != nil {
+		responses.BadRequest(w, "Wrong recipe's id")
+		return
+	}
+
+	data, err := this.recM.IsLiked(id_rcp, login)
+	switch err {
+	case nil:
+		responses.JsonSuccess(w, data)
+	case errors.UnknownRecipe:
+		responses.RecordNotFound(w, "recipe")
+	case errors.UnknownAccount:
+		responses.RecordNotFound(w, "account")
+	default:
+		responses.BadRequest(w, "Error in getting like")
 	}
 }
