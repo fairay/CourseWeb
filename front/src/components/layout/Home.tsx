@@ -3,6 +3,8 @@ import React from "react";
 import {BrowserRouter, Routes, Route, useParams, RouteProps, Params} from "react-router-dom"
 
 import AllRecipes from "./home/allrecipes/AllRecipes";
+import LikedRecipes from "./home/allrecipes/LikedRecipes";
+import AuthorRecipes from "./home/allrecipes/AuthorRecipes";
 import RecipeParams from "./home/recipe/Recipe"
 import Login from "./home/auth/Login"
 import SignUp from "./home/auth/Signup"
@@ -28,6 +30,8 @@ function Routing () {
   return <BrowserRouter>
     <Routes>
       <Route path="/" element={<AllRecipes />}/>
+      <Route path="/me/likes" element={<LikedRecipes />}/> 
+      <Route path="/me/recipes" element={<AuthorRecipes />}/>
       <Route path="/auth/signin" element={<Login />}/>
       <Route path="/auth/signup" element={<SignUp />}/>
       <Route path="/recipes/:id" element={<RecipeParams />}/>
