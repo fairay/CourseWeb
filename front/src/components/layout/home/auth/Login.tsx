@@ -39,13 +39,13 @@ class Login extends React.Component<LoginProps> {
         this.acc.password = val
     }
 
-    submit(e: React.MouseEvent) {
-        e.target.disabled = true
+    submit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        e.currentTarget.disabled = true
         LoginQuery(this.acc, this.props.setCookie).then(data => {
             if (data.status == 200) {
                 this.props.navigate("/")
             } else {
-                e.target.disabled = false
+                e.currentTarget.disabled = false
                 var title = document.getElementById("undertitle")
                 if (title)
                     title.innerText = "Ошибка авторизации!"
@@ -64,11 +64,11 @@ class Login extends React.Component<LoginProps> {
             <Box d="flex" flexDirection="column" rowGap="35px">
                 <FormControl isRequired>
                     <Input name="login" w="100%" placeholder="Введите логин" 
-                    onInput={event => this.setLogin(event.target.value)}/>
+                    onInput={event => this.setLogin(event.currentTarget.value)}/>
                 </FormControl>
                 <FormControl isRequired>
                     <Input name="password" type="password" w="100%" placeholder="Введите пароль"
-                    onInput={event => this.setPassword(event.target.value)}/>
+                    onInput={event => this.setPassword(event.currentTarget.value)}/>
                 </FormControl>
             </Box>
 

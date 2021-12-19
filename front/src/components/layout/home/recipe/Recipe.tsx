@@ -21,6 +21,8 @@ import AddLike from "postApi/likes/Add";
 import GetIsLiked from "postApi/likes/GetIs";
 import DeleteIngredient from "postApi/ingredients/Delete";
 import DeleteStep from "postApi/steps/Delete";
+import PutIngredient from "postApi/ingredients/Post";
+import DeleteRecipe from "postApi/recipes/Delete";
 
 import {Recipe as RecipeT} from "types/Resipe"
 import {Ingredient as IngredientT} from "types/Ingredient";
@@ -68,6 +70,13 @@ class Recipe extends React.Component<PP, State> {
         }
     }
 
+    async deleteRecipe() {
+        var data = await DeleteRecipe(this.id);
+        if (data.status == 200) {
+            this.props.navigate("/")
+        }
+    }
+
     async deleteLike() {
         var data = await DeleteLike(this.id);
         if (data.status == 200) {
@@ -111,6 +120,15 @@ class Recipe extends React.Component<PP, State> {
             var temp = this.state.steps
             temp.push(data.content)
             this.setState({steps: temp})
+        }
+    }
+
+    async putIngredient(data: IngredientT) {
+        var res = await PutIngredient(this.id, data)
+        if (res.status == 201) {
+            var ingArr = this.state.ingredients
+            ingArr.push(data)
+            this.setState({ingredients: ingArr})
         }
     }
 
@@ -166,6 +184,7 @@ class Recipe extends React.Component<PP, State> {
   
     render() {
         var stringDuration = ""
+
         if (!this.state.recipe)
             stringDuration = "---"
         else if (this.state.recipe.duration < 90)
@@ -185,9 +204,11 @@ class Recipe extends React.Component<PP, State> {
                         />
 
                         <VStack>
-                            <Box position="absolute" right="0px" top="0px"> 
-                                {this.state.isAuthor && <DeleteIcon width="50px" height="40px" /> }
-                            </Box>
+                            <Button display="contents" onClick={() => this.deleteRecipe()}>
+                                <Box position="absolute" right="0px" top="0px"> 
+                                    {this.state.isAuthor && <DeleteIcon width="50px" height="40px" /> }
+                                </Box>
+                            </Button>
                             
                             <Button display="contents" onClick={() => {                                
                                 {this.state.liked 
@@ -241,10 +262,7 @@ class Recipe extends React.Component<PP, State> {
                                     Ингредиенты
                                 </Text>
 
-                                <Button display="contents" onClick={() => {}}>
-                                    <Box paddingLeft="15px"> <AddIcon /> </Box>
-                                </Button>
-                                <IngredientModal/>
+                                <IngredientModal putCallback={(data: IngredientT) => this.putIngredient(data)}/>
                             </HStack>
 
                             <RoundBox width="100%" height="192px" padding="3px"
