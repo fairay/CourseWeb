@@ -3,6 +3,8 @@ import {
     HStack,
     Text,
     VStack,
+    Button,
+    Input,
   } from "@chakra-ui/react";
 import React from "react";
 
@@ -12,7 +14,11 @@ import {Step as StepT} from "types/Step";
 import PenIcon from "components/icon/Pen";
 import DeleteIcon from "components/icon/DeleteSmall";
 
-interface StepProps extends StepT{}
+
+interface StepProps extends StepT{
+    delStepCallback: (num: number) => Promise<void>
+}
+
 
 const Step: React.FC<StepProps> = (props) => {
     return (
@@ -24,7 +30,17 @@ const Step: React.FC<StepProps> = (props) => {
                         {props.title}
                     </Text>
 
-                    <HStack> <PenIcon /> <DeleteIcon /> </HStack>
+                    <HStack> 
+                        <Button display="contents" 
+                                /*onClick={() => props.delStepCallback(props.num)}*/>
+                            <PenIcon />
+                        </Button> 
+
+                        <Button display="contents" 
+                            onClick={() => props.delStepCallback(props.num)}>
+                            <DeleteIcon /> 
+                        </Button>
+                    </HStack>
                 </HStack>
 
                 <RoundBox display="inline-block" margin="5px" position="relative" borderColor="add-1"

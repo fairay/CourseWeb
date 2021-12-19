@@ -20,6 +20,7 @@ import DeleteLike from "postApi/likes/Delete";
 import AddLike from "postApi/likes/Add";
 import GetIsLiked from "postApi/likes/GetIs";
 import DeleteIngredient from "postApi/ingredients/Delete";
+import DeleteStep from "postApi/steps/Delete";
 
 import {Recipe as RecipeT} from "types/Resipe"
 import {Ingredient as IngredientT} from "types/Ingredient";
@@ -37,6 +38,9 @@ import RoundBox from "components/base/RoundBox";
 import Ingredient from "../menuright/ingredient/Ingredient";
 import Step from "../menuright/step/Step";
 import IngredientModal from "./IngredientModal";
+import Input from "components/base/Input";
+
+
 
 type State = {
     recipe?: RecipeT,
@@ -104,7 +108,9 @@ class Recipe extends React.Component<PP, State> {
 
         var data = await PushStep(this.id, step)
         if (data.status == 200) {
-            this.state.steps.push(data.content)
+            var temp = this.state.steps
+            temp.push(data.content)
+            this.setState({steps: temp})
         }
     }
 
@@ -114,6 +120,15 @@ class Recipe extends React.Component<PP, State> {
             var ingArr = this.state.ingredients
             ingArr = ingArr.filter(item => item.title != title)
             this.setState({ingredients: ingArr})
+        }
+    }
+
+    async deleteStep(num: number) {
+        var data = await DeleteStep(this.id, num)
+        if (data.status == 200) {
+            var temp = this.state.steps
+            temp = temp.filter(item => item.num != num)
+            this.setState({steps: temp})
         }
     }
 
@@ -261,9 +276,16 @@ class Recipe extends React.Component<PP, State> {
 
                     <Box>
                         {this.state.steps.map(item =>
-                            <Step {...item} key={item.num}/>
+                            <Step {...item} key={item.num}
+                            delStepCallback={(num) => 
+                                this.deleteStep(num)}
+                            />
                         )}
                     </Box>
+
+                    <Input>
+                    </Input>
+
                 </Box>
             </VStack>
         
