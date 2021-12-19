@@ -766,7 +766,9 @@ var doc = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/recipes/{id}/ingredients/{title}": {
             "delete": {
                 "produces": [
                     "application/json"
@@ -784,13 +786,11 @@ var doc = `{
                         "required": true
                     },
                     {
-                        "description": "Ingredient",
-                        "name": "recipe",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/objects.IngredientDTO"
-                        }
+                        "type": "string",
+                        "description": "Recipe's title",
+                        "name": "title",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {

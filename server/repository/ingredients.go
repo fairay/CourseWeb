@@ -75,6 +75,5 @@ func (this *PGIngredientsRep) ReplaceInRecipe(id_rcp int, arr []objects.RecipeIn
 }
 
 func (this *PGIngredientsRep) DelFromRecipe(idRecipe int, title string) error {
-	temp := &objects.RecipeIngredient{Recipe_id: idRecipe, Ingredient_id: title}
-	return this.db.Delete(&temp).Error
+	return this.db.Where("recipe_id = ? AND ingredient_id = ?", idRecipe, title).Delete(&objects.RecipeIngredient{}).Error
 }

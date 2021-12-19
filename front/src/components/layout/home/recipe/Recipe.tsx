@@ -18,6 +18,7 @@ import GetLikes from "postApi/likes/Get";
 import DeleteLike from "postApi/likes/Delete";
 import AddLike from "postApi/likes/Add";
 import GetIsLiked from "postApi/likes/GetIs";
+import DeleteIngredient from "postApi/ingredients/Delete";
 
 import {Recipe as RecipeT} from "types/Resipe"
 import {Ingredient as IngredientT} from "types/Ingredient";
@@ -88,6 +89,15 @@ class Recipe extends React.Component<PP, State> {
         var data = await GetIsLiked(this.id)
         if (data.status == 200) {
             this.setState({liked: data.content})
+        }
+    }
+
+    async deleteIngredient(title: string) {
+        var data = await DeleteIngredient(this.id, title)
+        if (data.status == 200) {
+            var ingArr = this.state.ingredients
+            ingArr = ingArr.filter(item => item.title != title)
+            this.setState({ingredients: ingArr})
         }
     }
 
@@ -206,7 +216,9 @@ class Recipe extends React.Component<PP, State> {
                                 borderColor="add-1" alignItems="flex-start"> 
                                 <Box>
                                     {this.state.ingredients.map(item =>
-                                        <Ingredient {...item} key={item.title}/>
+                                        <Ingredient {...item} key={item.title} 
+                                        delCallback={(title) => this.deleteIngredient(title)} 
+                                        />
                                     )}
                                 </Box>
                             </RoundBox>

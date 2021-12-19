@@ -14,7 +14,9 @@ import RoundBox from "components/base/RoundBox";
 import CancelIcon from "components/icon/Cancel";
 import {Ingredient as IngredientT} from "types/Ingredient";
 
-interface IngredientProps extends IngredientT{}
+interface IngredientProps extends IngredientT {
+    delCallback: (title: string) => Promise<void>
+}
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -39,7 +41,10 @@ const Ingredient: React.FC<IngredientProps> = (props) => {
                     </Text>
                 </VStack>
 
-                <Button display="contents" visibility={hide ? "hidden" : "visible"} /*onClick={() => deleteItem(id)}*/>
+                <Button display="contents" 
+                    visibility={hide ? "hidden" : "visible"} 
+                    onClick={() => props.delCallback(props.title)}
+                >
                     <Box position="absolute" right="0px" top="0px"><CancelIcon /> </Box>
                 </Button>
 
