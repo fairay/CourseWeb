@@ -29,6 +29,7 @@ import EmptyLike from "components/icon/EmptyLike";
 import FullLike from "components/icon/FullLike";
 import ClockIcon from "components/icon/Clock";
 import PlateIcon from "components/icon/Plate";
+import AddIcon from "components/icon/Add";
 
 import RoundBox from "components/base/RoundBox";
 import Ingredient from "../menuright/ingredient/Ingredient";
@@ -178,10 +179,16 @@ class Recipe extends React.Component<PP, State> {
                         </Text>
 
                         <Box>
-                            <Text textStyle="subtitle" color="title" align="left" maxH="156px"
-                                paddingTop="20px" paddingLeft="15px">
-                                Ингредиенты
-                            </Text>
+                            <HStack paddingTop="20px">
+                                <Text textStyle="subtitle" color="title" align="left" maxH="156px"
+                                    paddingLeft="15px">
+                                    Ингредиенты
+                                </Text>
+
+                                <Button display="contents" onClick={() => {}}>
+                                    <Box paddingLeft="15px"> <AddIcon /> </Box>
+                                </Button>
+                            </HStack>
 
                             <RoundBox width="100%" height="192px" padding="3px"
                                 borderColor="add-1" alignItems="flex-start"> 
@@ -196,10 +203,16 @@ class Recipe extends React.Component<PP, State> {
                 </Box>
 
                 <Box w="100%">
-                    <Text textStyle="subtitle" color="title" align="left" maxH="156px"
-                            paddingTop="15px">
-                        Шаги приготовления
-                    </Text>
+                    <HStack paddingTop="20px">
+                        <Text textStyle="subtitle" color="title" align="left" maxH="156px"
+                                paddingTop="15px">
+                            Шаги приготовления
+                        </Text>
+
+                        <Button display="contents" onClick={() => {}}>
+                            <Box paddingLeft="15px" paddingTop="15px"> <AddIcon /> </Box>
+                        </Button>
+                    </HStack>
 
                     <Box>
                         {this.state.steps.map(item =>
