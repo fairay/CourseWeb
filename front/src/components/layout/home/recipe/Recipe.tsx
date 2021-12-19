@@ -16,6 +16,7 @@ import GetIngredient from "postApi/ingredients/Get";
 import GetSteps from "postApi/steps/Get";
 import GetLikes from "postApi/likes/Get";
 import DeleteLike from "postApi/likes/Delete";
+import AddLike from "postApi/likes/Add";
 
 import {Recipe as RecipeT} from "types/Resipe"
 import {Ingredient as IngredientT} from "types/Ingredient";
@@ -50,7 +51,19 @@ class Recipe extends React.Component<PP, State> {
     }
 
     deleteLike() {
-        DeleteLike(this.id).then(data => {});
+        DeleteLike(this.id);
+    }
+
+    addLike() {
+        AddLike(this.id);
+    }
+
+    getLikes() {
+        GetLikes(this.id).then(data => {
+            if (data.status == 200) {
+                this.setState({likes: data.content})
+            }
+        });
     }
 
     componentDidMount() {
@@ -80,11 +93,7 @@ class Recipe extends React.Component<PP, State> {
             }
         });
 
-        GetLikes(this.id).then(data => {
-            if (data.status == 200) {
-                this.setState({likes: data.content})
-            }
-        });
+        this.getLikes();
     }
   
     render() {
@@ -110,9 +119,12 @@ class Recipe extends React.Component<PP, State> {
                         <VStack>
                             <Box position="absolute" right="0px" top="0px"> <DeleteIcon width="50px" height="40px" /> </Box>
                             
-                            <Button display="contents" onClick={() => {
+                            <Button display="contents" onClick={() => {                                
+                                {this.state.liked && this.deleteLike()};
+                                {!this.state.liked && this.addLike()};
                                 this.setState({liked:!this.state.liked});
-                                this.deleteLike();}
+                                this.getLikes();
+                            }
                             }>
                                 <Box position="absolute" right="0px" bottom="0px">
                                     {!this.state.liked && <EmptyLike width="50px" height="40px" />}
