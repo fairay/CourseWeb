@@ -1,17 +1,20 @@
 import React from "react";
 import {
-    BoxProps, Input as I
+    InputProps as IProps, Input as I
 } from "@chakra-ui/react";
 import RoundBox from "./RoundBox"
 import theme from "extendTheme"
 
-interface InputProps extends BoxProps {
+interface InputProps extends IProps {
+    name?: string
+    type?: string
     placeholder?: string
     focusBorderColor?: string
 }
 
 const Input: React.FC<InputProps> = (props) => {
     const {
+        name = "", type = "",
         placeholder = "Введите данные",
         focusBorderColor = theme.colors["accent-3"],
          ...rest 
@@ -25,6 +28,7 @@ const Input: React.FC<InputProps> = (props) => {
     return (
     <RoundBox {...rest}>
         <I 
+            name={name} type={type}
             borderWidth={0} borderRadius={10} 
             width="100%"
             placeholder={placeholder}

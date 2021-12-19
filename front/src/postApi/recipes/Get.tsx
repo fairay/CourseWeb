@@ -4,7 +4,6 @@ import { backUrl } from "../Common";
 
 const GetRecipe = async function(id: number) {
     const response = await axios.get(backUrl + `/recipes/${id}`);
-    console.log(response);
     return {
         status: response.status,
         content: response.data

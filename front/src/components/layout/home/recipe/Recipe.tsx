@@ -50,9 +50,13 @@ class Recipe extends React.Component<PP, State> {
             if (data.status == 200) {
                 this.setState({recipe: data.content})
 
-                var title = document.getElementById("title")
-                if (title && this.state.recipe)
-                    title.innerText = this.state.recipe.title
+                var elem = document.getElementById("title")
+                if (elem && this.state.recipe)
+                    elem.innerText = this.state.recipe.title
+
+                elem = document.getElementById("author")
+                if (elem && this.state.recipe)
+                    elem.innerText = this.state.recipe.author
             }
         });
 

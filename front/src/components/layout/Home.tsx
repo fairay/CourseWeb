@@ -1,17 +1,22 @@
 import { Box, Container, Divider } from "@chakra-ui/react";
 import React from "react";
-import AllRecipes from "./home/allrecipes/AllRecipes";
 import {BrowserRouter, Routes, Route, useParams, RouteProps, Params} from "react-router-dom"
+
+import AllRecipes from "./home/allrecipes/AllRecipes";
 import RecipeParams from "./home/recipe/Recipe"
+import Login from "./home/auth/Login"
+import SignUp from "./home/auth/Signup"
 
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = ({}) => {
   return (
     <Box backgroundColor="bg" minH="100vh" h="auto">
-      <Container maxW="1000px" display="flex" 
-        paddingX="0px" paddingY="30px" minH="95%" 
-        alignSelf="center" textStyle="body"
+      <Container maxW="1000px" minH="95%"
+        display="flex" 
+        paddingX="0px" paddingY="30px"  
+        alignSelf="center" justifyContent="center"
+        textStyle="body"
       > 
         <Routing />
       </Container>
@@ -23,7 +28,8 @@ function Routing () {
   return <BrowserRouter>
     <Routes>
       <Route path="/" element={<AllRecipes />}/>
-      <Route path="/auth" element={<Auth />}/>
+      <Route path="/auth/signin" element={<Login />}/>
+      <Route path="/auth/signup" element={<SignUp />}/>
       <Route path="/recipes/:id" element={<RecipeParams />}/>
       <Route path="*" element={<NotFound />}/>
     </Routes>

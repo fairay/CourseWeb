@@ -69,7 +69,7 @@ const theme = extendTheme({
       fontFamily: 'Lora',
       fontStyle: 'normal',
       fontWeight: 'bold',
-      fontSize: '10px',
+      fontSize: '12px',
       lineHeight: '200%',
       textTransform: 'uppercase',
     },

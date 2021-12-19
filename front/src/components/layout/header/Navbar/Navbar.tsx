@@ -33,22 +33,20 @@ const Navbar: React.FC<NavbarProps> = (props) => {
         justifyContent = 'space-between'
     >
         <Box
-            display="flex"
+            display="flex" columnGap="10px"
             width="fit-content"
         >
-            {/* # TODO Link to component */}
             {items.map(item =>
             <Link 
-                key={item.name}
-                marginRight="10px"
-                width="100%" href={item.ref} textStyle="body"
+                key={item.name} href={item.ref}
+                width="100%" textStyle="body"
             >
                 {item.name}
             </Link>
             )}
         </Box>
         
-        <Link href="/auth"> <RoundBox width="190px" height="40px" alignItems="center">
+        <Link href="/auth/signin"> <RoundBox width="190px" height="40px" alignItems="center">
             <Box marginY="auto" marginX="8px"> <LoginIcon /> </Box>
             <Text marginLeft="2px" textStyle="body">Войти</Text>
         </RoundBox></Link>

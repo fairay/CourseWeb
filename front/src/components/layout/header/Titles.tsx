@@ -20,7 +20,7 @@ export interface TitlesProps {
 export const Titles: React.FC<TitlesProps> = (props) => {
   return (
       <Container
-        width="100%"
+        width="100%" maxWidth="none"
         d="flex"
         alignItems="center"
         justifyContent="space-around"
