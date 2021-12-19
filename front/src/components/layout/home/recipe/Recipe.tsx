@@ -148,7 +148,7 @@ class Recipe extends React.Component<PP, State> {
 
                 <Box w="100%">
                     <Text textStyle="subtitle" color="title" align="left" maxH="156px"
-                            paddingTop="20px" paddingLeft="15px">
+                            paddingTop="15px">
                         Шаги приготовления
                     </Text>
 
