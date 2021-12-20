@@ -109,8 +109,8 @@ class Recipe extends React.Component<PP, State> {
 
     async createStep() {
         let step: StepT = {
-            description:    "Введите данные",
-            title: "Введите данные",
+            description:    '',
+            title: '',
             num: 0,
             recipe: this.id
         }
@@ -297,6 +297,7 @@ class Recipe extends React.Component<PP, State> {
                             <Step {...item} key={item.num}
                             delStepCallback={(num) => 
                                 this.deleteStep(num)}
+                            updatable={this.state.isAuthor}
                             />
                         )}
                     </Box>
