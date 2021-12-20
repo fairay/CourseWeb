@@ -2,7 +2,6 @@ import { Text, Heading, Divider, Box, Button, Link, FormControl } from "@chakra-
 import React from "react";
 import Input from "components/base/Input";
 import RoundButton from "components/base/Button";
-import RoundBox from "components/base/RoundBox";
 import { Account } from "types/Account";
 import { Login as LoginQuery } from "postApi/accounts/Login";
 import { NavigateFunction, useNavigate } from "react-router-dom";
@@ -43,7 +42,7 @@ class Login extends React.Component<LoginProps> {
         e.currentTarget.disabled = true
         LoginQuery(this.acc, this.props.setCookie).then(data => {
             if (data.status == 200) {
-                this.props.navigate("/")
+                window.location.href = '/';
             } else {
                 e.currentTarget.disabled = false
                 var title = document.getElementById("undertitle")

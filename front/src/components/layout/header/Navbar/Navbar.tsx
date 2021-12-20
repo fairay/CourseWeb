@@ -23,6 +23,8 @@ import FullLikeIcon from "components/icon/FullLike";
 import RecipeIcon from "components/icon/Recipes";
 import LogoutIcon from "components/icon/Logout";
 
+import { Logout as LogoutQuery } from "postApi/accounts/Logout";
+
 export interface NavbarProps {}
 
 const navItems = {
@@ -39,7 +41,7 @@ const navItems = {
 }
 
 const Navbar: React.FC<NavbarProps> = (props) => {
-    let [cookie] = useCookies(['role', 'login']);
+    let [cookie, setCookie, removeCookie] = useCookies(['role', 'login', 'token']);
     let role = cookie.login ? 'admin' : ''
 
     const [items, setItems] = React.useState(navItems[role]);
@@ -53,6 +55,11 @@ const Navbar: React.FC<NavbarProps> = (props) => {
         </RoundBox></Link>
         )
     }
+    const logout = () => {
+        localStorage.clear();
+        LogoutQuery(removeCookie)
+        window.location.href = '/';
+    }
 
     const RenderAuth = () => {
         if (expanded) {
@@ -64,7 +71,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
             <Link href="/me/recipes"><Box marginY="auto" marginX="8px"> 
                 <RecipeIcon  fill={theme.colors.title} /> 
             </Box></Link>
-            <Link href="/auth/logout"><Box marginY="auto" marginX="8px"> 
+            <Link onClick={logout}><Box marginY="auto" marginX="8px"> 
                 <LogoutIcon  fill={theme.colors.title} /> 
             </Box></Link>
             <Box marginY="auto" marginX="8px" onClick={() => setExpanded(false)} cursor="pointer"> 

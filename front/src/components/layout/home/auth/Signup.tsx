@@ -67,7 +67,7 @@ class SignUp extends React.Component<SignUpProps> {
         var data = await CreateQuery(this.acc)
         if (data.status == 200) {
             await LoginQuery(this.acc, this.props.setCookie)
-            this.props.navigate("/")
+            window.location.href = '/';
         } else {
             e.currentTarget.disabled = false
             var title = document.getElementById("undertitle")

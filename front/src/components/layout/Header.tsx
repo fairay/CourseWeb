@@ -16,8 +16,10 @@ const HeaderRouter: React.FC<{}> = ({}) => {
             <Route path="/" element={<Header title="Все рецепты" addField={searchInput} />}/>
             <Route path="/me/likes" element={<Header subtitle="Понравилось" title="Мне" />}/>
             <Route path="/me/recipes" element={<Header subtitle="Автор" title="Я" />}/>
+
             <Route path="/auth/signin" element={<Header title="Вход" undertitle="Добро пожаловать. Снова." />}/>
             <Route path="/auth/signup" element={<Header title="Регистрация" undertitle="Чтобы получить доступ к тысячам новых возможностей в Вашем кулинарном самовыражении!" />}/>
+            
             <Route path="/recipes/:id" element={<Header title="" addField={authorField}/>}/>
 
             <Route path="*" element={<Header title="Страница не найдена"/>}/>

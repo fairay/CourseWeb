@@ -34,6 +34,7 @@ class RecipeBox extends React.Component<RecipeBoxProps, State> {
     render() {
         return (
             <Box 
+                width="100%"
                 display='flex'
                 flexDirection="row"
                 flexWrap="wrap"
