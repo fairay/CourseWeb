@@ -16,6 +16,7 @@ import FullLike from "components/icon/FullLike";
 import {Recipe as RecipeI} from "types/Resipe";
 
 import GetLikes from "postApi/likes/Get";
+import ClockBox from "components/base/box/Clock";
 
 interface RecipeProps extends RecipeI {}
 
@@ -68,11 +69,7 @@ const Recipe: React.FC<RecipeProps> = (props) => {
                     </VStack>
 
                     <HStack>
-                        <RoundBox width="120px" height="30px"
-                            borderColor="accent-1" alignItems="center"> 
-                                <Box marginY="auto" marginX="8px"> <ClockIcon /> </Box>
-                                <Text marginLeft="2px" textStyle="body"> {props.duration} </Text>
-                        </RoundBox>
+                        <ClockBox duration={props.duration}/>
 
                         <RoundBox width="120px" height="30px"
                             borderColor="accent-1" alignItems="center"> 

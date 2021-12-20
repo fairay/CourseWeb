@@ -21,9 +21,6 @@ interface HeaderProps extends TitlesProps {
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
-    const [cookies, setCookie] = useCookies(['login', 'refresh_token'])
-    console.log(cookies.login)
-    
     return (
     <Box 
         bg="bg-alt"

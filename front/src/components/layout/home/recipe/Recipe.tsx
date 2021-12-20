@@ -41,6 +41,7 @@ import Ingredient from "../menuright/ingredient/Ingredient";
 import Step from "../menuright/step/Step";
 import IngredientModal from "./IngredientModal";
 import Input from "components/base/Input";
+import ClockBox from "components/base/box/Clock";
 
 
 
@@ -183,17 +184,6 @@ class Recipe extends React.Component<PP, State> {
     }
   
     render() {
-        var stringDuration = ""
-
-        if (!this.state.recipe)
-            stringDuration = "---"
-        else if (this.state.recipe.duration < 90)
-            stringDuration += this.state.recipe.duration + " мин"
-        else if (this.state.recipe.duration < 60 * 24)
-            stringDuration += Math.round(this.state.recipe.duration / 60) + " ч"
-        else
-            stringDuration += Math.round(this.state.recipe.duration / (60 * 24)) + " д"
-
         return(
             <VStack display="flex" w="100%">
                 <Box display="flex" w="100%">
@@ -230,11 +220,7 @@ class Recipe extends React.Component<PP, State> {
 
                     <Box paddingLeft="40px" w="100%">
                         <HStack display="flex" w="100%" columnGap="30px" paddingLeft="15px">
-                            <RoundBox width="120px" height="30px" 
-                                borderColor="accent-1" alignItems="center"> 
-                                    <Box marginY="auto" marginX="8px"> <ClockIcon /> </Box>
-                                    <Text marginLeft="2px" textStyle="body"> {stringDuration}  </Text>
-                            </RoundBox>
+                            <ClockBox duration={this.state.recipe?.duration}/>
 
                             <RoundBox width="120px" height="30px" 
                                 borderColor="accent-1" alignItems="center"> 
