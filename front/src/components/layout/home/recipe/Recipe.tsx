@@ -248,7 +248,9 @@ class Recipe extends React.Component<PP, State> {
                                     Ингредиенты
                                 </Text>
 
-                                <IngredientModal putCallback={(data: IngredientT) => this.putIngredient(data)}/>
+                                {this.state.isAuthor &&
+                                 <IngredientModal putCallback={(data: IngredientT) => this.putIngredient(data)}/>
+                                }
                             </HStack>
 
                             <RoundBox width="100%" height="192px" padding="3px"
@@ -256,7 +258,11 @@ class Recipe extends React.Component<PP, State> {
                                 <Box>
                                     {this.state.ingredients.map(item =>
                                         <Ingredient {...item} key={item.title} 
-                                        delCallback={(title) => this.deleteIngredient(title)} 
+                                        delCallback={
+                                            this.state.isAuthor 
+                                            ? (title) => this.deleteIngredient(title) 
+                                            : undefined
+                                        } 
                                         />
                                     )}
                                 </Box>
@@ -281,9 +287,11 @@ class Recipe extends React.Component<PP, State> {
                     <Box>
                         {this.state.steps.map(item =>
                             <Step {...item} key={item.num}
-                            delStepCallback={(num) => 
-                                this.deleteStep(num)}
-                            updatable={this.state.isAuthor}
+                            delStepCallback={
+                                this.state.isAuthor 
+                                ? (num) => this.deleteStep(num)
+                                : undefined
+                            }
                             />
                         )}
                     </Box>

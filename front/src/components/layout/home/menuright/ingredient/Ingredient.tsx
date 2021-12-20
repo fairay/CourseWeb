@@ -15,7 +15,7 @@ import CancelIcon from "components/icon/Cancel";
 import {Ingredient as IngredientT} from "types/Ingredient";
 
 interface IngredientProps extends IngredientT {
-    delCallback: (title: string) => Promise<void>
+    delCallback?: (title: string) => Promise<void>
 }
 
 function capitalizeFirstLetter(string) {
@@ -40,13 +40,15 @@ const Ingredient: React.FC<IngredientProps> = (props) => {
                         {props.amount}
                     </Text>
                 </VStack>
-
+                
+                { props.delCallback &&
                 <Button display="contents" 
                     visibility={hide ? "hidden" : "visible"} 
-                    onClick={() => props.delCallback(props.title)}
+                    onClick={() => props.delCallback && props.delCallback(props.title)}
                 >
                     <Box position="absolute" right="0px" top="0px"><CancelIcon /> </Box>
                 </Button>
+                }
 
             </HStack>
 

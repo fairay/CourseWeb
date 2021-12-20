@@ -25,8 +25,7 @@ async function updateChanges(step: StepT) {
 
 
 interface StepProps extends StepT{
-    delStepCallback: (num: number) => Promise<void>
-    updatable: boolean
+    delStepCallback?: (num: number) => Promise<void>
 }
 
 
@@ -49,7 +48,7 @@ const Step: React.FC<StepProps> = (props) => {
                         {title}
                     </Text>}
 
-                    {props.updatable && <HStack> 
+                    {props.delStepCallback && <HStack> 
                         <Button display="contents" onClick={() => 
                             {
                                 active && updateChanges({recipe: props.recipe, num: props.num, title: title, description: description}); 
@@ -61,7 +60,7 @@ const Step: React.FC<StepProps> = (props) => {
                         </Button> 
 
                         <Button display="contents" 
-                            onClick={() => props.delStepCallback(props.num)}>
+                            onClick={() => props.delStepCallback && props.delStepCallback(props.num)}>
                             <DeleteIcon /> 
                         </Button>
                     </HStack>}

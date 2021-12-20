@@ -36,10 +36,10 @@ export default function IngredientModal(propos) {
           <ModalCloseButton />
           <ModalBody columnGap="6px" display='flex' flexDirection='row' alignItems="center">
             <Box rowGap="6px" display='flex' flexDirection='column' width="100%">
-              <Input value={data.title} placeholder='Введите ингредиент'
+              <Input placeholder='Введите ингредиент'
                 onInput={(e) => {data.title = e.currentTarget.value}}
               />
-              <Input value={data.amount} placeholder='Введите меру' 
+              <Input placeholder='Введите меру' 
                 textColor='accent-3' placeholderColor='accent-3'
                 onInput={(e) => {data.amount = e.currentTarget.value}}
               />
